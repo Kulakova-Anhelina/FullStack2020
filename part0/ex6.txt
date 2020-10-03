@@ -1,0 +1,7 @@
+title Single page app
+
+
+Browser->Server: HTTP POST:  https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note right of Browser:new note:  {content: "hello", date: "2020-10-03T16:51:15.309Z"}
+note left of Browser:The Content-Type header is represented in the JSON format.
+Server->Browser: server responds  with 201 code created

@@ -1,0 +1,20 @@
+title Exercises 4
+
+Browser->Server: HTTP POST: https://studies.cs.helsinki.fi/exampleapp/new_note
+note right of Browser: the user input is send to the server and with five HTTP requests
+note left of Browser:HTTP POST request to the server address new_note
+Server->Browser: server responds with HTTP status code 302
+note right of Server: the browser reloads the Notes page.
+Browser->Server: HTTP GET : https://studies.cs.helsinki.fi/exampleapp/notes
+note left of Browser: HTTP GET request to the address defined in the header's Location - the address notes.
+Server->Browser:note.html 
+Browser->Server: HTTP GET : https://studies.cs.helsinki.fi/exampleapp/main.css
+Server->Browser: main.css
+Browser->Server: HTTP GET :https://studies.cs.helsinki.fi/exampleapp/main.js
+Server->Browser:main.js
+Browser->Server: https://studies.cs.helsinki.fi/exampleapp/data.json
+Server->Browser:data.js
+Browser->Server: HTTP GET :https://studies.cs.helsinki.fi/exampleapp/main.js
+Server->Browser:main.js
+
+
