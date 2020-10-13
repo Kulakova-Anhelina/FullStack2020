@@ -1,58 +1,50 @@
 import React from 'react'
 
-const Header = ({course}) => {
-  console.log(course)
+const Header = ({ title }) => {
   return (
-    <div>
-      <h1>{course}</h1>
-    </div>
+    <h1>
+      {title}
+    </h1>
   )
 }
 
-const Part = ({course}) => {
-  console.log(course,"part")
-  return (
-    <div>
-      {course.parts.map((item, id) => <p key={id}>{item.name} {item.exercises}</p>)}
-    </div>
-  )
-}
-
-
-const Content = ({course}) => {
-  console.log(course,"content")
-  return (
-    <div>
-      <Part course={course}/>
-    </div>
-  )
-}
-const Total = ({course}) => {
-  console.log(course,"total")
+const Part = ({ courses }) => {
   const reducer = (accumulator, currentValue) => accumulator + currentValue;
-
+  console.log(courses, "part")
   return (
     <div>
-      <p>
-        Total number of exercises:
-        { course.parts.map((exresise) => exresise.exercises).reduce(reducer)}
-      </p>
+      {courses.map((course) =>
+        <div key={course.id}>
+          <h2 >{course.name}</h2>
+          {course.parts.map((item) => <p key={item.id}>{item.name} {item.exercises}</p>)}
+          <p> Total number of exercises:  {course.parts.map((ex) => ex.exercises).reduce(reducer)} </p>
+        </div>
+
+      )}
     </div>
   )
 }
 
 
+const Content = ({ courses }) => {
+  console.log(courses, "content")
+  return (
+    <div>
+      <Part courses={courses} />
+    </div>
+  )
+}
 
-const Course = ({course}) => {
-  // console.log(course)
+
+const Course = ({ courses }) => {
+  console.log(courses)
 
   return (
     <div>
-    <Header course={course.name} />
-    <Content course={course}/>
-    <Total course={course}/>
+      <Header title="Web development curriculumn" />
+      <Content courses={courses} />
 
-  </div>
+    </div>
   )
 }
 export default Course;
