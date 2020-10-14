@@ -51,7 +51,7 @@ const App = () => {
   const handleSearch = (event) => {
     console.log(event.target.value)
     setSearch(event.target.value)
-    setFilter(allNames.filter(name => name.includes(search)).map((filterName) => <p>{filterName.toLowerCase()}</p>))
+    setFilter(allNames.filter(name => name.includes(search)).map((filterName) => filterName.toLowerCase()))
     console.log(filter, "search")
 
   }
