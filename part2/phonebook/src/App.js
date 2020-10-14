@@ -9,6 +9,9 @@ const App = () => {
   const addName =(event) =>{
     event.preventDefault();
     console.log('button clicked', event.target)
+    if(persons.map((person) => person.name === newName)){
+      alert(`${newName} is already added to phonebook`)
+    }
     const listObject = {
       name: newName,
       date: new Date().toISOString(),
