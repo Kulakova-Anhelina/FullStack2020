@@ -1,22 +1,18 @@
 
-
 import React, { useState, useEffect } from 'react'
 import './App.css';
 import axios from 'axios'
 import CountryDetails from './components/CountryDetails'
-import CountryList  from './components/CountryList'
-
+import CountryList from './components/CountryList'
 
 
 const App = () => {
   const [countries, setCountries] = useState([])
   const [search, setSearch] = useState('')
-
-  const countriesFiltered = countries.filter(country => (country.name.toLowerCase().includes(search.toLowerCase())))
+ const countriesFiltered = countries.filter(country => (country.name.toLowerCase().includes(search.toLowerCase())))
   const moreThanTen = countriesFiltered.length > 10;
   const lessThanTen = countriesFiltered.length < 10 && countriesFiltered.length >= 2;
   const oneCountry = countriesFiltered.length === 1
-
 
   useEffect(() => {
     console.log('effect')
@@ -26,14 +22,13 @@ const App = () => {
         console.log('promise fulfilled')
         setCountries(response.data)
         console.log(countries.length)
+
       })
 
+    }
+    , [countries.length])
 
 
-
-
-  }
-    , [search])
 
 
   const handleSearch = (event) => {
@@ -47,7 +42,6 @@ const App = () => {
     setSearch(name)
 
   }
-
 
 
   return (
