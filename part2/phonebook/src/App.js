@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
-import axios from 'axios'
+import personService from './services/persons'
+
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -14,11 +15,10 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get(' http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -39,10 +39,12 @@ const App = () => {
       setPhone('')
       return
     }
-    setPersons(persons.concat(listObject))
-    setNewName('')
-    setPhone('')
-
+    personService
+      .create(listObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+      })
   }
 
   const handleNameChange = (event) => {
@@ -57,7 +59,8 @@ const App = () => {
   const handleSearch = (event) => {
     console.log(event.target.value)
     setSearch(event.target.value)
-    setFilter(allNames.filter(name => name.includes(search)).map((filterName) => filterName.toLowerCase()))
+    setFilter(allNames.filter(name =>
+    name.includes(search)).map((filterName) => <p>{filterName.toLowerCase()}</p>))
     console.log(filter, "search")
 
   }
