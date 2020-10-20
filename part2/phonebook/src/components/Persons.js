@@ -1,12 +1,14 @@
 import React from 'react'
 
-const Persons = (props) => {
 
-  const showAll = props.persons.map((person, i) => <p key={i}>{person.name} {person.number}</p>)
+
+const Persons = ({name, number, handleDelete}) => {
+console.log(name, number)
   return (
     <div>
-     {props.search.length > 0 ? <p>{props.filter}</p> : showAll}
-  </div>
+       <p >{name} {number}</p>
+      <button onClick={handleDelete}>Delete</button>
+    </div>
   )
 
 }

@@ -11,7 +11,7 @@ const App = () => {
   const [phone, setPhone] = useState('')
   const [search, setSearch] = useState([])
   const [filter, setFilter] = useState([])
-  const allNames = persons.map((person) => person.name.toLowerCase())
+  const allNames = persons.map((person) => person.name)
 
   useEffect(() => {
     console.log('effect')
@@ -44,7 +44,21 @@ const App = () => {
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
+      }).catch(err => {
+        console.log(err);
+      });
+  }
+
+  const handleDelete = (id, name) => {
+    console.log("hello", id)
+    if (window.confirm(`Do you really want to delete the user ${name}?`) === true) {
+      personService
+      .deletePersona(id)
+      .then(_ => {
+        setPersons(persons.filter(p => id !== p.id))
       })
+    }
+
   }
 
   const handleNameChange = (event) => {
@@ -60,10 +74,18 @@ const App = () => {
     console.log(event.target.value)
     setSearch(event.target.value)
     setFilter(allNames.filter(name =>
-    name.includes(search)).map((filterName) => <p>{filterName.toLowerCase()}</p>))
+      name.includes(search)).map((filterName) => <p>{filterName.toLowerCase()}</p>))
     console.log(filter, "search")
 
   }
+
+  const display = search.length > 0 ? filter :
+    persons.map((person) =>
+      <Persons
+        key={person.id}
+        name={person.name}
+        number={person.number}
+        handleDelete={() => handleDelete(person.id, person.name)} />)
 
 
   return (
@@ -82,7 +104,7 @@ const App = () => {
         newName={newName}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} search={search} />
+      {display}
 
     </div>
   )
