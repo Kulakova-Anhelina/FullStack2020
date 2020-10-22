@@ -4,6 +4,8 @@ import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import ErrorNotification from './components/ErrorNotification'
+import SuccessNotification from './components/SuccessNotification'
 
 
 const App = () => {
@@ -13,6 +15,8 @@ const App = () => {
   const [search, setSearch] = useState([])
   const [filter, setFilter] = useState([])
   const allNames = persons.map((person) => person.name)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [sucessMessage, setSucessMessage] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -22,7 +26,7 @@ const App = () => {
         setPersons(initialPersons)
       })
   }, [])
-// input name
+  // input name
   const handleNameChange = (event) => {
     setNewName(event.target.value)
 
@@ -50,7 +54,7 @@ const App = () => {
     console.log('button clicked', event.target)
 
 
-    allNames.includes(newName)? updatePerson() : createPerson()
+    allNames.includes(newName) ? updatePerson() : createPerson()
   }
 
   // create  a  new person
@@ -66,12 +70,23 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setPhone('')
-      }).catch(err => {
-        console.log(err);
-      });
+        setSucessMessage(`added ${newName}`)
+
+        setTimeout(() => {
+          setSucessMessage(null)
+        }, 5000)
+
+      }).catch(error => {
+        setErrorMessage(
+          error
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
   }
 
-// delete person
+  // delete person
   const handleDelete = (id, name) => {
     console.log("hello", id)
     if (window.confirm(`Do you really want to delete the user ${name}?`) === true) {
@@ -79,30 +94,45 @@ const App = () => {
         .deletePersona(id)
         .then(_ => {
           setPersons(persons.filter(p => id !== p.id))
-        }).catch(err => {
-          console.log(err);
-        });
+        }).catch(error => {
+          setErrorMessage(
+            error
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
+
 
   }
   // edit person
   const updatePerson = () => {
-    if (window.confirm(` ${newName} is already exist in phonebook, would you like to update the phone?`) === true){
+    if (window.confirm(` ${newName} is already exist in phonebook, would you like to update the phone?`) === true) {
       const persona = persons.find(n => n.name === newName);
       const id = persona.id
       console.log(persona);
-      const changedNumber = { ...persona, number : phone}
+      const changedNumber = { ...persona, number: phone }
       console.log(changedNumber, "number")
       personService
-      .update(id, changedNumber)
-      .then(returnedPerson => {
-        setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
-        setNewName('')
-        setPhone('')
-        console.log(persons, "here")
-      }).catch(err => {
-        console.log(err);
-      });
+        .update(id, changedNumber)
+        .then(returnedPerson => {
+          setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+          setNewName('')
+          setPhone('')
+          setSucessMessage(`number of ${newName} was changed`)
+          setTimeout(() => {
+            setSucessMessage(null)
+          }, 5000)
+          console.log(persons, "here")
+        }).catch(error => {
+          setErrorMessage(
+            `Information of '${newName}' was already removed from server`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
 
   }
@@ -118,12 +148,14 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <ErrorNotification message={errorMessage} />
+      <SuccessNotification messageSucsess={sucessMessage} />
       <Filter
         handleSearch={handleSearch}
         search={search}
       />
-      <h3>Add a new</h3>
+      <h1>Add a new</h1>
       <PersonForm
         addPerson={addPerson}
         handleNameChange={handleNameChange}
@@ -131,7 +163,7 @@ const App = () => {
         phone={phone}
         newName={newName}
       />
-      <h2>Numbers</h2>
+      <h1>Numbers</h1>
       {display}
 
     </div>
