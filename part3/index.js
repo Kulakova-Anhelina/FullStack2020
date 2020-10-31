@@ -29,6 +29,8 @@ const generateId = () => {
 }
 
 
+let all_names = persons.map((n) => n.name)
+
 app.get('/', (request, response) => {
   response.send('<div><p>Phonebook has info of ' + persons.length + '</p>' + d + '</div>')
 })
@@ -60,9 +62,14 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
   const body = request.body
 console.log(body);
-  if (!body.name) {
+  if (!body.name || !body.number) {
     return response.status(400).json({
-      error: 'name is missing'
+      error: 'please fill all the fields'
+    })
+  }
+  if (all_names.includes(body.name) ===  true) {
+    return response.status(400).json({
+      error: 'name must be unique'
     })
   }
 
