@@ -3,6 +3,9 @@ const app = express()
 
 app.use(express.json())
 
+var morgan = require('morgan')
+morgan('tiny')
+
 
 var d = new Date()
 let persons = [
