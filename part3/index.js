@@ -1,10 +1,31 @@
-const express = require('express')
-const app = express()
-
-app.use(express.json())
-
+var express = require('express')
+var fs = require('fs')
 var morgan = require('morgan')
-morgan('tiny')
+var path = require('path')
+const bodyParser = require('body-parser');
+
+var app = express()
+
+// const requestLogger= morgan(function (tokens, req, res) {
+//   return [
+//     tokens.method(req, res),
+//     tokens.url(req, res),
+//     tokens.status(req, res),
+//     tokens.res(req, res, 'content-length'), '-',
+//     tokens['response-time'](req, res), 'ms',
+//   ].join(' ')
+// })
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan('tiny'))
+// log only 4xx and 5xx responses to console
+app.use(morgan('dev', {
+  skip: function (req, res) { return res.statusCode < 400 }
+}))
+
+app.use(morgan('combined'));
+morgan.token('type', (req, res) => req.headers['content-type'])
+// app.use(requestLogger)
 
 
 var d = new Date()
@@ -61,7 +82,7 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-//
+
 app.post('/api/persons', (request, response) => {
   const body = request.body
 console.log(body);
