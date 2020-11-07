@@ -1,31 +1,23 @@
 var express = require('express')
-var fs = require('fs')
+
 var morgan = require('morgan')
-var path = require('path')
-const bodyParser = require('body-parser');
+
+var bodyParser = require('body-parser');
 
 var app = express()
 
-// const requestLogger= morgan(function (tokens, req, res) {
-//   return [
-//     tokens.method(req, res),
-//     tokens.url(req, res),
-//     tokens.status(req, res),
-//     tokens.res(req, res, 'content-length'), '-',
-//     tokens['response-time'](req, res), 'ms',
-//   ].join(' ')
-// })
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(morgan('tiny'))
-// log only 4xx and 5xx responses to console
-app.use(morgan('dev', {
-  skip: function (req, res) { return res.statusCode < 400 }
-}))
+// setup the logger
 
-app.use(morgan('combined'));
-morgan.token('type', (req, res) => req.headers['content-type'])
-// app.use(requestLogger)
+
+//support parsing of application/x-www-form-urlencoded post data
+app.use(bodyParser.urlencoded({ extended: true }));
+
+morgan.token("data", (req, res) => { const { body } = req; return JSON.stringify(body) });
+
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
+
 
 
 var d = new Date()
@@ -74,6 +66,8 @@ app.get('/api/persons/:id', (request, response) => {
 
 })
 
+app.use(morgan('dev', { skip: function (req, res) { return res.statusCode < 400 } }))
+
 // delete the person
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
@@ -85,13 +79,13 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
-console.log(body);
+  console.log(body);
   if (!body.name || !body.number) {
     return response.status(400).json({
       error: 'please fill all the fields'
     })
   }
-  if (all_names.includes(body.name) ===  true) {
+  if (all_names.includes(body.name) === true) {
     return response.status(400).json({
       error: 'name must be unique'
     })
