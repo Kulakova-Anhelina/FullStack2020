@@ -7,17 +7,12 @@ var bodyParser = require('body-parser');
 var app = express()
 
 app.use(bodyParser.json());
-// setup the logger
 
-
-//support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({ extended: true }));
 
-morgan.token("data", (req, res) => { const { body } = req; return JSON.stringify(body) });
+morgan.token('body', (req, res) => JSON.stringify(req.body));
 
-
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
-
+app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
 
 
 var d = new Date()
