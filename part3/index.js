@@ -5,14 +5,14 @@ var morgan = require('morgan')
 var bodyParser = require('body-parser');
 const cors = require('cors')
 
-app.use(cors())
 
 var app = express()
 
+app.use(cors())
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(express.static('build'))
 morgan.token('body', (req, res) => JSON.stringify(req.body));
 
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
