@@ -3,6 +3,8 @@ var express = require('express')
 var morgan = require('morgan')
 
 var bodyParser = require('body-parser');
+require('dotenv').config()
+const Person = require('./models/person')
 const cors = require('cors')
 
 
@@ -50,12 +52,17 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(persons => {
+    console.log(persons)
+    response.json(persons)
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
+  Person.findById(request.params.id).then(persons => {
+    response.json(persons)
+  })
+
   if (person) {
     response.json(person)
   } else {
@@ -95,12 +102,12 @@ app.post('/api/persons', (request, response) => {
     id: generateId(),
   }
 
-  persons = persons.concat(person)
-
-  response.json(person)
+  person.save().then(personSaved => {
+    response.json(personSaved)
+  })
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
