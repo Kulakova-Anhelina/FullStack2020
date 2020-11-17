@@ -50,6 +50,30 @@ app.get('/', (request, response) => {
 })
 
 
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+  console.log(body);
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: 'please fill all the fields'
+    })
+  }
+  if (all_names.includes(body.name) === true) {
+    return response.status(400).json({
+      error: 'name must be unique'
+    })
+  }
+
+  const personShema = new Person({
+    name: body.name,
+    number: body.number,
+  })
+
+  personShema.save().then(personSaved => {
+    response.json(personSaved)
+  })
+})
+
 
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
@@ -89,7 +113,6 @@ app.put('/api/persons/:id', (request, response, next) => {
   const person = {
     name: body.name,
     number: body.number,
-    id: generateId(),
   }
 
   Person.findByIdAndUpdate(request.params.id, person, { new: true })
@@ -99,32 +122,6 @@ app.put('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-
-
-app.post('/api/persons', (request, response) => {
-  const body = request.body
-  console.log(body);
-  if (!body.name || !body.number) {
-    return response.status(400).json({
-      error: 'please fill all the fields'
-    })
-  }
-  if (all_names.includes(body.name) === true) {
-    return response.status(400).json({
-      error: 'name must be unique'
-    })
-  }
-
-  const person = {
-    name: body.name,
-    number: body.number,
-    id: generateId(),
-  }
-
-  person.save().then(personSaved => {
-    response.json(personSaved)
-  })
-})
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
