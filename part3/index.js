@@ -50,7 +50,7 @@ app.get('/', (request, response) => {
 })
 
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response,  next) => {
   const body = request.body
   console.log(body);
   if (!body.name || !body.number) {
@@ -58,7 +58,7 @@ app.post('/api/persons', (request, response) => {
       error: 'please fill all the fields'
     })
   }
-  if (all_names.includes(body.name) === true) {
+  else if (all_names.includes(body.name) === true) {
     return response.status(400).json({
       error: 'name must be unique'
     })
@@ -69,9 +69,14 @@ app.post('/api/persons', (request, response) => {
     number: body.number,
   })
 
-  personShema.save().then(personSaved => {
-    response.json(personSaved)
+
+ personShema
+  .save()
+  .then(savedPerson => savedPerson.toJSON())
+  .then(savedAndFormattedPerson => {
+    response.json(savedAndFormattedPerson )
   })
+  .catch(error => next(error))
 })
 
 
@@ -84,14 +89,14 @@ app.get('/api/persons', (request, response) => {
 
 app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
-  .then(people => {
-    if (people) {
-      response.json(people.toJSON())
-    } else {
-      response.status(404).end()
-    }
-  })
-  .catch(error => next(error))
+    .then(people => {
+      if (people) {
+        response.json(people.toJSON())
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 
 })
 
