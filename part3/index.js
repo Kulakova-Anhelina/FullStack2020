@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser')
 require('dotenv').config()
 const Person = require('./models/person')
 
@@ -17,13 +17,13 @@ const logger = (request, response, next) => {
 }
 
 app.use(cors())
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('build'))
 app.use(logger)
-morgan.token('body', (req, res) => JSON.stringify(req.body));
+morgan.token('body', (req) => JSON.stringify(req.body))
 
-app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
+app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'))
 
 
 
@@ -33,14 +33,14 @@ const d = new Date()
 //   return id
 // }
 
-app.get('/', (request, response) => {
-  response.send('<div><p>Phonebook has info of ' + persons.length + '</p>' + d + '</div>')
+app.get('/home', (request, response) => {
+  response.send('<div><p>Phonebook has info of ' + Person.length + '</p>' + d + '</div>')
 })
 
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-  console.log(body);
+  console.log(body)
 
   const personShema = new Person({
     name: body.name,
@@ -79,9 +79,9 @@ app.get('/api/persons/:id', (request, response, next) => {
 app.use(morgan('dev', { skip: function (req, res) { return res.statusCode < 400 } }))
 
 // delete the person
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
