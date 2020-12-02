@@ -4,23 +4,20 @@ describe('total likes', () => {
   const listBlog = [
     {
       author: "Ernest Hemingway",
-      title: "For whom the Bell Tolls",
-      likes: 12
+      blogs: 7
     },
     {
-      title: "Faustina Bama",
       author: "Kurukku",
-      likes: 1
+      blogs: 3
     },
     {
-      title: "Canonical string reduction",
       author: "Edsger W. Dijkstra",
-      likes: 5
+      blogs: 3
     }
   ]
 
   test('when list has only one blog, equals the likes of that', () => {
-    const result = listHelper.favoriteBlog(listBlog)
-    expect(result).toEqual(12)
+    const result = listHelper.mostBlogs(listBlog)
+    expect(result).toEqual("Ernest Hemingway, 7")
   })
 })
