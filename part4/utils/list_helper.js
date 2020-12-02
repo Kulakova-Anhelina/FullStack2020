@@ -20,8 +20,13 @@ const favoriteBlog = (blogs) => {
 
 const mostBlogs = (blogs) => {
   const result = _.maxBy(blogs, function (o) { return o.blogs; });
-  console.log(result.author, result.blogs ,"log");
   return result.author + ', ' + result.blogs
+}
+
+const mostLikes = (blogs) => {
+  const result = _.maxBy(blogs, function (o) { return o.likes; });
+  console.log(result.author, result.likes ,"log");
+  return result.author + ', ' + result.likes
 }
 
 module.exports = {
@@ -29,4 +34,5 @@ module.exports = {
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes
 }

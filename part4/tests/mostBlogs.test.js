@@ -1,23 +1,23 @@
 const listHelper = require('../utils/list_helper')
 
-describe('total likes', () => {
+describe('total blogs', () => {
   const listBlog = [
     {
       author: "Ernest Hemingway",
-      likes: 8
+      blogs: 7
     },
     {
       author: "Kurukku",
-      likes: 1
+      blogs: 3
     },
     {
       author: "Edsger W. Dijkstra",
-      likes: 17
+      blogs: 3
     }
   ]
 
   test('when list has only one blog, equals the likes of that', () => {
-    const result = listHelper.mostLikes(listBlog)
-    expect(result).toEqual("Edsger W. Dijkstra, 17")
+    const result = listHelper.mostBlogs(listBlog)
+    expect(result).toEqual("Ernest Hemingway, 7")
   })
 })
