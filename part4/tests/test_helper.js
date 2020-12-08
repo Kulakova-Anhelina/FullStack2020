@@ -15,7 +15,7 @@ const initialBlogs = [
 ]
 
 const nonExistingId = async () => {
-  const blog = new Blog({ title: 'willremovethissoon', author: "Faustina Bama" })
+  const blog = new Blog({ title: 'willremovethissoon'})
   await blog.save()
   await blog.remove()
 
@@ -23,7 +23,7 @@ const nonExistingId = async () => {
 }
 
 const blogsInDb = async () => {
-  const blogs = await blog.find({})
+  const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())
 }
 

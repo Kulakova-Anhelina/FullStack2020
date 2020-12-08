@@ -34,22 +34,20 @@ test('all blogs are returned', async () => {
 })
 
 // test 2
-test('a specific blog is within the returned blogs', async () => {
+test('verifies that the unique identifier property of the blog posts is named id', async () => {
   const response = await api.get('/api/blogs')
+  const contents = response.body.map(b => b._id.toString())
 
-  const contents = response.body.map(b => b.title)
-  expect(contents).toContain(
-    'A Time to Be Happy'
-  )
+  expect(contents).toBeDefined()
 })
 
 
 // test 3
 test('a valid blog can be added', async () => {
 const newBlog = {
-  title: "Animal Farm",
-  author:"George Orwell",
-  url: "https://en.wikipedia.org/wiki/Animal_Farm",
+  title: "The Castle",
+  author:"Franz Kalka",
+  url: "https://en.wikipedia.org/wiki/Castle",
   likes:78
 }
 
@@ -63,67 +61,45 @@ const blogsAtEnd = await helper.blogsInDb()
 expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
 const contents = blogsAtEnd.map(b => b.title)
 expect(contents).toContain(
-  'Animal Farm')
+  'The Castle')
 })
 
 // test 4
-test('blog without author is not added', async () => {
+test('a valid blog can be added and likes 0 by default', async () => {
   const newBlog = {
-    title: "Ccc",
+    title: "Animal Farm",
+    author:"George Orwell",
     url: "https://en.wikipedia.org/wiki/Animal_Farm",
-    likes:78
   }
+
   await api
     .post('/api/blogs')
     .send(newBlog)
-    .expect(400)
-// check the state stored in the database after the saving operation
-const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd.length).toBe(helper.initialBlogs.length)
-})
-
- // test 5
- test('a specific blog can be viewed', async () => {
-  const blogsAtStart = await helper.blogsInDb()
-
-  const blogToView = blogsAtStart[0]
-
-  const resultBlog = await api
-
-  .get(`/api/blogs/${blogToView.id}`)
-  .expect(200)
-  .expect('Content-Type', /application\/json/)
-  // const processedBlogToView = JSON.parse(JSON.stringify(noteToView))
-  expect(resultBlog.body).toEqual(blogToView)
-
-
-
-
-
-
-
-})
-
-// test 6
-
-test('a blog can be deleted', async () => {
-  const blogsAtStart = await helper.blogsInDb()
-  const blogToDelete = blogsAtStart[0]
-
-  await api
-    .delete(`/api/blogs/${blogToDelete.id}`)
-    .expect(204)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
+  const contents = blogsAtEnd[blogsAtEnd.length - 1].likes
+  expect(contents).toBe(0)
+  })
 
-  expect(blogsAtEnd).toHaveLength(
-    helper.initialblogs.length - 1
-  )
+  // test 5
 
-  const contents = blogsAtEnd.map(r => r.title)
+  test('blog without title and url properties is not added', async () => {
+    const newBlog = {
+      author:"Firdausi",
+    }
 
-  expect(contents).not.toContain(blogToDelete.title)
-})
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const blogsAtEnd = await helper.notesInDb()
+
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length)
+  })
 
 afterAll(() => {
   mongoose.connection.close()
