@@ -124,17 +124,13 @@ test('a valid blog can be added and likes 0 by default', async () => {
 describe('deletion of a blog', () => {
   test('succeeds with status code 204 if id is valid', async () => {
     const blogsAtStart = await helper.blogsInDb()
-    console.log(blogsAtStart.length, "start");
     const blogToDelete = blogsAtStart[0]
-    console.log(blogToDelete, "delete");
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
-
-
 
     const contents = blogsAtEnd.map(r => r.author)
     console.log(contents);
@@ -145,6 +141,32 @@ describe('deletion of a blog', () => {
     expect(contents).not.toContain(blogToDelete.author)
   })
 })
+
+test('a valid blog can be updated', async () => {
+  const updateBlog = {
+    title: "Kur",
+    author: "Faustina Bama",
+    url: "https://www.amazon.com/",
+    likes: 109,
+
+  }
+
+  const blog=  await helper.blogsInDb()
+  const blogToUpdate = blog[0]
+  console.log(blogToUpdate, "update");
+
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(updateBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsUpdated = await helper.blogsInDb()
+  expect(blogsUpdated.length).toBe(helper.initialBlogs.length)
+  const contents = blogsUpdated[0]
+  console.log(contents, "content");
+  expect(contents.likes).toBe(109)
+  })
 
 afterAll(() => {
   mongoose.connection.close()
