@@ -6,5 +6,6 @@ Content-Type: application/json
     "author": "Robert C. Martin",
     "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
     "likes": 87,
-    "user": "5fd51974a52aa3193008df38"
+    "userId": "5fd51fb3a52aa3193008df3c",
 }
+
