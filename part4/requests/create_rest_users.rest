@@ -1,17 +1,9 @@
-POST http://localhost:3001/api/users
+
+POST http://localhost:3001/api/login
 Content-Type: application/json
 
 {
-"username": "hellas",
-"name": "Arto Hellas",
-"password": "secret"
-}
+"username": "anhel",
+"password": "yiuyiuyiuyiuy"
 
-POST http://localhost:3001/api/users
-Content-Type: application/json
-
-{
-"username": "anhe",
-"name": "Anhelina Kulkova",
-"password": "bobom"
 }
