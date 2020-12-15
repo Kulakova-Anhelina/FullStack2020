@@ -49,31 +49,12 @@ blogsRouter.post('/', async (request, response, next) => {
     const savedBlog = await blog.save()
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
-
     response.json(savedBlog.toJSON())
   } catch (exception) {
     next(exception)
   }
 })
 
-blogsRouter.put('/:id', (request, response) => {
-
-  const body = request.body
-
-  const blog = { // <-- Here
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes,
-
-  }
-
-  Blog.findByIdAndUpdate(request.params.id, blog)
-    .then(updatedBlog => {
-      response.json(updatedBlog.toJSON())
-    })
-    .catch(error => console.log(error))
-})
 
 blogsRouter.delete('/:id', async (request, response, next) => {
   try {
@@ -83,7 +64,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     if (!token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
-    if (blog.user._id.toString() === userid.toString()) {
+    if (blog.user._id.toString() === decodedToken.id.toString()) {
       await Blog.findByIdAndRemove(blog.id)
       response.status(204).end()
     } else {
@@ -94,4 +75,41 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     next(exception)
   }
 })
+
+blogsRouter.put('/:id', async (request, response, next) => {
+
+  const body = request.body
+  const token = getTokenFrom(request)
+
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+
+
+  const blog = { // <-- Here
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+
+  }
+
+  try {
+    const blogId = await Blog.findById(request.params.id)
+    if (blogId.user._id.toString() === decodedToken.id.toString()) {
+
+      Blog.findByIdAndUpdate(request.params.id, blog)
+        .then(updatedBlog => {
+          response.json(updatedBlog.toJSON())
+        })
+        .catch(error => console.log(error))
+    }
+  } catch (exception) {
+    next(exception)
+  }
+
+})
+
+
 module.exports = blogsRouter
