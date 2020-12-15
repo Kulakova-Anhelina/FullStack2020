@@ -15,13 +15,13 @@ blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
     .find({}).populate('user', { username: 1, name: 1 })
 
-    response.json(blogs.map(blog => blog.toJSON()))
+  response.json(blogs.map(blog => blog.toJSON()))
 });
 
 blogsRouter.get('/:id', async (request, response) => {
-  const blogs = await Blog.findById(request.params.id)
-  if (blogs) {
-    response.json(blogs.toJSON())
+  const blog = await Blog.findById(request.params.id)
+  if (blog) {
+    response.json(blog.toJSON())
   } else {
     response.status(404).end()
   }
@@ -38,7 +38,7 @@ blogsRouter.post('/', async (request, response, next) => {
 
   const user = await User.findById(decodedToken.id)
 
-  const blogs = new Blog({
+  const blog = new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
@@ -46,7 +46,7 @@ blogsRouter.post('/', async (request, response, next) => {
     user: user._id
   })
   try {
-    const savedBlog = await blogs.save()
+    const savedBlog = await blog.save()
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
 
@@ -75,9 +75,23 @@ blogsRouter.put('/:id', (request, response) => {
     .catch(error => console.log(error))
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
+blogsRouter.delete('/:id', async (request, response, next) => {
+  try {
+    const token = getTokenFrom(request)
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    const blog = await Blog.findById(request.params.id)
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    if (blog.user._id.toString() === userid.toString()) {
+      await Blog.findByIdAndRemove(blog.id)
+      response.status(204).end()
+    } else {
+      //The HTTP 403 is a HTTP status code meaning access to the requested resource is forbidden
+      response.status(403).end()
+    }
+  } catch (exception) {
+    next(exception)
+  }
 })
-
 module.exports = blogsRouter
