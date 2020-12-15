@@ -1,11 +1,12 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI1ZTMxZjMyMjc2NGY0NjUxMzYxZWY4ZjQiLCJpYXQiOjE1ODAzOTAzMTB9.WexYIFkkPJ7mdjYJZh9wswkal0et39tTKEPmpiTQx4
 
 {
-    "title": "First class tests",
-    "author": "Robert C. Martin",
+    "title": "Game of Crowns",
+    "author": "Robert",
     "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
     "likes": 87,
-    "userId": "5fd51fb3a52aa3193008df3c",
-}
+    "userId": "5fd7d311cfc0513b84354bf3",
+    }
 
