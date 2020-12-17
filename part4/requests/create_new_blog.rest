@@ -6,6 +6,7 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sd
     "title": "Game of Crowns",
     "author": "Robert",
     "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-    "likes": 87
+    "likes": 87,
+    "user": "5fdb65c2fec2e9246c0d23f4"
     }
 
