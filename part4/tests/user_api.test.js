@@ -4,7 +4,7 @@ const app = require('../app')
 const helper = require('./test_helper')
 const api = supertest(app)
 
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 const User = require('../models/user')
 
 
@@ -44,7 +44,7 @@ describe('when there is initially one user in db', () => {
 
 
     const newUser = {
-      username: 'maya',
+      username: 'root',
       name: 'Maya Kashpur',
       password: 'secret',
     }

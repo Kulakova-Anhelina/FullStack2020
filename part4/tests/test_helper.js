@@ -1,5 +1,13 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
+
+const initialUsers = [{
+  username: 'antia',
+  password: process.env.SECRET
+}
+]
+
+
 const initialBlogs = [
   {
     title: 'Kurukku',
@@ -69,5 +77,5 @@ const usersInDb = async () => {
 }
 
 module.exports = {
-  initialBlogs, nonExistingId, blogsInDb, usersInDb
+  initialBlogs, initialUsers, nonExistingId, blogsInDb, usersInDb
 }
