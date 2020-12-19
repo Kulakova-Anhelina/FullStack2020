@@ -33,6 +33,7 @@ userSchema.set('toJSON', {
 })
 
 userSchema.plugin(uniqueValidator)
+mongoose.set('useCreateIndex', true)
 const User = mongoose.model('User', userSchema)
 
 module.exports = User
