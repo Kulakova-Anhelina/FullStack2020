@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI1ZTMxZjMyMjc2NGY0NjUxMzYxZWY4ZjQiLCJpYXQiOjE1ODAzOTAzMTB9.WexYIFkkPJ7mdjYJZh9wswkal0et39tTKEPmpiTQx4
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuaGVsaW5hIiwiaWQiOiI1ZmRiNjVjMmZlYzJlOTI0NmMwZDIzZjQiLCJpYXQiOjE2MDg0MDI5MDl9.COo1WNozWJuSFUdRRZkJ54-23_thyFiKVxecTaZ3ubU
 
 {
     "title": "Game of Crowns",

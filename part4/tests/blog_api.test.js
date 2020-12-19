@@ -1,13 +1,31 @@
+/* eslint-disable no-unused-vars */
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const helper = require('./test_helper')
 const api = supertest(app)
 
+const bcrypt = require('bcrypt')
+const User = require('../models/user')
+
 const Blog = require('../models/blog')
 
+let token = null
 
 beforeEach(async () => {
+  await User.deleteMany({})
+
+  const passwordHash = await bcrypt.hash('sekret', 10)
+  const user = new User({ username: 'root', passwordHash })
+
+  await user.save()
+  const login = await api
+    .post('/api/login')
+    .set('Content-Type', 'application/json')
+    .send({ username: 'root', password: 'sekret' })
+    .expect(200)
+  token = login.body.token
+
   await Blog.deleteMany({})
 
   const blogsObjects = helper.initialBlogs
@@ -45,13 +63,14 @@ test('verifies that the unique identifier property of the blog posts is named id
 test('a valid blog can be added', async () => {
   const newBlog = {
     title: 'The Castle',
-    author:'Franz Kalka',
+    author: 'Franz Kalka',
     url: 'https://en.wikipedia.org/wiki/Castle',
-    likes:78
+    likes: 78
   }
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(200)
     .expect('Content-Type', /application\/json/)
@@ -67,12 +86,13 @@ test('a valid blog can be added', async () => {
 test('a valid blog can be added and likes 0 by default', async () => {
   const newBlog = {
     title: 'Animal Farm',
-    author:'George Orwell',
+    author: 'George Orwell',
     url: 'https://en.wikipedia.org/wiki/Animal_Farm',
   }
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(200)
     .expect('Content-Type', /application\/json/)
@@ -87,11 +107,12 @@ test('a valid blog can be added and likes 0 by default', async () => {
 
 test('blog without title and url properties is not added', async () => {
   const newBlog = {
-    author:'Firdausi',
+    author: 'Firdausi',
   }
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(400)
 
@@ -127,6 +148,7 @@ describe('deletion of a blog', () => {
     const blogToDelete = blogsAtStart[0]
 
     await api
+      .set('Authorization', `Bearer ${token}`)
       .delete(`/api/blogs/${blogToDelete.id}`)
       .expect(204)
 
@@ -151,11 +173,12 @@ test('a valid blog can be updated', async () => {
 
   }
 
-  const blog=  await helper.blogsInDb()
+  const blog = await helper.blogsInDb()
   const blogToUpdate = blog[0]
   console.log(blogToUpdate, 'update')
 
   await api
+    .set('Authorization', `Bearer ${token}`)
     .put(`/api/blogs/${blogToUpdate.id}`)
     .send(updateBlog)
     .expect(200)
