@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -34,35 +35,19 @@ const App = () => {
     }
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  )
+
   return (
     <div>
       <h1>{errorMessage}</h1>
       <div>
         {user === null ?
-          loginForm() :
+        <LoginForm
+        handleLogin={handleLogin}
+        onChangeUser = {({ target }) => setUsername(target.value)}
+        username  ={username}
+        password = {password}
+        onChangePassword= {({ target }) => setPassword(target.value)}
+        /> :
           <div>
             <p>{user.name} logged-in</p>
             <div>
