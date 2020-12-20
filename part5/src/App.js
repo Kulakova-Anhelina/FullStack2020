@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -10,12 +11,19 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [newBlog, setNewBlog] = useState({
+    title: '',
+    author: '',
+    url: ''
+  })
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
     )
   }, [])
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloappUser')
     if (loggedUserJSON) {
@@ -35,6 +43,7 @@ const App = () => {
       window.localStorage.setItem(
         'loggedBloappUser', JSON.stringify(user)
       )
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -46,7 +55,6 @@ const App = () => {
     }
   }
 
-
   const handleLogOut = async (event) => {
 
     //window.localStorage.clear(); //clear all localstorage
@@ -54,6 +62,29 @@ const App = () => {
     setUser(null)
 
   }
+
+  const inputChanged = (event) => {
+    setNewBlog({ ...newBlog, [event.target.name]: event.target.value });
+  }
+
+  const addBlog = (event) => {
+    event.preventDefault()
+    const blogObject = {
+      title: newBlog.title,
+      author: newBlog.author,
+      url: newBlog.url,
+    }
+
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setNewBlog('')
+      })
+  }
+
+
+
 
 
   return (
@@ -76,6 +107,14 @@ const App = () => {
               {blogs.map(blog =>
                 <Blog key={blog.id} blog={blog} />
               )}
+              <h2>Create a blog</h2>
+              <BlogForm
+                addBlog={addBlog}
+                inputChanged={inputChanged}
+                title={newBlog.title}
+                author={newBlog.author}
+                url={newBlog.url}
+              />
 
             </div>
           </div>
