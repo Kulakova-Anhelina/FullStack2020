@@ -16,6 +16,14 @@ const App = () => {
       setBlogs(blogs)
     )
   }, [])
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBloappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -24,6 +32,9 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
+      window.localStorage.setItem(
+        'loggedBloappUser', JSON.stringify(user)
+      )
       setUser(user)
       setUsername('')
       setPassword('')
@@ -36,20 +47,30 @@ const App = () => {
   }
 
 
+  const handleLogOut = async (event) => {
+
+    //window.localStorage.clear(); //clear all localstorage
+    window.localStorage.removeItem('loggedBloappUser', JSON.stringify(user)); //remove one item
+    setUser(null)
+
+  }
+
+
   return (
     <div>
       <h1>{errorMessage}</h1>
       <div>
         {user === null ?
-        <LoginForm
-        handleLogin={handleLogin}
-        onChangeUser = {({ target }) => setUsername(target.value)}
-        username  ={username}
-        password = {password}
-        onChangePassword= {({ target }) => setPassword(target.value)}
-        /> :
+          <LoginForm
+            handleLogin={handleLogin}
+            onChangeUser={({ target }) => setUsername(target.value)}
+            username={username}
+            password={password}
+            onChangePassword={({ target }) => setPassword(target.value)}
+          /> :
           <div>
             <p>{user.name} logged-in</p>
+            <button onClick={handleLogOut}>logout</button>
             <div>
               <h2>blogs</h2>
               {blogs.map(blog =>
