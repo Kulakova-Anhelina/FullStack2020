@@ -4,6 +4,8 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import SuccessNotification from './components/SuccessNotification'
+import ErrorNotification from './components/ErrorNotification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,6 +13,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [sucessMessage, setSucessMessage] = useState(null)
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
@@ -80,16 +83,21 @@ const App = () => {
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
         setNewBlog('')
+        setSucessMessage(`added ${newBlog.title}`)
+        setTimeout(() => {
+          setSucessMessage(null)
+        }, 5000)
+      }).catch(error => {
+        setErrorMessage(error)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
   }
-
-
-
-
-
   return (
     <div>
-      <h1>{errorMessage}</h1>
+      <ErrorNotification message={errorMessage} />
+      <SuccessNotification messageSucsess={sucessMessage} />
       <div>
         {user === null ?
           <LoginForm
