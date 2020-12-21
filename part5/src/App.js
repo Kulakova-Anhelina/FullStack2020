@@ -99,6 +99,7 @@ const App = () => {
     </Togglable>
   )
 
+
   return (
     <div>
       <ErrorNotification message={errorMessage} />
@@ -112,7 +113,9 @@ const App = () => {
             <div>
               <h2>blogs</h2>
               {blogs.map(blog =>
+              <>
                 <Blog key={blog.id} blog={blog} />
+                </>
               )}
               <h2>Create a blog</h2>
              {blogForm()}
