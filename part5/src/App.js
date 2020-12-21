@@ -17,6 +17,10 @@ const App = () => {
   const [sucessMessage, setSucessMessage] = useState(null)
   const blogFormRef = React.createRef()
 
+  const blogsSorted = blogs.sort(function (a, b) {
+    return b.likes - a.likes;
+  })
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -63,18 +67,21 @@ const App = () => {
   }
 
 
-  const handleClicks = (id, event) => {
-    const blog = blogs.find(b => b.id === id)
-    const changedBlog = { ...blog, likes: 55}
-
-  blogService
-      .update(id, changedBlog )
+  const handleClicks = (blog) => {
+    const changedBlog = { ...blog, likes: blog.likes = +1 }
+    const id = blog.id
+    blogService
+      .update(id, changedBlog)
       .then(returnedBlog => {
-        setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
-      })
-      .catch(error => {
+        setBlogs(returnedBlog)
+        setSucessMessage(`number of ${blog.likes} was changed`)
+        setTimeout(() => {
+          setSucessMessage(null)
+        }, 5000)
+        console.log(blogs, "here")
+      }).catch(error => {
         setErrorMessage(
-          `blog '${blogs.likes}' was already removed from server`
+          `Information of '${blog.likes}' was already removed from server`
         )
         setTimeout(() => {
           setErrorMessage(null)
@@ -84,8 +91,9 @@ const App = () => {
 
 
 
+
   const addBlog = (blogObject) => {
-      blogFormRef.current.toggleVisibility()
+    blogFormRef.current.toggleVisibility()
 
     blogService
       .create(blogObject)
@@ -116,7 +124,7 @@ const App = () => {
 
   const blogForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
-      <BlogForm   createBlog={addBlog} />
+      <BlogForm createBlog={addBlog} />
     </Togglable>
   )
 
@@ -133,13 +141,13 @@ const App = () => {
             <button onClick={handleLogOut}>logout</button>
             <div>
               <h2>blogs</h2>
-              {blogs.map(blog =>
-              <>
-                <Blog key={blog.id} blog={blog} handleClicks={handleClicks}/>
+              {blogsSorted.map(blog =>
+                <>
+                  <Blog key={blog.id} blog={blog} updateLike={handleClicks} />
                 </>
               )}
               <h2>Create a blog</h2>
-             {blogForm()}
+              {blogForm()}
 
             </div>
           </div>
