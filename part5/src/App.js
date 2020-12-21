@@ -16,10 +16,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [sucessMessage, setSucessMessage] = useState(null)
   const blogFormRef = React.createRef()
-
-  const blogsSorted = blogs.sort(function (a, b) {
-    return b.likes - a.likes;
-  })
+  blogs.sort((a, b) => b.likes - a.likes)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -81,13 +78,11 @@ const App = () => {
             setTimeout(() => {
               setSucessMessage(null)
             }, 5000),
-
-            console.log(blogs, "here")
           )
 
       ).catch(error => {
         setErrorMessage(
-          error
+          'Oopssss... looks like it is not the blog created'
         )
         setTimeout(() => {
           setErrorMessage(null)
@@ -149,7 +144,7 @@ const App = () => {
             <button onClick={handleLogOut}>logout</button>
             <div>
               <h2>blogs</h2>
-              {blogsSorted.map(blog =>
+              {blogs.map(blog =>
                 <>
                   <Blog
                     key={blog.id}
