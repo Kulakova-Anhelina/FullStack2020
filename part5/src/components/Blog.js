@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleClicks }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -11,10 +11,6 @@ const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
   const toggleVisibility = () => {
     setVisible(!visible)
-  }
-
-  const handleClicks = () => {
-    console.log("click")
   }
 
   return (

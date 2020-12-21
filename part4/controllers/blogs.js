@@ -100,12 +100,9 @@ blogsRouter.put('/:id', async (request, response, next) => {
   try {
     const blogId = await Blog.findById(request.params.id)
     if (blogId.user._id.toString() === decodedToken.id.toString()) {
-
-      Blog.findByIdAndUpdate(request.params.id, blog)
-        .then(updatedBlog => {
-          response.json(updatedBlog.toJSON())
-        })
-        .catch(error => console.log(error))
+      const updatedBlog = await Blog
+        .findByIdAndUpdate(request.params.id, blog, { new: true })
+      return response.json(updatedBlog.toJSON())
     }
   } catch (exception) {
     next(exception)
