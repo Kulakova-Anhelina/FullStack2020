@@ -68,20 +68,26 @@ const App = () => {
 
 
   const handleClicks = (blog) => {
-    const changedBlog = { ...blog, likes: blog.likes = +1 }
+    const changedBlog = { ...blog, likes: blog.likes += 1 }
     const id = blog.id
     blogService
-      .update(id, changedBlog)
-      .then(returnedBlog => {
-        setBlogs(returnedBlog)
-        setSucessMessage(`number of ${blog.likes} was changed`)
-        setTimeout(() => {
-          setSucessMessage(null)
-        }, 5000)
-        console.log(blogs, "here")
-      }).catch(error => {
+      .updateBlog(id, changedBlog)
+      .then(
+        blogService
+          .getAll()
+          .then(returnedBlog =>
+            setBlogs(returnedBlog),
+            setSucessMessage(`number of ${blog.likes} was changed`),
+            setTimeout(() => {
+              setSucessMessage(null)
+            }, 5000),
+
+            console.log(blogs, "here")
+          )
+
+      ).catch(error => {
         setErrorMessage(
-          `Information of '${blog.likes}' was already removed from server`
+          error
         )
         setTimeout(() => {
           setErrorMessage(null)
@@ -89,7 +95,9 @@ const App = () => {
       })
   }
 
-
+  const handleDeleteBlog = () => {
+    console.log()
+  }
 
 
   const addBlog = (blogObject) => {
@@ -143,7 +151,12 @@ const App = () => {
               <h2>blogs</h2>
               {blogsSorted.map(blog =>
                 <>
-                  <Blog key={blog.id} blog={blog} updateLike={handleClicks} />
+                  <Blog
+                    key={blog.id}
+                    blog={blog}
+                    updateLike={handleClicks}
+                    handleDeleteBlog={handleDeleteBlog}
+                  />
                 </>
               )}
               <h2>Create a blog</h2>
