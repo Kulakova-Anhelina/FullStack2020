@@ -64,7 +64,7 @@ const App = () => {
   }
 
 
-  const handleClicks = (blog) => {
+  const handleClicks = (blog, event) => {
     const changedBlog = { ...blog, likes: blog.likes += 1 }
     const id = blog.id
     blogService
@@ -90,8 +90,29 @@ const App = () => {
       })
   }
 
-  const handleDeleteBlog = () => {
-    console.log()
+  const handleDeleteBlog = (blog) => {
+    const id = blog.id
+    if (window.confirm(`Do you really want to delete the user ${blog.title}?`) === true) {
+      blogService
+        .deleteBlog(id)
+      blogService
+        .getAll()
+        .then(_ =>
+          setBlogs(blogs.filter(b => id !== b.id)),
+          setSucessMessage(`the Blog ${blog.title} was removed`),
+          setTimeout(() => {
+            setSucessMessage(null)
+          }, 5000),
+        )
+        .catch(error => {
+          setErrorMessage(
+            "the blog cant be deleted"
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
+    }
   }
 
 
@@ -150,7 +171,7 @@ const App = () => {
                     key={blog.id}
                     blog={blog}
                     updateLike={handleClicks}
-                    handleDeleteBlog={handleDeleteBlog}
+                    deleteOneBlog={handleDeleteBlog}
                   />
                 </>
               )}

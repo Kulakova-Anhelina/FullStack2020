@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, updateLike, handleDeleteBlog}) => {
+const Blog = ({ blog, updateLike, deleteOneBlog}) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -15,9 +15,14 @@ const Blog = ({ blog, updateLike, handleDeleteBlog}) => {
   const handleLikesClick = e => {
     updateLike({
       ...blog,
-      likes: blog.likes + 1
+      likes: blog.likes
     })
   }
+ const handleDeleteBlog=e=>{
+   deleteOneBlog({
+     ...blog
+   })
+ }
 
   return (
     <div style={blogStyle}>
@@ -32,9 +37,9 @@ const Blog = ({ blog, updateLike, handleDeleteBlog}) => {
           <p>{blog.url}</p>
           <p>{blog.author}</p>
           <p>{blog.likes}
-            <button onClick={handleLikesClick}> like</button>
+            <button onClick={(event) =>handleLikesClick(event, blog)}> like</button>
           </p>
-          <buton onClick={handleDeleteBlog}>delete</buton>
+          <button onClick={(event) =>handleDeleteBlog(event, blog)}> delete</button>
         </div>
       )}
     </div>
