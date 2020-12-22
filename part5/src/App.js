@@ -63,7 +63,6 @@ const App = () => {
 
   }
 
-
   const handleClicks = (blog, event) => {
     const changedBlog = { ...blog, likes: blog.likes += 1 }
     const id = blog.id
@@ -95,15 +94,16 @@ const App = () => {
     if (window.confirm(`Do you really want to delete the user ${blog.title}?`) === true) {
       blogService
         .deleteBlog(id)
-      blogService
-        .getAll()
-        .then(_ =>
-          setBlogs(blogs.filter(b => id !== b.id)),
+        .then(
+          blogService
+            .getAll()
+            .then(_ =>
+              setBlogs(blogs.filter(b => id !== b.id)),
+            ),
           setSucessMessage(`the Blog ${blog.title} was removed`),
           setTimeout(() => {
             setSucessMessage(null)
-          }, 5000),
-        )
+          }, 5000))
         .catch(error => {
           setErrorMessage(
             "the blog cant be deleted"
@@ -166,14 +166,12 @@ const App = () => {
             <div>
               <h2>blogs</h2>
               {blogs.map(blog =>
-                <>
-                  <Blog
-                    key={blog.id}
-                    blog={blog}
-                    updateLike={handleClicks}
-                    deleteOneBlog={handleDeleteBlog}
-                  />
-                </>
+                <Blog
+                  key={blog.id}
+                  blog={blog}
+                  updateLike={handleClicks}
+                  deleteOneBlog={handleDeleteBlog}
+                />
               )}
               <h2>Create a blog</h2>
               {blogForm()}
