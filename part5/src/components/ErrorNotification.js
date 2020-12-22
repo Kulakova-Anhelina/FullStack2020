@@ -1,15 +1,18 @@
 
 import React from 'react'
+import PropTypes from 'prop-types'
 
-const  ErrorNotification = ({ message}) => {
-  if (message === null ) {
+const ErrorNotification = ({ message }) => {
+  if (message === null) {
     return null
   }
   return (
     <div>
-     <p  className="error">{message}</p>
+      <p className="error">{message}</p>
     </div>
   )
 }
-
-export default  ErrorNotification
+ErrorNotification.propTypes = {
+  message: PropTypes.string.isRequired
+}
+export default ErrorNotification

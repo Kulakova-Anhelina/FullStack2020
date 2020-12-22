@@ -68,18 +68,14 @@ const App = () => {
     const id = blog.id
     blogService
       .updateBlog(id, changedBlog)
-      .then(
-        blogService
-          .getAll()
-          .then(returnedBlog =>
-            setBlogs(returnedBlog),
-            setSucessMessage(`number of ${blog.likes} was changed`),
-            setTimeout(() => {
-              setSucessMessage(null)
-            }, 5000),
-          )
-
-      ).catch(error => {
+      .then(returnedBlog  =>
+        setBlogs(returnedBlog),
+        setSucessMessage(`number of ${blog.likes} was changed`),
+        setTimeout(() => {
+          setSucessMessage(null)
+        }, 5000),
+)
+      .catch(error => {
         setErrorMessage(
           'Oopssss... looks like it is not the blog created'
         )
@@ -94,16 +90,13 @@ const App = () => {
     if (window.confirm(`Do you really want to delete the user ${blog.title}?`) === true) {
       blogService
         .deleteBlog(id)
-        .then(
-          blogService
-            .getAll()
             .then(_ =>
               setBlogs(blogs.filter(b => id !== b.id)),
-            ),
-          setSucessMessage(`the Blog ${blog.title} was removed`),
-          setTimeout(() => {
-            setSucessMessage(null)
-          }, 5000))
+              setSucessMessage(`the Blog ${blog.title} was removed`),
+              setTimeout(() => {
+                setSucessMessage(null)
+              }, 5000)
+            )
         .catch(error => {
           setErrorMessage(
             "the blog cant be deleted"
