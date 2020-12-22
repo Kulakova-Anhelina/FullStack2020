@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, updateLike, deleteOneBlog}) => {
+const Blog = ({ blog, updateLike, deleteOneBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -13,17 +13,17 @@ const Blog = ({ blog, updateLike, deleteOneBlog}) => {
   const toggleVisibility = () => {
     setVisible(!visible)
   }
-  const handleLikesClick = e => {
+  const handleLikesClick = () => {
     updateLike({
       ...blog,
       likes: blog.likes
     })
   }
- const handleDeleteBlog=e=>{
-   deleteOneBlog({
-     ...blog
-   })
- }
+  const handleDeleteBlog = () => {
+    deleteOneBlog({
+      ...blog
+    })
+  }
 
   return (
     <div style={blogStyle}>
@@ -38,9 +38,9 @@ const Blog = ({ blog, updateLike, deleteOneBlog}) => {
           <p>{blog.url}</p>
           <p>{blog.author}</p>
           <p>{blog.likes}
-            <button onClick={(event) =>handleLikesClick(event, blog)}> like</button>
+            <button onClick={(event) => handleLikesClick(event, blog)}> like</button>
           </p>
-          <button onClick={(event) =>handleDeleteBlog(event, blog)}> delete</button>
+          <button onClick={(event) => handleDeleteBlog(event, blog)}> delete</button>
         </div>
       )}
     </div>

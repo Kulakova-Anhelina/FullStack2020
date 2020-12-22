@@ -55,27 +55,27 @@ const App = () => {
     }
   }
 
-  const handleLogOut = async (event) => {
+  const handleLogOut = async () => {
 
     //window.localStorage.clear(); //clear all localstorage
-    window.localStorage.removeItem('loggedBloappUser', JSON.stringify(user)); //remove one item
+    window.localStorage.removeItem('loggedBloappUser', JSON.stringify(user)) //remove one item
     setUser(null)
 
   }
 
-  const handleClicks = (blog, event) => {
+  const handleClicks = (blog) => {
     const changedBlog = { ...blog, likes: blog.likes += 1 }
     const id = blog.id
     blogService
       .updateBlog(id, changedBlog)
       .then(returnedBlog  =>
         setBlogs(returnedBlog),
-        setSucessMessage(`number of ${blog.likes} was changed`),
-        setTimeout(() => {
-          setSucessMessage(null)
-        }, 5000),
-)
-      .catch(error => {
+      setSucessMessage(`number of ${blog.likes} was changed`),
+      setTimeout(() => {
+        setSucessMessage(null)
+      }, 5000),
+      )
+      .catch(() => {
         setErrorMessage(
           'Oopssss... looks like it is not the blog created'
         )
@@ -90,16 +90,17 @@ const App = () => {
     if (window.confirm(`Do you really want to delete the user ${blog.title}?`) === true) {
       blogService
         .deleteBlog(id)
-            .then(_ =>
-              setBlogs(blogs.filter(b => id !== b.id)),
-              setSucessMessage(`the Blog ${blog.title} was removed`),
-              setTimeout(() => {
-                setSucessMessage(null)
-              }, 5000)
-            )
-        .catch(error => {
+        // eslint-disable-next-line no-unused-vars
+        .then(_ =>
+          setBlogs(blogs.filter(b => id !== b.id)),
+        setSucessMessage(`the Blog ${blog.title} was removed`),
+        setTimeout(() => {
+          setSucessMessage(null)
+        }, 5000)
+        )
+        .catch(() => {
           setErrorMessage(
-            "the blog cant be deleted"
+            'the blog cant be deleted'
           )
           setTimeout(() => {
             setErrorMessage(null)

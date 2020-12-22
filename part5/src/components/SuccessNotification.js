@@ -7,13 +7,16 @@ const SuccessNotification = ({  messageSucsess }) => {
   }
   return (
     <div>
-     <p  className="success">{messageSucsess}</p>
+      <p  className="success">{messageSucsess}</p>
     </div>
   )
 }
 
 
 SuccessNotification.propTypes = {
- messageSucsess: PropTypes.string.isRequired
+  messageSucsess: PropTypes.string
+}
+SuccessNotification.defaultProps = {
+  messageSucsess: null
 }
 export default SuccessNotification
