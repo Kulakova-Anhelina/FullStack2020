@@ -16,11 +16,10 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [sucessMessage, setSucessMessage] = useState(null)
   const blogFormRef = React.createRef()
-  blogs.sort((a, b) => b.likes - a.likes)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs)
+      setBlogs( blogs.sort((a, b) => b.likes - a.likes))
     )
   }, [])
 
@@ -63,13 +62,14 @@ const App = () => {
 
   }
 
-  const handleClicks = (blog) => {
+  const handleClicks = (id) => {
+    const blog= blogs.find(n => n.id === id)
     const changedBlog = { ...blog, likes: blog.likes += 1 }
-    const id = blog.id
+    console.log(id, 'blog')
     blogService
       .updateBlog(id, changedBlog)
-      .then(returnedBlog  =>
-        setBlogs(returnedBlog),
+      .then(returnedBlog =>
+        setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog)),
       setSucessMessage(`number of ${blog.likes} was changed`),
       setTimeout(() => {
         setSucessMessage(null)
@@ -85,15 +85,14 @@ const App = () => {
       })
   }
 
-  const handleDeleteBlog = (blog) => {
-    const id = blog.id
-    if (window.confirm(`Do you really want to delete the user ${blog.title}?`) === true) {
+  const handleDeleteBlog = (id, title) => {
+    if (window.confirm(`Do you really want to delete the blog ${title}?`) === true) {
       blogService
         .deleteBlog(id)
         // eslint-disable-next-line no-unused-vars
         .then(_ =>
           setBlogs(blogs.filter(b => id !== b.id)),
-        setSucessMessage(`the Blog ${blog.title} was removed`),
+        setSucessMessage(`the Blog ${title} was removed`),
         setTimeout(() => {
           setSucessMessage(null)
         }, 5000)
@@ -159,14 +158,12 @@ const App = () => {
             <button onClick={handleLogOut}>logout</button>
             <div>
               <h2>blogs</h2>
-              {blogs.map(blog =>
-                <Blog
-                  key={blog.id}
-                  blog={blog}
-                  updateLike={handleClicks}
-                  deleteOneBlog={handleDeleteBlog}
-                />
-              )}
+              <Blog
+                blog={blogs}
+                handleLikesClick={handleClicks}
+                handleDeleteBlog={handleDeleteBlog}
+              />
+
               <h2>Create a blog</h2>
               {blogForm()}
 

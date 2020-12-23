@@ -6,7 +6,7 @@ import Blog from './Blog'
 
 describe('</>', () => {
   let component
-  const blog = {
+  const blog = [{
     author: 'Anhelina Kulakova',
     title: 'Component testing is done with react-testing-library',
     url: 'www/anhelina/com',
@@ -14,7 +14,7 @@ describe('</>', () => {
     user: {
       name: 'Anelina Kulakova'
     }
-  }
+  }]
   const mockHandler = jest.fn()
   beforeEach(() => {
     component = render(
@@ -43,6 +43,7 @@ describe('</>', () => {
     expect(div).toHaveTextContent('Anelina Kulakova', 'www/anhelina/com', 100)
 
   })
+
 
 })
 

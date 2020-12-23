@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import BlogToggable  from './BlogToggable'
+import BlogToggable from './BlogToggable'
 
-const Blog = ({ blog, updateLike, deleteOneBlog }) => {
+const Blog = ({ blog, handleLikesClick, handleDeleteBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -10,44 +10,37 @@ const Blog = ({ blog, updateLike, deleteOneBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-
-  const handleLikesClick = () => {
-    updateLike({
-      ...blog,
-      likes: blog.likes
-    })
-  }
-  const handleDeleteBlog = () => {
-    deleteOneBlog({
-      ...blog
-    })
-  }
-
+  const blogsSorted = blog.sort((a, b) => b.likes - a.likes)
   return (
-    <div style={blogStyle}>
-      <div className="blog">
-        {blog.title} {blog.author}
-      </div>
-      <BlogToggable>
-        <p>{blog.user.name}</p>
-        <p>{blog.url}</p>
-        <p>{blog.likes}   </p>
-        <button onClick={(event) => handleLikesClick(event, blog)}> like</button>
+    <>
+      {
+        blogsSorted.map((blog) =>
+          <div style={blogStyle} key={blog.id}>
+            <div className="blog">
+              {blog.title} {blog.author}
+            </div>
+            <BlogToggable>
+              <p>{blog.user.name}</p>
+              <p>{blog.url}</p>
+              <p>{blog.likes}   </p>
+              <button onClick={() => handleLikesClick(blog.id)}> like</button>
 
-        <button onClick={(event) => handleDeleteBlog(event, blog)}> delete</button>
-      </BlogToggable>
-    </div>
+              <button onClick={() => handleDeleteBlog(blog.id, blog.title)}> delete</button>
+            </BlogToggable>
+          </div>)
+      }
+    </>
   )
 }
 
 Blog.propTypes = {
-  updateLike: PropTypes.func,
+  handleLikesClick: PropTypes.func,
   deleteOneBlog: PropTypes.func,
-  blog: PropTypes.object
+  blog: PropTypes.arrayOf(PropTypes.object)
 }
 Blog.defaultProps = {
   deleteOneBlog: null,
-  updateLike: null
+  handleLikesClick: null
 }
 
 export default Blog

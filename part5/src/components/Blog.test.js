@@ -5,16 +5,15 @@ import Blog from './Blog'
 
 //step 1
 test('renders title, author', () => {
-  const blog = {
+  const blog = [{
     author: 'Anhelina Kulakova',
     title: 'Component testing is done with react-testing-library',
     url: 'www/anhelina/com',
     likes: 100,
-    user:{
+    user: {
       name: 'Anelina Kulakova'
     }
-  }
-
+  }]
   const component = render(
     <Blog blog={blog} />
   )
