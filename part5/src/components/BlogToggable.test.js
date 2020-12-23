@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import BlogToggable from './BlogToggable'
 import Blog from './Blog'
 
@@ -15,17 +16,16 @@ describe('</>', () => {
       name: 'Anelina Kulakova'
     }
   }]
-  const mockHandler = jest.fn()
+  const handleClick = jest.fn()
   beforeEach(() => {
     component = render(
-      <BlogToggable buttonLabel="view" toggleVisibility={mockHandler} >
+      <BlogToggable >
         <div className="testDiv" />
-        <Blog blog={blog} />
+        <Blog blog={blog} handleLikesClick= {handleClick}/>
       </BlogToggable>
     )
-    component.debug()
   })
-
+  // step 2
   test('renders its children', () => {
     expect(
       component.container.querySelector('.testDiv')
@@ -45,5 +45,18 @@ describe('</>', () => {
   })
 
 
+  // step 3
+  test('calls onClick prop when clicked', () => {
+
+    const button = component.getByText('like')
+    fireEvent.click(button)
+    fireEvent.click(button)
+    expect(handleClick).toHaveBeenCalledTimes(2)
+  })
+
 })
+
+
+
+
 

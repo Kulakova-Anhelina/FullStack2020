@@ -14,17 +14,18 @@ const Blog = ({ blog, handleLikesClick, handleDeleteBlog }) => {
   return (
     <>
       {
-        blogsSorted.map((blog) =>
-          <div style={blogStyle} key={blog.id}>
+        blogsSorted.map((blog, index) =>
+          <div
+            key={index}
+            style={blogStyle}>
             <div className="blog">
               {blog.title} {blog.author}
             </div>
-            <BlogToggable>
+            <BlogToggable key={blog.id}>
               <p>{blog.user.name}</p>
               <p>{blog.url}</p>
               <p>{blog.likes}   </p>
               <button onClick={() => handleLikesClick(blog.id)}> like</button>
-
               <button onClick={() => handleDeleteBlog(blog.id, blog.title)}> delete</button>
             </BlogToggable>
           </div>)
