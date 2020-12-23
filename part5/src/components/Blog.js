@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import BlogToggable  from './BlogToggable'
 
 const Blog = ({ blog, updateLike, deleteOneBlog }) => {
   const blogStyle = {
@@ -9,10 +10,7 @@ const Blog = ({ blog, updateLike, deleteOneBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  const [visible, setVisible] = useState(false)
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
+
   const handleLikesClick = () => {
     updateLike({
       ...blog,
@@ -30,19 +28,14 @@ const Blog = ({ blog, updateLike, deleteOneBlog }) => {
       <div className="blog">
         {blog.title} {blog.author}
       </div>
-      <button onClick={toggleVisibility}>
-        {visible ? 'hide' : 'view'}
-      </button>
-      {visible && (
-        <div>
-          <p>{blog.user.name}</p>
-          <p>{blog.url}</p>
-          <p>{blog.likes}
-            <button onClick={(event) => handleLikesClick(event, blog)}> like</button>
-          </p>
-          <button onClick={(event) => handleDeleteBlog(event, blog)}> delete</button>
-        </div>
-      )}
+      <BlogToggable>
+        <p>{blog.user.name}</p>
+        <p>{blog.url}</p>
+        <p>{blog.likes}   </p>
+        <button onClick={(event) => handleLikesClick(event, blog)}> like</button>
+
+        <button onClick={(event) => handleDeleteBlog(event, blog)}> delete</button>
+      </BlogToggable>
     </div>
   )
 }
