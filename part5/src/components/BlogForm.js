@@ -48,6 +48,7 @@ const BlogForm  = ({ createBlog }) => {
           value={newBlog.author}
           name="author"
           onChange={inputChanged}
+          id="author"
         />
       </div>
       <div>
