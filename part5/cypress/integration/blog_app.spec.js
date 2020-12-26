@@ -39,11 +39,11 @@ describe('Blog app', function () {
     })
   })
 
-  describe('when logged in', function() {
-    beforeEach(function() {
+  describe('when logged in', function () {
+    beforeEach(function () {
       cy.login({ username: 'milka', password: 'salainen' })
     })
-    it('A blog can be created', function() {
+    it('A blog can be created', function () {
       cy.contains('new blog').click()
       cy.get('#title').type('a blog created by cypress')
       cy.get('#author').type('cypress')
@@ -51,7 +51,36 @@ describe('Blog app', function () {
       cy.contains('save').click()
       cy.contains('a blog created by cypress')
     })
+
+    describe('and a blog exists', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Kurukku',
+          author: 'Faustina Bama',
+          url: 'https://www.amazon.com/Karukku-Bama-Faustina/dp/0199450412',
+          likes: 59,
+        })
+        cy.createBlog({
+          title: 'A Time to Be Happy',
+          author: 'Nayantara Sahgal',
+          url: 'https://www.questia.com/library/7232327/a-time-to-be-happy',
+          likes: 56
+        })
+        cy.createBlog({
+          title: 'React patterns',
+          author: 'Michael Chan',
+          url: 'https://reactpatterns.com/',
+          likes: 7
+        })
+      })
+
+      it('it can liked', function () {
+        cy.contains('Kurukku Faustina Bama')
+        cy.get('#view').click()
+        cy.get('#like').click()
+        cy.get('#like').click()
+
+      })
+    })
   })
-
 })
-

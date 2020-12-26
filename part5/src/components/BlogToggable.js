@@ -13,7 +13,7 @@ const BlogToggable = ((props) => {
   return (
     <div>
       <button
-        onClick={toggleVisibility}>
+        onClick={toggleVisibility} id='view'>
         {
           label
         }

@@ -25,7 +25,7 @@ const Blog = ({ blog, handleLikesClick, handleDeleteBlog }) => {
               <p>{blog.user.name}</p>
               <p>{blog.url}</p>
               <p>{blog.likes}   </p>
-              <button onClick={() => handleLikesClick(blog.id)}> like</button>
+              <button id ='like' onClick={() => handleLikesClick(blog.id)}> like</button>
               <button onClick={() => handleDeleteBlog(blog.id, blog.title)}> delete</button>
             </BlogToggable>
           </div>)
