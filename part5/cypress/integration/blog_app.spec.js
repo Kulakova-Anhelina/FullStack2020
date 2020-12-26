@@ -38,4 +38,20 @@ describe('Blog app', function () {
       cy.get('html').should('not.contain', 'Milla Boon logged-in')
     })
   })
+
+  describe('when logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'milka', password: 'salainen' })
+    })
+    it('A blog can be created', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('a blog created by cypress')
+      cy.get('#author').type('cypress')
+      cy.get('#url').type('www/cypress.com')
+      cy.contains('save').click()
+      cy.contains('a blog created by cypress')
+    })
+  })
+
 })
+
