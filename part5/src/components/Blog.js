@@ -18,14 +18,14 @@ const Blog = ({ blog, handleLikesClick, handleDeleteBlog }) => {
           <div
             key={index}
             style={blogStyle}>
-            <div className="blog">
+            <div className="blog" data-cy ='blog'>
               {blog.title} {blog.author}
             </div>
             <BlogToggable key={blog.id}>
               <p>{blog.user.name}</p>
               <p>{blog.url}</p>
-              <p>{blog.likes}   </p>
-              <button id ='like' onClick={() => handleLikesClick(blog.id)}> like</button>
+              <p data-cy='like'>{blog.likes}   </p>
+              <button  onClick={() => handleLikesClick(blog.id)}> like</button>
               <button id = 'delete' onClick={() => handleDeleteBlog(blog.id, blog.title)}> delete</button>
             </BlogToggable>
           </div>)

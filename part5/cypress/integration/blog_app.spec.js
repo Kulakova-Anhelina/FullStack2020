@@ -64,7 +64,7 @@ describe('Blog app', function () {
           title: 'A Time to Be Happy',
           author: 'Nayantara Sahgal',
           url: 'https://www.questia.com/library/7232327/a-time-to-be-happy',
-          likes: 56
+          likes: 100
         })
         cy.createBlog({
           title: 'React patterns',
@@ -74,23 +74,35 @@ describe('Blog app', function () {
         })
       })
 
-      it('it can be liked', function () {
-        cy.contains('A Time to Be Happy').parent().find('button')
-          .contains('view').click()
-        cy.contains('A Time to Be Happy').parent().find('button')
-          .contains('like')
-          .click()
-          .click()
+      it('blogs are sorted by likes', function () {
+        cy.get('[data-cy="like"]').then(($blog) => {
+          expect($blog[0]).to.contain.text(Number(100))
+          expect($blog[1]).to.contain.text(Number(59))
+          expect($blog[2]).to.contain.text(Number(7))
+
+        })
+
+        it('it can be liked', function () {
+          cy.contains('A Time to Be Happy').parent().find('button')
+            .contains('view').click()
+          cy.contains('A Time to Be Happy').parent().find('button')
+            .contains('like')
+            .click()
+            .click()
+
+
+        })
+        it('it can be deleted', function () {
+          cy.contains('React patterns').parent().find('button')
+            .contains('view').click()
+          cy.contains('React patterns').parent().find('button')
+            .contains('delete').click()
+
+        })
 
 
       })
-      it('it can be deleted', function () {
-        cy.contains('React patterns').parent().find('button')
-          .contains('view').click()
-        cy.contains('React patterns').parent().find('button')
-          .contains('delete').click()
 
-      })
     })
   })
 })
