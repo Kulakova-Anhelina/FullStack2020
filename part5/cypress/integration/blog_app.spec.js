@@ -74,11 +74,21 @@ describe('Blog app', function () {
         })
       })
 
-      it('it can liked', function () {
-        cy.contains('Kurukku Faustina Bama')
-        cy.get('#view').click()
-        cy.get('#like').click()
-        cy.get('#like').click()
+      it('it can be liked', function () {
+        cy.contains('A Time to Be Happy').parent().find('button')
+          .contains('view').click()
+        cy.contains('A Time to Be Happy').parent().find('button')
+          .contains('like')
+          .click()
+          .click()
+
+
+      })
+      it('it can be deleted', function () {
+        cy.contains('React patterns').parent().find('button')
+          .contains('view').click()
+        cy.contains('React patterns').parent().find('button')
+          .contains('delete').click()
 
       })
     })
