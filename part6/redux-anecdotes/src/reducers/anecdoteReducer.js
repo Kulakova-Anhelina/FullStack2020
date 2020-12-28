@@ -22,6 +22,16 @@ export const numberOfVotes = (id) => {
     data: { id }
   }
 }
+export const createAnecdote = (content) => {
+  return {
+    type: 'NEW_NOTE',
+    data: {
+      content,
+      votes: 0,
+      id: getId()
+    }
+  }
+}
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
@@ -35,7 +45,7 @@ const reducer = (state = initialState, action) => {
       const anecdoteToChange = state.find(n => n.id === id)
       const changedAnecdote = {
         ...anecdoteToChange,
-        votes: anecdoteToChange.votes +=1
+        votes: anecdoteToChange.votes += 1
       }
       console.log(state.map(anecdote =>
         anecdote.id !== id ? anecdote : changedAnecdote
@@ -43,7 +53,8 @@ const reducer = (state = initialState, action) => {
       return state.map(anecdote =>
         anecdote.id !== id ? anecdote : changedAnecdote
       )
-
+    case 'NEW_NOTE':
+      return state.concat(action.data)
     default: // if none of the above matches, code comes here
       return state
   }
