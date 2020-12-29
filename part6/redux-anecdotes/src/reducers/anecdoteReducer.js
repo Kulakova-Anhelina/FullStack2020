@@ -47,9 +47,6 @@ const anecdoteReducer = (state = initialState, action) => {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes += 1
       }
-      console.log(state.map(anecdote =>
-        anecdote.id !== id ? anecdote : changedAnecdote
-      ));
       const sortedAnecdotes = state.sort((a, b) => b.votes - a.votes)
       return sortedAnecdotes.map(anecdote =>
         anecdote.id !== id ? anecdote : changedAnecdote
