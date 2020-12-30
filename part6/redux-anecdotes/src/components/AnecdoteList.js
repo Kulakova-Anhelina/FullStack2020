@@ -15,8 +15,9 @@ const AnecdoteList = ({ notification }) => {
     console.log(anecdote.id, "anecdote id");
     notification = `You vote for ${anecdote.content}`
     dispatch(setNotification(notification))
-
-    dispatch(removeNotification())
+    setTimeout(() => {
+      dispatch(removeNotification(notification))
+     }, 5000)
   }
 
 
