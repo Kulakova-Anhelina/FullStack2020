@@ -1,12 +1,32 @@
-const visibilityFilter = (
-  state = 'SHOW_ALL',
-  action
-) => {
+
+
+const initialState = {
+  keyword: '',
+}
+
+
+const filterReducer = (state = initialState, action ) => {
+  console.log('state now: ', state)
+  console.log('action', action)
   switch (action.type) {
-    case 'SET_VISIBILITY_FILTER':
-      return action.filter;
+    case 'SEARCH_TEXT':
+
+      return action.keyword
     default:
       return state;
   }
 };
-export default visibilityFilter
+
+export const filterChange = (keyword) => {
+  return {
+    type: 'SEARCH_TEXT',
+    keyword: keyword
+
+
+
+
+  }
+}
+
+
+export default filterReducer

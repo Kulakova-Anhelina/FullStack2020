@@ -11,22 +11,25 @@ const Notification = () => {
   let style = {
     border: 'solid',
     padding: 10,
-    borderWidth: 1
+    borderWidth: 1,
+    marginBottom: '40px'
   }
+
   return (
-
-    <div style={style}>
-      {notification.notification}
-    </div>
-
-
-
-
+    <> {
+      notification.notification.length > 0 && (
+        <div style={style}>
+          {notification.notification}
+        </div>
+      )
+    }
+     <div/>
+    </>
 
 
 
 
   )
-}
 
+}
 export default Notification
