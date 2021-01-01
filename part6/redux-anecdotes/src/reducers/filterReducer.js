@@ -13,9 +13,8 @@ const filterReducer = (state = initialState, action ) => {
 };
 
 export const setFilter = filter => {
-  return (dispatch) => {
-    dispatch({ type: 'SET_FILTER', filter });
-  };
+  return {
+    type: 'SET_FILTER', filter: filter
 }
-
+}
 export default filterReducer
