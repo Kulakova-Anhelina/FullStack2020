@@ -5,7 +5,15 @@ import { setNotification, removeNotification } from '../reducers/notificationRed
 
 
 const AnecdoteList = ({ notification }) => {
-  const anecdotes = useSelector(state => state.anecdotes)
+  const anecdotes = useSelector(({ filter, anecdotes }) => {
+    if ( filter.length <= 3 ) {
+      return anecdotes
+    } else if (filter.length > 4){
+      return anecdotes.filter((anecdote) => anecdote.content.includes(filter))
+    }
+
+
+  })
   const dispatch = useDispatch()
 
   const vote = (id) => {

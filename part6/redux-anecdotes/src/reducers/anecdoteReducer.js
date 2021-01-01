@@ -24,7 +24,7 @@ export const numberOfVotes = (id) => {
 }
 export const createAnecdote = (content) => {
   return {
-    type: 'NEW_NOTE',
+    type: 'NEW_ANECDOTE',
     data: {
       content,
       votes: 0,
@@ -51,7 +51,7 @@ const anecdoteReducer = (state = initialState, action) => {
       return sortedAnecdotes.map(anecdote =>
         anecdote.id !== id ? anecdote : changedAnecdote
       )
-    case 'NEW_NOTE':
+    case 'NEW_ANECDOTE':
       return state.concat(action.data)
     default: // if none of the above matches, code comes here
       return state
