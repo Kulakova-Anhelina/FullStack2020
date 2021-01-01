@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <div>
-        <Filter />
+      <Filter />
       <Notification/>
       <AnecdoteList />
       <AnecdoteForm />
