@@ -16,10 +16,14 @@ const AnecdoteList = ({ notification }) => {
   })
   const dispatch = useDispatch()
 
-  const vote = (id) => {
+  const vote = (id, object) => {
     console.log('vote', id)
     let anecdote = anecdotes.find(id => id.id)
-    dispatch(numberOfVotes(id))
+    object ={
+      content: anecdote.content,
+      votes: anecdote.votes
+    }
+    dispatch(numberOfVotes(id, object))
     console.log(anecdote.id, "anecdote id");
     notification = `You vote for ${anecdote.content}`
     dispatch(setNotification(notification))
