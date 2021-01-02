@@ -1,9 +1,7 @@
-
 const initialState = {
   notification: '',
-  visible: false
-}
 
+}
 
 
 const notificationReducer = (state = initialState, action) => {
@@ -11,9 +9,9 @@ const notificationReducer = (state = initialState, action) => {
   console.log('action notification', action)
   switch (action.type) {
     case 'SET_NOTIFICATION':
-      return { notification: action.data.notification, visible: true }
+      return { notification: action.data.notification }
     case 'REMOVE_NOTIFICATION':
-      return { notification: '', visible: false }
+      return initialState
     default:
       return state
   }
@@ -40,5 +38,15 @@ export const removeNotification = (notification) => {
   }
   }
 
+
+  export const manageNotification = (notification, time) =>{
+    return async dispatch => {
+      dispatch(setNotification(notification))
+      setTimeout(() => {
+        dispatch(removeNotification(notification))
+       }, time)
+
+    }
+  }
 
 export default notificationReducer

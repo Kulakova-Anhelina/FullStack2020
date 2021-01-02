@@ -1,14 +1,14 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { numberOfVotes } from '../reducers/anecdoteReducer'
-import { setNotification, removeNotification } from '../reducers/notificationReducer'
+import { manageNotification } from '../reducers/notificationReducer'
 
 
 const AnecdoteList = ({ notification }) => {
   const anecdotes = useSelector(({ filter, anecdotes }) => {
-    if ( filter.length <= 3 ) {
+    if (filter.length <= 3) {
       return anecdotes
-    } else if (filter.length > 4){
+    } else if (filter.length > 4) {
       return anecdotes.filter((anecdote) => anecdote.content.includes(filter))
     }
 
@@ -19,17 +19,14 @@ const AnecdoteList = ({ notification }) => {
   const vote = (id, object) => {
     console.log('vote', id)
     let anecdote = anecdotes.find(id => id.id)
-    object ={
+    object = {
       content: anecdote.content,
       votes: anecdote.votes
     }
     dispatch(numberOfVotes(id, object))
     console.log(anecdote.id, "anecdote id");
     notification = `You vote for ${anecdote.content}`
-    dispatch(setNotification(notification))
-    setTimeout(() => {
-      dispatch(removeNotification(notification))
-     }, 5000)
+    dispatch(manageNotification(notification, 5000))
   }
 
 
