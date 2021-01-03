@@ -5,18 +5,9 @@ import { manageNotification } from '../reducers/notificationReducer'
 
 
 const AnecdoteList = ({ notification }) => {
-  const anecdotes = useSelector(({ filter, anecdotes }) => {
-    if (filter.length <= 3) {
-      return anecdotes
-    } else if (filter.length > 4) {
-      return anecdotes.filter((anecdote) => anecdote.content.includes(filter))
-    }
-
-
-  })
   const dispatch = useDispatch()
 
-  const vote = (anecdote ) => {
+  const vote = (anecdote) => {
     console.log('anecdote obj', anecdote.id)
     dispatch(numberOfVotes(anecdote.id, anecdote))
     console.log(anecdote, "anecdote id");
@@ -24,28 +15,42 @@ const AnecdoteList = ({ notification }) => {
     dispatch(manageNotification(notification, 5000))
   }
 
-
-
-
-
-  return (
-    <div>
-
-      <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
-        <div key={anecdote.id}>
+  const anecdotes = useSelector(({ filter, anecdotes }) => {
+    if (filter.length <= 3) {
+      return (
+        (
           <div>
-            {anecdote.content}
-          </div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote)}>vote</button>
-          </div>
+            <h2>Anecdotes</h2>
+            {anecdotes.map(anecdote =>
+              <div key={anecdote.id}>
+                <div>
+                  {anecdote.content}
+                </div>
+                <div>
+                  has {anecdote.votes}
+                  <button onClick={() => vote(anecdote)}>vote</button>
+                </div>
 
-        </div>
-      )}
-    </div>
-  )
+              </div>
+            )}
+          </div>
+        )
+
+      )
+    } else if (filter.length > 4) {
+      let filtered = anecdotes.filter((an) => an.content.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
+      return filtered.map((f) => <p>{f.content}   <div>
+      has {f.votes}
+      <button onClick={() => vote(f)}>vote</button>
+    </div></p>)
+
+    }
+
+return <div/>
+
+  })
+
+return anecdotes
 }
 
 export default AnecdoteList
