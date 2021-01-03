@@ -16,15 +16,10 @@ const AnecdoteList = ({ notification }) => {
   })
   const dispatch = useDispatch()
 
-  const vote = (id, object) => {
-    console.log('vote', id)
-    let anecdote = anecdotes.find(id => id.id)
-    object = {
-      content: anecdote.content,
-      votes: anecdote.votes
-    }
-    dispatch(numberOfVotes(id, object))
-    console.log(anecdote.id, "anecdote id");
+  const vote = (anecdote ) => {
+    console.log('anecdote obj', anecdote.id)
+    dispatch(numberOfVotes(anecdote.id, anecdote))
+    console.log(anecdote, "anecdote id");
     notification = `You vote for ${anecdote.content}`
     dispatch(manageNotification(notification, 5000))
   }
@@ -44,7 +39,7 @@ const AnecdoteList = ({ notification }) => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
 
         </div>

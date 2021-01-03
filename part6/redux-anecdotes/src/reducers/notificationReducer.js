@@ -23,7 +23,6 @@ export const setNotification = (notification) => {
     type: 'SET_NOTIFICATION',
     data: {
       notification,
-      visible: true
     }
   }
 }
@@ -33,7 +32,6 @@ export const removeNotification = (notification) => {
     type: 'REMOVE_NOTIFICATION',
     data: {
       notification: '',
-      visible: false
     }
   }
   }
