@@ -1,56 +1,55 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { numberOfVotes } from '../reducers/anecdoteReducer'
 import { manageNotification } from '../reducers/notificationReducer'
+import { connect } from 'react-redux'
 
-
-const AnecdoteList = ({ notification }) => {
-  const dispatch = useDispatch()
-
+const AnecdoteList = (props) => {
   const vote = (anecdote) => {
     console.log('anecdote obj', anecdote.id)
-    dispatch(numberOfVotes(anecdote.id, anecdote))
-    console.log(anecdote, "anecdote id");
-    notification = `You vote for ${anecdote.content}`
-    dispatch(manageNotification(notification, 5000))
+    props.numberOfVotes(anecdote.id, anecdote)
+    props.notification = `You vote for ${anecdote.content}`
+    props.manageNotification(props.notification, 5000)
   }
 
-  const anecdotes = useSelector(({ filter, anecdotes }) => {
-    if (filter.length <= 3) {
-      return (
-        (
-          <div>
-            <h2>Anecdotes</h2>
-            {anecdotes.map(anecdote =>
-              <div key={anecdote.id}>
-                <div>
-                  {anecdote.content}
-                </div>
-                <div>
-                  has {anecdote.votes}
-                  <button onClick={() => vote(anecdote)}>vote</button>
-                </div>
+  return (
+    (
+      <div>
+        <h2>Anecdotes</h2>
+        {props.anecdotes.map(anecdote =>
+          <div key={anecdote.id}>
+            <div>
+              {anecdote.content}
+            </div>
+            <div>
+              has {anecdote.votes}
+              <button onClick={() => vote(anecdote)}>vote</button>
+            </div>
 
-              </div>
-            )}
           </div>
-        )
+        )}
+      </div>
+    )
 
-      )
-    } else if (filter.length > 4) {
-      let filtered = anecdotes.filter((an) => an.content.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
-      return filtered.map((f) => <p>{f.content}   <div>
-      has {f.votes}
-      <button onClick={() => vote(f)}>vote</button>
-    </div></p>)
-
-    }
-
-return <div/>
-
-  })
-
-return anecdotes
+  )
 }
 
-export default AnecdoteList
+const mapStateToProps = (state) => {
+  if (state.filter.length <= 0) {
+    return {
+      anecdotes: state.anecdotes,
+    }
+  }
+  return {
+    anecdotes: (state.filter.length > 0
+      ? state.anecdotes.filter((an) => an.content.toLowerCase().indexOf(state.filter.toLowerCase()) !== -1)
+      : <p>The item you are searching does not exist</p>
+    )
+  }
+}
+
+const mapDispatchToProps = {
+  numberOfVotes, manageNotification
+}
+
+const ConnectedAnecdotes = connect(mapStateToProps, mapDispatchToProps)(AnecdoteList)
+export default ConnectedAnecdotes

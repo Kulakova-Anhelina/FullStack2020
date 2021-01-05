@@ -17,7 +17,7 @@ const Notification = () => {
 
   return (
     <> {
-      notification.notification.length > 0 && (
+     notification.length > 0 && (
         <div style={style}>
           {notification.notification}
         </div>

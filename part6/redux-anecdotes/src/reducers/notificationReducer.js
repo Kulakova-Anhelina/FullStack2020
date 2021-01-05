@@ -1,8 +1,4 @@
-const initialState = {
-  notification: '',
-
-}
-
+const initialState = ''
 
 const notificationReducer = (state = initialState, action) => {
   console.log('state notification: ', state)
