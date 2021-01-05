@@ -5,10 +5,8 @@ import { connect } from 'react-redux'
 
 const AnecdoteList = (props) => {
   const vote = (anecdote) => {
-    console.log('anecdote obj', anecdote.id)
     props.numberOfVotes(anecdote.id, anecdote)
-    let notification = `You vote for ${anecdote.content}`
-    props.manageNotification(notification, 5000)
+    props.manageNotification(`You vote for ${anecdote.content}`, 5000)
   }
 
   return (
@@ -24,7 +22,6 @@ const AnecdoteList = (props) => {
               has {anecdote.votes}
               <button onClick={() => vote(anecdote)}>vote</button>
             </div>
-
           </div>
         )}
       </div>
@@ -37,7 +34,7 @@ const mapStateToProps = (state) => {
   if (state.filter.length <= 0) {
     return {
       anecdotes: state.anecdotes,
-      notification: state.notification
+
     }
   }
   return {
