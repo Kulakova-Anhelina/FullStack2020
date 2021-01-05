@@ -7,8 +7,8 @@ const AnecdoteList = (props) => {
   const vote = (anecdote) => {
     console.log('anecdote obj', anecdote.id)
     props.numberOfVotes(anecdote.id, anecdote)
-    props.notification = `You vote for ${anecdote.content}`
-    props.manageNotification(props.notification, 5000)
+    let notification = `You vote for ${anecdote.content}`
+    props.manageNotification(notification, 5000)
   }
 
   return (
@@ -37,6 +37,7 @@ const mapStateToProps = (state) => {
   if (state.filter.length <= 0) {
     return {
       anecdotes: state.anecdotes,
+      notification: state.notification
     }
   }
   return {
