@@ -11,35 +11,35 @@ interface AcivityConfig {
 
 const calculateExercises = (args: Array<number>, t: number): AcivityConfig => {
   //trainingDays
-  let newArr = []
-  let sum = 0
+  const newArr = [];
+  let sum = 0;
   for (let index = 0; index < args.length; index++) {
     if (args[index] > 0) {
-      newArr.push(args[index])
+      newArr.push(args[index]);
     }
-    sum += args[index]
+    sum += args[index];
   }
   // success
   let sucs;
-  let trainingDif = args.length - newArr.length
+  const trainingDif = args.length - newArr.length;
   if (trainingDif === 0) {
-    sucs = true
+    sucs = true;
   } else {
-    sucs = false
+    sucs = false;
   }
 
   //rating
-  let r = 0
-  let d = ''
+  let r = 0;
+  let d = '';
   if (trainingDif === 0) {
-    r = 3
-    d = 'well done'
+    r = 3;
+    d = 'well done';
   } else if (trainingDif >= 2) {
-    r = 2
-    d = 'not too bad but could be better'
+    r = 2;
+    d = 'not too bad but could be better';
   } else {
-    r = 1
-    d = 'too bad '
+    r = 1;
+    d = 'too bad ';
   }
   return {
     periodLength: args.length,
@@ -49,7 +49,7 @@ const calculateExercises = (args: Array<number>, t: number): AcivityConfig => {
     ratingDescription: d,
     target: t,
     average: sum / args.length
-  }
-}
+  };
+};
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));

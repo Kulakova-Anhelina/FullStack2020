@@ -1,4 +1,4 @@
-export  interface BmiValues {
+export interface BmiValues {
   height: number;
   weight: number;
   bmi?: string
@@ -19,18 +19,14 @@ const parseArguments = (args: Array<string>): BmiValues => {
 }
 const calculateBmi = (h: number, w: number): string => {
   let bmi = Math.floor(((w / h / h) * 10000))
-  let result = ''
   if (bmi < 17) {
-    result = 'Underweight'
-    console.log(result);
+    return 'Underweight'
   } else if (bmi >= 18.5 && bmi <= 24.9) {
-    result = 'Normal (healthy weight)'
-    console.log(result);
+    return 'Normal (healthy weight)'
   } else if (bmi >= 25) {
-    result = 'Overweight'
-    console.log(result);
+    return 'Overweight'
   }
-  return result
+  return 'Not valid'
 }
 
 try {
@@ -39,3 +35,4 @@ try {
 } catch (e) {
   console.log('Error, something bad happened, message: ', e.message);
 }
+export default calculateBmi
