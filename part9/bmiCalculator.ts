@@ -1,4 +1,4 @@
-interface BmiValues {
+export  interface BmiValues {
   height: number;
   weight: number;
   bmi?: string
