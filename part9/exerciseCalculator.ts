@@ -1,3 +1,5 @@
+
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface AcivityConfig {
   periodLength: number,
@@ -10,8 +12,13 @@ export interface AcivityConfig {
 }
 
 //trainingDays
-const tainingDay =(arr_hours : Array<number>) :number =>{
+const tainingDay =(arr_hours : number[]) :number =>{
+
+
    const result = arr_hours.filter(h =>h > 0);
+   console.log(result, "Hello I am result");
+  console.log(arr_hours, "Hello, I am array");
+
    return result.length;
 };
 
@@ -58,14 +65,14 @@ const averageCalculation = (arr_hours: number[]): number=>{
 };
 
 
-const calculateExercises = (args: Array<number>, t: number): AcivityConfig => {
+const calculateExercises = (daily_exercises: Array<number>, t: number): AcivityConfig => {
 
-   const periodLength =args.length;
-    const trainingDays =tainingDay(args);
+   const periodLength =daily_exercises.length;
+    const trainingDays =tainingDay(daily_exercises);
     const rating = rate(periodLength, trainingDays);
     const success =sucessful(rating);
     const ratingDescription = rateOverview(rating);
-    const average = averageCalculation(args);
+    const average = averageCalculation(daily_exercises);
     const targrt = t;
 
 
@@ -80,4 +87,4 @@ const calculateExercises = (args: Array<number>, t: number): AcivityConfig => {
     average: average
   };
 };
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+export default calculateExercises;
