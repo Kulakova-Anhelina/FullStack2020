@@ -16,8 +16,23 @@ router.get('/', (_req, res) => {
   res.send(patientsService.getNonSensitiveEntries());
 });
 
-router.post('/', (_req, res) => {
-    res.send('Saving a patient!');
+router.post('/', (req, res) => {
+  const { name,
+    dateOfBirth,
+    ssn,
+    gender,
+    occupation, } = req.body;
+  const newPatientEntry = patientsService.addData(
+    {
+      name,
+      dateOfBirth,
+      ssn,
+      gender,
+      occupation,
+    }
+  );
+  res.json(newPatientEntry);
 });
-
 export default router;
+
+
