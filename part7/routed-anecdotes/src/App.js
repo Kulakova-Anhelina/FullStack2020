@@ -3,14 +3,15 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useRouteMatch
 } from "react-router-dom";
 import React, { useState } from 'react'
-import Menu from './components/Menu'
 import AnecdoteList from './components/AnecdoteList'
 import About from './components/About'
 import CreateNew from './components/Createnew'
 import Footer from './components/Footer'
+import Anecdote from './components/Anecdote'
 
 
 const App = () => {
@@ -38,6 +39,12 @@ const App = () => {
     setAnecdotes(anecdotes.concat(anecdote))
   }
 
+  const match = useRouteMatch('/anecdotes/:id')
+  const anecdote = match
+    ? anecdotes.find(note => note.id === match.params.id)
+    : null
+
+
   const anecdoteById = (id) =>
     anecdotes.find(a => a.id === id)
 
@@ -56,6 +63,7 @@ const App = () => {
   return (
     <Router>
       <div>
+        <h1>Software anecdotes</h1>
         <div>
           <Link to="/">about</Link> {" "}
           <Link to="/create">Create New</Link> {" "}
@@ -65,17 +73,20 @@ const App = () => {
         {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/create">
-            <CreateNew addNew={addNew} />
+          <Route path="/anecdotes/:id">
+            <Anecdote anecdote={anecdote} />
           </Route>
           <Route path="/anecdotes">
             <AnecdoteList anecdotes={anecdotes} />
+          </Route>
+          <Route path="/create">
+            <CreateNew addNew={addNew} />
           </Route>
           <Route path="/">
             <About />
           </Route>
         </Switch>
-        <Footer/>
+        <Footer />
       </div>
     </Router>
   )
