@@ -10,6 +10,7 @@
 
 # production
 /build
+eslincache
 
 # misc
 .DS_Store
