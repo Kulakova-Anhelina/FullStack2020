@@ -1,4 +1,5 @@
 import patients from '../../data/patients';
+import { v4 as uuidv4 } from 'uuid';
 
 
 import { Patient, NonSensitivePatientEntry, NewPatientEntry } from '../types';
@@ -9,7 +10,7 @@ const getData = (): Array<Patient> => {
 const addData = (entry: NewPatientEntry): Patient => {
 
   const newPatientEntry = {
-    id: Date.now() + Math.random().toString().slice(2),
+    id: uuidv4(),
     ...entry
   };
 
