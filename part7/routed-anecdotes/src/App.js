@@ -4,7 +4,8 @@ import {
   Switch,
   Route,
   Link,
-  useRouteMatch
+  useRouteMatch,
+  Redirect
 } from "react-router-dom";
 import React, { useState } from 'react'
 import AnecdoteList from './components/AnecdoteList'
@@ -37,6 +38,11 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification("The anecdote was created" + anecdote.content)
+    setTimeout(() => {
+      setNotification('')
+    }, 10000);
+
   }
 
   const match = useRouteMatch('/anecdotes/:id')
@@ -77,12 +83,13 @@ const App = () => {
             <Anecdote anecdote={anecdote} />
           </Route>
           <Route path="/anecdotes">
-            <AnecdoteList anecdotes={anecdotes} />
+            <AnecdoteList anecdotes={anecdotes} notification={notification} />
           </Route>
-          <Route path="/create">
-            <CreateNew addNew={addNew} />
-          </Route>
-          <Route path="/">
+          <Route path="/create"  render={() =>
+          notification ?   <Redirect to="/anecdotes"/>:
+        <CreateNew addNew={addNew} />
+          } />
+       <Route path="/">
             <About />
           </Route>
         </Switch>
