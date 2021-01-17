@@ -10,7 +10,7 @@ const Part: React.FC<{ part: CoursePart }> = ({ part }) => {
           <h3>Course Name : {part.name}</h3>
           <p>Number of Ex: {part.exerciseCount}</p>
           <p>Description: {part.description}</p>
-          </div>)
+        </div>)
     case "Using props to pass data":
       return (
         <div>
@@ -23,6 +23,13 @@ const Part: React.FC<{ part: CoursePart }> = ({ part }) => {
           <p>Number of Ex: {part.exerciseCount}</p>
           <p>Description   {part.description}</p>
           <p> Link {part.exerciseSubmissionLink}</p>
+        </div>)
+    case "Full Stack Open":
+      return (
+        <div>
+          <h3>Course Name : {part.name}</h3>
+          <p>Number of Ex: {part.exerciseCount}</p>
+          <p>Description   {part.description}</p>
         </div>)
     default:
       return assertNever(part)

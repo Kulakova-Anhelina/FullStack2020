@@ -24,4 +24,9 @@ interface CoursePartTwo extends CoursePartBase {
   name: "Deeper type usage";
   exerciseSubmissionLink: string;
 }
-export  type CoursePart = CoursePartOne | CoursePartTwo | CoursePartThree;
+interface CoursePartFour extends CoursePartDescription {
+  name: "Full Stack Open"
+
+
+}
+export  type CoursePart = CoursePartOne | CoursePartTwo | CoursePartThree | CoursePartFour;
