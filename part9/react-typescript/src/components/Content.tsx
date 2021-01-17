@@ -6,7 +6,7 @@ const Content: React.FC<{ courseParts: CoursePart[] }> = ({ courseParts })  => {
   console.log(courseParts, "Hello course parts")
   return(
     <div>
-    {courseParts.map(course => <p> Parts <Part key ={course.id} part = {course}/> </p>)}
+    {courseParts.map(course => <Part key ={course.id} part = {course}/>)}
     </div>
   )
 }

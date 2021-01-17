@@ -9,7 +9,8 @@ const Part: React.FC<{ part: CoursePart }> = ({ part }) => {
         <div>
           <h3>Course Name : {part.name}</h3>
           <p>Number of Ex: {part.exerciseCount}</p>
-          <p>Description: {part.description}</p> </div>)
+          <p>Description: {part.description}</p>
+          </div>)
     case "Using props to pass data":
       return (
         <div>
