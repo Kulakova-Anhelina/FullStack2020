@@ -36,6 +36,7 @@ const App = () => {
   const [notification, setNotification] = useState('')
 
   const addNew = (anecdote) => {
+    console.log(anecdote);
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
     setNotification("The anecdote was created" + anecdote.content)
@@ -86,7 +87,7 @@ const App = () => {
             <AnecdoteList anecdotes={anecdotes} notification={notification} />
           </Route>
           <Route path="/create"  render={() =>
-          notification ?   <Redirect to="/anecdotes"/>:
+          notification ? <Redirect to="/anecdotes"/>:
         <CreateNew addNew={addNew} />
           } />
        <Route path="/">
