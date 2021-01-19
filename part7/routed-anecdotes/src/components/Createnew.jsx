@@ -1,12 +1,12 @@
 import React from 'react'
-import {useField} from '../hooks/index'
+import {useField, useAnotherHook} from '../hooks/index'
 
 
 const CreateNew = (props) => {
   const content  = useField('content')
   const author  = useField('author')
   const info  = useField('info')
-  const reset = useField()
+  const reset = useField('')
 
 
   const handleSubmit = (e) => {
@@ -36,7 +36,7 @@ const CreateNew = (props) => {
           <input {...info} />
         </div>
         <button>create</button>
-        <button onClick={reset.reset} >resert</button>
+        <button {...reset} >resert</button>
       </form>
 
     </div>

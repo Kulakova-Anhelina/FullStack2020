@@ -7,7 +7,7 @@ export const useField = (type) => {
     setValue(event.target.value)
   }
 
-  const reset =()=>{
+const onClick =()=>{
     setValue('')
   }
 
@@ -15,11 +15,11 @@ export const useField = (type) => {
     type,
     value,
     onChange,
-     reset
+    onClick
   }
 }
 
 // modules can have several named exports
 export const useAnotherHook = () => {
-  // ...for now it us empty
+
 }
