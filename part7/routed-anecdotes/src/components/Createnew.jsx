@@ -1,5 +1,5 @@
 import React from 'react'
-import {useField, useAnotherHook} from '../hooks/index'
+import {useField } from '../hooks/index'
 
 
 const CreateNew = (props) => {
