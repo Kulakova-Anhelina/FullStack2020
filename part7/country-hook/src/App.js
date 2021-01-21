@@ -18,7 +18,25 @@ const useField = (type) => {
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
 
-  useEffect()
+
+  useEffect(() => {
+    console.log('effect')
+    try {
+      axios
+        .get(`https://restcountries.eu/rest/v2/name/${name}?fullText=true`)
+        .then(response => {
+          console.log('promise fulfilled')
+          setCountry({
+            country: response,
+            found: true
+          })
+        })
+    } catch (error) {
+      setCountry({ found: false, country: null })
+    }
+
+  }, [name]);
+  console.log(country, "from effect")
 
   return country
 }
@@ -27,21 +45,20 @@ const Country = ({ country }) => {
   if (!country) {
     return null
   }
-
   if (!country.found) {
     return (
       <div>
-        not found...
+        Not found
       </div>
     )
   }
-
+  console.log(country, "from hew")
   return (
     <div>
-      <h3>{country.data.name} </h3>
-      <div>capital {country.data.capital} </div>
-      <div>population {country.data.population}</div> 
-      <img src={country.data.flag} height='100' alt={`flag of ${country.data.name}`}/>  
+      <h3>{country.country.data[0].name} </h3>
+      <div>capital {country.country.data[0].capital} </div>
+      <div>population {country.country.data[0].population}</div>
+      <img src={country.country.data[0].flag} height='100' alt={`flag of ${country.country.data[0].name}`} />
     </div>
   )
 }
@@ -62,7 +79,6 @@ const App = () => {
         <input {...nameInput} />
         <button>find</button>
       </form>
-
       <Country country={country} />
     </div>
   )
