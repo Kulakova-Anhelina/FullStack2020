@@ -3,10 +3,11 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
-
+import { useDispatch } from 'react-redux'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import storage from './utils/storage'
+import {initializeblogs}  from './reducers/blogReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -17,11 +18,13 @@ const App = () => {
 
   const blogFormRef = React.createRef()
 
+  const dispatch = useDispatch()
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
-  }, [])
+    blogService.getAll().then(blogs =>{console.log(blogs)
+      return dispatch(initializeblogs(blogs))} )
+  },[dispatch])
+
+
 
   useEffect(() => {
     const user = storage.loadUser()
@@ -67,7 +70,8 @@ const App = () => {
 
   const handleLike = async (id) => {
     const blogToLike = blogs.find(b => b.id === id)
-    const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1, user: blogToLike.user.id }
+    const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1,
+      user: blogToLike.user.id }
     await blogService.update(likedBlog)
     setBlogs(blogs.map(b => b.id === id ?  { ...blogToLike, likes: blogToLike.likes + 1 } : b))
   }

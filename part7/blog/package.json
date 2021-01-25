@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "@testing-library/user-event": "^7.2.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.3.1"
+    "react-redux": "^7.2.2",
+    "react-scripts": "^4.0.1",
+    "redux": "^4.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -16,7 +18,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "eslint .",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "server": "json-server -p3001 --watch db.json"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -37,8 +40,11 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
-    "cypress": "^3.8.3",
+    "cypress": "^6.3.0",
+    "deep-freeze": "0.0.1",
     "eslint-plugin-cypress": "^2.9.0",
-    "eslint-plugin-jest": "^23.6.0"
+    "eslint-plugin-jest": "^23.6.0",
+    "json-server": "^0.15.1",
+    "redux-devtools-extension": "^2.13.8"
   }
 }
