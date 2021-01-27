@@ -7,10 +7,10 @@ import { useDispatch } from 'react-redux'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import storage from './utils/storage'
-import {initializeblogs}  from './reducers/blogReducer'
+import {initializeblogs, createblog}  from './reducers/blogReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+ // const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -21,6 +21,7 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     blogService.getAll().then(blogs =>{console.log(blogs)
+      console.log(blogs, "initial blogs")
       return dispatch(initializeblogs(blogs))} )
   },[dispatch])
 
@@ -57,33 +58,9 @@ const App = () => {
     }
   }
 
-  const createBlog = async (blog) => {
-    try {
-      const newBlog = await blogService.create(blog)
-      blogFormRef.current.toggleVisibility()
-      setBlogs(blogs.concat(newBlog))
-      notifyWith(`a new blog '${newBlog.title}' by ${newBlog.author} added!`)
-    } catch(exception) {
-      console.log(exception)
-    }
-  }
 
-  const handleLike = async (id) => {
-    const blogToLike = blogs.find(b => b.id === id)
-    const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1,
-      user: blogToLike.user.id }
-    await blogService.update(likedBlog)
-    setBlogs(blogs.map(b => b.id === id ?  { ...blogToLike, likes: blogToLike.likes + 1 } : b))
-  }
 
-  const handleRemove = async (id) => {
-    const blogToRemove = blogs.find(b => b.id === id)
-    const ok = window.confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`)
-    if (ok) {
-      await blogService.remove(id)
-      setBlogs(blogs.filter(b => b.id !== id))
-    }
-  }
+
 
   const handleLogout = () => {
     setUser(null)
@@ -119,9 +96,6 @@ const App = () => {
       </div>
     )
   }
-
-  const byLikes = (b1, b2) => b2.likes - b1.likes
-
   return (
     <div>
       <h2>blogs</h2>
@@ -133,18 +107,8 @@ const App = () => {
       </p>
 
       <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
-        <NewBlog createBlog={createBlog} />
       </Togglable>
-
-      {blogs.sort(byLikes).map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLike={handleLike}
-          handleRemove={handleRemove}
-          own={user.username===blog.user.username}
-        />
-      )}
+        <Blog/>
     </div>
   )
 }
