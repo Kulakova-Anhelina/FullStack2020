@@ -1,20 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { createblog } from '../reducers/blogReducer'
+import { useDispatch } from 'react-redux'
 
 const NewBlog = (props) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const dispatch = useDispatch()
 
   const handleNewBlog = (event) => {
     event.preventDefault()
-
-    props.createBlog({
-      title, author, url
-    })
-
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    const title = event.target.title.value
+    const author = event.target.author.value
+    const url = event.target.url.value
+    dispatch(createblog({ title, author, url }))
   }
 
   return (
@@ -25,24 +21,21 @@ const NewBlog = (props) => {
           author
           <input
             id='author'
-            value={author}
-            onChange={({ target }) => setAuthor(target.value)}
+            name="author"
           />
         </div>
         <div>
           title
           <input
             id='title'
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
+            name="title"
           />
         </div>
         <div>
           url
           <input
             id='url'
-            value={url}
-            onChange={({ target }) => setUrl(target.value)}
+            name="url"
           />
         </div>
         <button id="create">create</button>

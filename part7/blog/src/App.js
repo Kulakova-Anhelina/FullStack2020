@@ -109,6 +109,7 @@ const App = () => {
       <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
       </Togglable>
         <Blog/>
+      <NewBlog/>
     </div>
   )
 }

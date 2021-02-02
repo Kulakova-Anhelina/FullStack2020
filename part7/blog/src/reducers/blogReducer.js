@@ -13,10 +13,12 @@ const blogReducer = (state = [], action) => {
   }
 }
 
-export const createblog = (data) => {
+export const createblog = (title, author, url) => {
   return {
     type: 'NEW_BLOG',
-    data
+    data: {
+      title, author, url
+    }
   }
 }
 
