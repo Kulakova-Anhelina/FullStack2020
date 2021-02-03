@@ -1,4 +1,4 @@
-const blogReducer = (state = [], action) => {
+const loginReducer = (state = [], action) => {
   console.log(action, "Action")
   console.log(state, "State")
 
@@ -6,21 +6,19 @@ const blogReducer = (state = [], action) => {
     case 'NEW_BLOG':
       return [...state, action.data]
     case 'INIT_BLOG':
+
       return action.data
-    case 'LIKE':
-      return action.data
-    case 'DELETE':
-      return action
     default:
       return state
   }
 }
 
-export const createblog = (data) => {
+export const createblog = (title, author, url) => {
   return {
     type: 'NEW_BLOG',
-    data
-
+    data: {
+      title, author, url
+    }
   }
 }
 
@@ -31,4 +29,4 @@ export const initializeblogs = (blogs) => {
   }
 }
 
-export default blogReducer
+export default loginReducer
