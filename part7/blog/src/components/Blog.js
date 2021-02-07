@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import {handleLike, handleDelete} from '../reducers/blogReducer'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike, handleRemove }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -11,37 +12,48 @@ const Blog = ({ blog }) => {
   }
   const [visible, setVisible] = useState(false)
   const label = visible ? 'hide' : 'view'
-
-  return(
+  return (
     <>
-    <div style={blogStyle} className='blog'>
-      <i>{blog.title}</i> by {blog.author}
-      <button onClick={() => setVisible(!visible)}>{label}</button>
+      <div style={blogStyle} className='blog'>
+        <i>{blog.title}</i> by {blog.author}
+        <button onClick={() => setVisible(!visible)}>{label}</button>
       </div>
-      {visible&&(
-      <div>
-        <div>{blog.url}</div>
-        <div>likes {blog.likes}
+      {visible && (
+        <div>
+          <div>{blog.url}</div>
+          <div>likes {blog.likes}
+            <div>likes {blog.likes}
+              <button onClick={handleLike}>like</button>
+            </div>
+            <div>{blog.user.name}</div>
+            {<button onClick={() => handleRemove(blog.id)}>remove</button>}
+          </div>
         </div>
-      </div>
-    )}
-  </>
+      )}
+    </>
   )
 }
 
 
 const Blogs = () => {
 
-  const dispatch = useDispatch()
   const blogState = useSelector(state => state.blogs)
   console.log(blogState, "blog from Blog")
   const byLikes = (b1, b2) => b2.likes - b1.likes
+  const dispatch = useDispatch()
+  const like = (id) => {
+    const toLike = blogState.find(a => a.id === id)
+    dispatch(handleLike(toLike))
+  }
+
   return (
     <>
       {blogState.sort(byLikes).map((blog) =>
-       <Blog
-       blog={blog}
-       />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleLike={()=> like(blog.id)}
+        />
       )}
 
 
