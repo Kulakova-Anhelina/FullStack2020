@@ -19,14 +19,16 @@ const create = (blog) => {
   return request.then(response => response.data)
 }
 
-const update = (blog) => {
-  const request = axios.put(`${baseUrl}/${blog.id}`, blog, getConfig())
-  return request.then(response => response.data)
+const update = async (blog) => {
+  const response = await axios.put(`${baseUrl}/${blog.id}`, blog, getConfig())
+  return response.data
+
 }
 
-const remove = (id) => {
+const remove = async (id) => {
   const request = axios.delete(`${baseUrl}/${id}`, getConfig())
-  return request.then(response => response.data)
+  const response = await request
+  return response.data
 }
 
 export default { getAll, create, update, remove }

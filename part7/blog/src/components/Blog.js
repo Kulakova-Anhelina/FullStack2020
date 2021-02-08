@@ -21,14 +21,12 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
       {visible && (
         <div>
           <div>{blog.url}</div>
-          <div>likes {blog.likes}
             <div>likes {blog.likes}
               <button onClick={handleLike}>like</button>
             </div>
             <div>{blog.user.name}</div>
             {<button onClick={() => handleRemove(blog.id)}>remove</button>}
           </div>
-        </div>
       )}
     </>
   )
