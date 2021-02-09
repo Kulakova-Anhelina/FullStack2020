@@ -36,12 +36,18 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
 const Blogs = () => {
 
   const blogState = useSelector(state => state.blogs)
-  console.log(blogState, "blog from Blog")
   const byLikes = (b1, b2) => b2.likes - b1.likes
   const dispatch = useDispatch()
-  const like = (id) => {
+
+  const like = async (id) => {
     const toLike = blogState.find(a => a.id === id)
     dispatch(handleLike(toLike))
+  }
+
+
+  const handleRemove = async (id) => {
+    const toRemove = blogState.find(a => a.id === id)
+    dispatch(handleDelete(toRemove))
   }
 
   return (
@@ -51,6 +57,7 @@ const Blogs = () => {
           key={blog.id}
           blog={blog}
           handleLike={()=> like(blog.id)}
+          handleRemove={() => handleRemove(blog.id)}
         />
       )}
 

@@ -20,9 +20,7 @@ const App = () => {
 
   const dispatch = useDispatch()
   useEffect(() => {
-    blogService.getAll().then(blogs =>{console.log(blogs)
-      console.log(blogs, "initial blogs")
-      return dispatch(initializeblogs(blogs))} )
+    dispatch(initializeblogs())
   },[dispatch])
 
 

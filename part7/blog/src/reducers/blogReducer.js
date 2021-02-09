@@ -1,41 +1,59 @@
 import blogServices from '../services/blogs'
 
+const byLikes = (a1, a2) => a2.likes - a1.likes
+
 const blogReducer = (state = [], action) => {
   console.log(action, "Action")
   console.log(state, "State")
 
   switch (action.type) {
+
+    case 'INIT_BLOG':
+      return action.data.sort(byLikes)
+
     case 'NEW_BLOG':
       return [...state, action.data]
-    case 'INIT_BLOG':
-      return action.data
+
     case 'LIKE':
       const liked = action.data
+      console.log(liked, "liked")
       return state.map(a => a.id===liked.id ? liked : a)
+
     case 'DELETE':
-      return action
+      const blogToRemove = action.data
+      console.log(blogToRemove, "id from delete")
+      return state.filter(b=> b.id !== blogToRemove.id )
     default:
       return state
   }
 }
 
-export const createblog = (data) => {
-  return {
-    type: 'NEW_BLOG',
-    data
-
-  }
-}
 const generateId = () =>
   Number((Math.random() * 1000000).toFixed(0))
 
-export const initializeblogs = (blogs) => {
-  return {
-    type: 'INIT_BLOG',
-    data: blogs,
-    id: generateId()
+export const createblog = (blog) => {
+  return async dispatch => {
+    const data = await blogServices.create(blog)
+    dispatch({
+      type: 'CREATE',
+      data,
+      id: generateId()
+    })
   }
 }
+
+
+export const initializeblogs = () => {
+  return async dispatch => {
+    const blogs = await blogServices.getAll()
+    dispatch({
+      type: 'INIT_BLOG',
+      data: blogs,
+    })
+  }
+}
+
+
 export const handleLike =(blog)=>{
   return async dispatch => {
     const toLike = {...blog, likes: blog.likes + 1 }
@@ -47,10 +65,10 @@ export const handleLike =(blog)=>{
   }
 }
 
-export const handleDelete=(blog)=>{
+export const handleDelete=(id)=>{
   return async dispatch => {
-    const toLike = {...blog, likes: blog.likes + 1 }
-    const data = await blogServices.delete(toLike)
+    console.log(id, "id from acttion creator")
+    const data = await blogServices.remove(id)
     dispatch({
       type: 'DELETE',
       data
