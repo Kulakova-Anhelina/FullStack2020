@@ -40,7 +40,7 @@ const Blogs = () => {
   const dispatch = useDispatch()
 
   const like = async (id) => {
-    const toLike = blogState.find(a => a.id === id)
+   const toLike = blogState.find(a => a.id === id)
     dispatch(handleLike(toLike))
   }
 
@@ -52,7 +52,7 @@ const Blogs = () => {
 
   return (
     <>
-      {blogState.sort(byLikes).map((blog) =>
+      {blogState.map((blog) =>
         <Blog
           key={blog.id}
           blog={blog}

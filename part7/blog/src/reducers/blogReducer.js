@@ -54,13 +54,14 @@ export const initializeblogs = () => {
 }
 
 
-export const handleLike =(blog)=>{
+export const handleLike =(blogs)=>{
   return async dispatch => {
-    const toLike = {...blog, likes: blog.likes + 1 }
+    const toLike = {...blogs, likes: blogs.likes += 1 }
+    console.log(toLike)
     const data = await blogServices.update(toLike)
     dispatch({
       type: 'LIKE',
-      data
+      data:data
     })
   }
 }
