@@ -3,8 +3,8 @@ import blogServices from '../services/blogs'
 const byLikes = (a1, a2) => a2.likes - a1.likes
 
 const blogReducer = (state = [], action) => {
-  console.log(action, "Action")
-  console.log(state, "State")
+  //console.log(action, "Action")
+  //console.log(state, "State")
 
   switch (action.type) {
 
@@ -12,6 +12,8 @@ const blogReducer = (state = [], action) => {
       return action.data.sort(byLikes)
 
     case 'NEW_BLOG':
+      console.log(state)
+      console.log(action.data)
       return [...state, action.data]
 
     case 'LIKE':
@@ -33,10 +35,14 @@ const generateId = () =>
 
 export const createblog = (blog) => {
   return async dispatch => {
+
     const data = await blogServices.create(blog)
+    console.log(blog, "b")
+    console.log(data, "c")
+
     dispatch({
       type: 'CREATE',
-      data,
+      data: data,
       id: generateId()
     })
   }

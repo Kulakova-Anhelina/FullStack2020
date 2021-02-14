@@ -14,9 +14,9 @@ const getAll = async () => {
   return response.data
 }
 
-const create = async (blog) => {
-  const object = { blog, likes: 0 }
-  const response = axios.post(baseUrl, object, getConfig())
+const create = async (url, author, title) => {
+  const object = { url,author, title, likes: 0 }
+  const response =await axios.post(baseUrl, object, getConfig())
   return response.data
 }
 

@@ -8,8 +8,11 @@ const NewBlog = (props) => {
   const handleNewBlog = (event) => {
     event.preventDefault()
     const title = event.target.title.value
+    event.target.title.value=""
     const author = event.target.author.value
+    event.target.author.value=""
     const url = event.target.url.value
+    event.target.url.value=""
     dispatch(createblog({ title, author, url }))
   }
 
