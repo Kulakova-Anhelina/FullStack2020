@@ -10,21 +10,16 @@ const blogReducer = (state = [], action) => {
 
     case 'INIT_BLOG':
       return action.data.sort(byLikes)
-
     case 'NEW_BLOG':
-      console.log(state)
-      console.log(action.data)
       return [...state, action.data]
-
     case 'LIKE':
       const liked = action.data
-      console.log(liked, "liked")
-      return state.map(a => a.id===liked.id ? liked : a)
-
+      const sortedLikes =  state.map(a => a.id===liked.id ? liked : a)
+      return [...sortedLikes]
     case 'DELETE':
       const blogToRemove = action.data
-      console.log(blogToRemove, "id from delete")
-      return state.filter(b=> b.id !== blogToRemove.id )
+      const removedBlog = state.filter(b=> b.id !== blogToRemove.id )
+      return [...removedBlog]
     default:
       return state
   }
