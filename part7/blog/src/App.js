@@ -3,14 +3,15 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import loginService from './services/login'
 import storage from './utils/storage'
 import {initializeblogs }  from './reducers/blogReducer'
+import {showUser, logOut, logIn } from './reducers/loginReducer'
 
 const App = () => {
- // const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
+  const userState = useSelector(state => state.user)
+  console.log(userState)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [notification, setNotification] = useState(null)
@@ -25,13 +26,13 @@ const App = () => {
 
 
   useEffect(() => {
-    const user = storage.loadUser()
-    setUser(user)
-  }, [])
+    dispatch(showUser())
+    
+  }, [dispatch])
 
   const notifyWith = (message, type='success') => {
     setNotification({
-      message, type
+    message, type
     })
     setTimeout(() => {
       setNotification(null)
@@ -39,17 +40,16 @@ const App = () => {
   }
 
   const handleLogin = async (event) => {
+   
     event.preventDefault()
     try {
-      const user = await loginService.login({
-        username, password
-      })
-
+      
+      dispatch(logIn(password,username))
       setUsername('')
       setPassword('')
-      setUser(user)
-      notifyWith(`${user.name} welcome back!`)
-      storage.saveUser(user)
+      //setUser(user)
+      notifyWith(`${userState.name} welcome back!`)
+      storage.saveUser(userState)
     } catch(exception) {
       notifyWith('wrong username/password', 'error')
     }
@@ -57,14 +57,11 @@ const App = () => {
 
 
 
-
-
   const handleLogout = () => {
-    setUser(null)
-    storage.logoutUser()
+    dispatch(logOut())
   }
 
-  if ( !user ) {
+  if ( !userState )  {
     return (
       <div>
         <h2>login to application</h2>
@@ -100,7 +97,7 @@ const App = () => {
       <Notification notification={notification} />
 
       <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
+        {userState.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
 
       <Togglable buttonLabel='create new blog'  ref={blogFormRef}>

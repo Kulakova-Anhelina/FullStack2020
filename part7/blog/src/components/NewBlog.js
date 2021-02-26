@@ -13,7 +13,11 @@ const NewBlog = (props) => {
     event.target.author.value=""
     const url = event.target.url.value
     event.target.url.value=""
-    dispatch(createblog({ title, author, url }))
+    dispatch(createblog({
+      title: title,
+      author: author,
+      url: url
+    }))
   }
 
   return (

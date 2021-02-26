@@ -11,7 +11,7 @@ const blogReducer = (state = [], action) => {
     case 'INIT_BLOG':
       return action.data.sort(byLikes)
     case 'NEW_BLOG':
-      return [...state, action.data]
+      return [...state]
     case 'LIKE':
       const liked = action.data
       const sortedLikes =  state.map(a => a.id===liked.id ? liked : a)
@@ -25,20 +25,18 @@ const blogReducer = (state = [], action) => {
   }
 }
 
-const generateId = () =>
-  Number((Math.random() * 1000000).toFixed(0))
-
 export const createblog = (blog) => {
   return async dispatch => {
 
     const data = await blogServices.create(blog)
     console.log(blog, "b")
     console.log(data, "c")
-
     dispatch({
       type: 'CREATE',
-      data: data,
-      id: generateId()
+         title: data.title,
+         author: data.author,
+         url: data.url
+      
     })
   }
 }
@@ -67,13 +65,13 @@ export const handleLike =(blogs)=>{
   }
 }
 
-export const handleDelete=(id)=>{
+export const handleDelete=(blog)=>{
   return async dispatch => {
-    console.log(id, "id from acttion creator")
-    const data = await blogServices.remove(id)
+    console.log(blog.id, "id from acttion creator")
+    const data = await blogServices.remove(blog.id)
     dispatch({
       type: 'DELETE',
-      data
+      data:data
     })
   }
 }

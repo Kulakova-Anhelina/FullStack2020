@@ -14,9 +14,10 @@ const getAll = async () => {
   return response.data
 }
 
-const create = async (url, author, title) => {
-  const object = { url,author, title, likes: 0 }
-  const response =await axios.post(baseUrl, object, getConfig())
+const create = async ({url, author, title}) => {
+  const object = {title, url, author, likes: 0 }
+  console.log(object, "obj");
+  const response = await axios.post(baseUrl, object, getConfig())
   return response.data
 }
 
@@ -26,9 +27,9 @@ const update = async (blog) => {
 
 }
 
-const remove = async (blog) => {
-  console.log(blog.id, "SERVICE")
-  const response = await axios.delete(`${baseUrl}/${blog.id}`,blog, getConfig())
+const remove = async (id) => {
+  console.log(id, "SERVICE")
+  const response = await axios.delete(`${baseUrl}/${id}`, getConfig())
   return response.data
 }
 

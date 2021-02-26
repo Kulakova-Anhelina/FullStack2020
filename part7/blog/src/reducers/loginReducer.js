@@ -1,32 +1,53 @@
+import storage from "../utils/storage";
+import loginServices from '../services/login'
+
 const loginReducer = (state = [], action) => {
-  console.log(action, "Action")
-  console.log(state, "State")
+  console.log(action, "Action");
+  console.log(state, "State");
 
   switch (action.type) {
-    case 'NEW_BLOG':
-      return [...state, action.data]
-    case 'INIT_BLOG':
-
-      return action.data
+    case "SHOW_USER":
+      return action.data;
+    case "LOG_OUT":
+      return state;
+      case "LOG_IN":
+        return action.data
     default:
-      return state
+      return state;
   }
-}
+};
 
-export const createblog = (title, author, url) => {
+export const showUser = () => {
+  const user = storage.loadUser();
+  console.log(user);
   return {
-    type: 'NEW_BLOG',
-    data: {
-      title, author, url
-    }
-  }
-}
+    type: "SHOW_USER",
+    data: user,
+  };
+};
 
-export const initializeblogs = (blogs) => {
+  export const logIn = (password, username) => {
+    return async (dispatch) => {
+      const user = await loginServices.login({
+        username,
+        password,
+      });
+      console.log(user);
+      dispatch({
+        type: "LOG_IN",
+        data: user,
+      });
+    };
+  };
+
+export const logOut =()=>{
+  const user = storage.logoutUser()
+  console.log(user);
   return {
-    type: 'INIT_BLOG',
-    data: blogs,
-  }
+    type: "LOG_OUT",
+    data: user
+  };
+
 }
 
-export default loginReducer
+export default loginReducer;
