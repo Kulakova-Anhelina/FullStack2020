@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+import Blogs from './components/Blogs'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
@@ -13,18 +13,33 @@ import {
 } from "react-router-dom"
 import Users from './components/Users';
 import User from './components/User'
+import { handleLike, handleDelete } from './reducers/blogReducer'
+import Blog from './components/Blog'
 
 
 
 const App = () => {
   const userState = useSelector(state => state.loginUser)
-const usersState = useSelector(state => state.users)
+  const usersState = useSelector(state => state.users)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [notification, setNotification] = useState(null)
   const user = storage.loadUser()
 
   const blogFormRef = React.createRef()
+  const blogState = useSelector(state => state.blogs)
+
+  const like = async (id) => {
+    const toLike = blogState.find(a => a.id === id)
+    dispatch(handleLike(toLike))
+  }
+
+
+  const handleRemove = async (id) => {
+    const toRemove = blogState.find(a => a.id === id)
+    dispatch(handleDelete(toRemove))
+  }
+
 
   const dispatch = useDispatch()
   useEffect(() => {
@@ -100,10 +115,11 @@ const usersState = useSelector(state => state.users)
   }
   return (
     <div>
-
-
-
-
+      <h2>blogs</h2>
+      <Notification notification={notification} />
+      <p>
+        {userState.name} logged in <button onClick={handleLogout}>logout</button>
+      </p>
       <Router>
         <div>
           <Link className="padding" to="/">home</Link>
@@ -112,24 +128,26 @@ const usersState = useSelector(state => state.users)
         </div>
 
         <Switch>
+          <Route path="/blogs/:id">
+            <Blog
+              blogs={blogState}
+              handleLike={handleLike}
+              handleRemove={handleRemove}
+            />
+          </Route>
           <Route path="/blogs">
-            <Blog />
+            <Blogs blogs={blogState} />
             <Togglable buttonLabel='create new blog' ref={blogFormRef}>
               <NewBlog />
             </Togglable>
           </Route>
           <Route path="/users/:id">
-            <User users = {usersState}/>
+            <User users={usersState} />
           </Route>
           <Route path="/users">
-            <Users users ={usersState}/>
+            <Users users={usersState} />
           </Route>
           <Route path="/">
-            <h2>blogs</h2>
-            <Notification notification={notification} />
-            <p>
-              {userState.name} logged in <button onClick={handleLogout}>logout</button>
-            </p>
           </Route>
         </Switch>
 
