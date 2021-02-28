@@ -25,7 +25,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [notification, setNotification] = useState(null)
   const user = storage.loadUser()
-
   const blogFormRef = React.createRef()
   const blogState = useSelector(state => state.blogs)
 
@@ -86,7 +85,7 @@ const App = () => {
 
   if (!userState) {
     return (
-      <div>
+      <div className="container">
         <h2>login to application</h2>
 
         <Notification notification={notification} />
@@ -114,7 +113,7 @@ const App = () => {
     )
   }
   return (
-    <div>
+    <div className="container">
       <h2>blogs</h2>
       <Notification notification={notification} />
       <p>
@@ -131,7 +130,7 @@ const App = () => {
           <Route path="/blogs/:id">
             <Blog
               blogs={blogState}
-              handleLike={handleLike}
+              handleLike={like}
               handleRemove={handleRemove}
             />
           </Route>
