@@ -4,17 +4,16 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
 import { useDispatch, useSelector } from 'react-redux'
-import loginService from './services/login'
 import storage from './utils/storage'
 import {initializeblogs }  from './reducers/blogReducer'
 import {showUser, logOut, logIn } from './reducers/loginReducer'
 
 const App = () => {
   const userState = useSelector(state => state.user)
-  console.log(userState)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [notification, setNotification] = useState(null)
+  const user = storage.loadUser()
 
   const blogFormRef = React.createRef()
 
@@ -26,8 +25,7 @@ const App = () => {
 
 
   useEffect(() => {
-    dispatch(showUser())
-    
+    dispatch(showUser(user))
   }, [dispatch])
 
   const notifyWith = (message, type='success') => {
@@ -40,16 +38,17 @@ const App = () => {
   }
 
   const handleLogin = async (event) => {
-   
     event.preventDefault()
     try {
-      
       dispatch(logIn(password,username))
+      dispatch(showUser(user))
+      notifyWith(`${userState.name} welcome back!`)
+      console.log(userState)
+      dispatch(showUser(user))
       setUsername('')
       setPassword('')
-      //setUser(user)
-      notifyWith(`${userState.name} welcome back!`)
-      storage.saveUser(userState)
+
+
     } catch(exception) {
       notifyWith('wrong username/password', 'error')
     }
@@ -58,7 +57,7 @@ const App = () => {
 
 
   const handleLogout = () => {
-    dispatch(logOut())
+    dispatch(logOut(storage.logoutUser()))
   }
 
   if ( !userState )  {

@@ -2,14 +2,11 @@ import storage from "../utils/storage";
 import loginServices from '../services/login'
 
 const loginReducer = (state = [], action) => {
-  console.log(action, "Action");
-  console.log(state, "State");
-
   switch (action.type) {
     case "SHOW_USER":
       return action.data;
     case "LOG_OUT":
-      return state;
+      return action.data;
       case "LOG_IN":
         return action.data
     default:
@@ -17,9 +14,7 @@ const loginReducer = (state = [], action) => {
   }
 };
 
-export const showUser = () => {
-  const user = storage.loadUser();
-  console.log(user);
+export const showUser = (user) => {
   return {
     type: "SHOW_USER",
     data: user,
@@ -32,7 +27,7 @@ export const showUser = () => {
         username,
         password,
       });
-      console.log(user);
+      storage.saveUser(user)
       dispatch({
         type: "LOG_IN",
         data: user,
@@ -41,13 +36,10 @@ export const showUser = () => {
   };
 
 export const logOut =()=>{
-  const user = storage.logoutUser()
-  console.log(user);
   return {
     type: "LOG_OUT",
-    data: user
+    data: null
   };
-
 }
 
 export default loginReducer;
