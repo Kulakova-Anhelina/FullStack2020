@@ -5,11 +5,20 @@ import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
 import { useDispatch, useSelector } from 'react-redux'
 import storage from './utils/storage'
-import {initializeblogs }  from './reducers/blogReducer'
-import {showUser, logOut, logIn } from './reducers/loginReducer'
+import { initializeblogs } from './reducers/blogReducer'
+import { showUser, logOut, logIn } from './reducers/loginReducer'
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link
+} from "react-router-dom"
+import Users from './components/Users';
+import User from './components/User'
+
+
 
 const App = () => {
-  const userState = useSelector(state => state.user)
+  const userState = useSelector(state => state.loginUser)
+const usersState = useSelector(state => state.users)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [notification, setNotification] = useState(null)
@@ -20,7 +29,7 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(initializeblogs())
-  },[dispatch])
+  }, [dispatch])
 
 
 
@@ -28,9 +37,9 @@ const App = () => {
     dispatch(showUser(user))
   }, [dispatch])
 
-  const notifyWith = (message, type='success') => {
+  const notifyWith = (message, type = 'success') => {
     setNotification({
-    message, type
+      message, type
     })
     setTimeout(() => {
       setNotification(null)
@@ -40,7 +49,7 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      dispatch(logIn(password,username))
+      dispatch(logIn(password, username))
       dispatch(showUser(user))
       notifyWith(`${userState.name} welcome back!`)
       console.log(userState)
@@ -49,7 +58,7 @@ const App = () => {
       setPassword('')
 
 
-    } catch(exception) {
+    } catch (exception) {
       notifyWith('wrong username/password', 'error')
     }
   }
@@ -60,7 +69,7 @@ const App = () => {
     dispatch(logOut(storage.logoutUser()))
   }
 
-  if ( !userState )  {
+  if (!userState) {
     return (
       <div>
         <h2>login to application</h2>
@@ -91,18 +100,43 @@ const App = () => {
   }
   return (
     <div>
-      <h2>blogs</h2>
 
-      <Notification notification={notification} />
 
-      <p>
-        {userState.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
 
-      <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
-      </Togglable>
-        <Blog/>
-      <NewBlog/>
+
+      <Router>
+        <div>
+          <Link className="padding" to="/">home</Link>
+          <Link className="padding" to="/blogs">blogs</Link>
+          <Link className="padding" to="/users">users</Link>
+        </div>
+
+        <Switch>
+          <Route path="/blogs">
+            <Blog />
+            <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+              <NewBlog />
+            </Togglable>
+          </Route>
+          <Route path="/users/:id">
+            <User users = {usersState}/>
+          </Route>
+          <Route path="/users">
+            <Users users ={usersState}/>
+          </Route>
+          <Route path="/">
+            <h2>blogs</h2>
+            <Notification notification={notification} />
+            <p>
+              {userState.name} logged in <button onClick={handleLogout}>logout</button>
+            </p>
+          </Route>
+        </Switch>
+
+        <div>
+          <i>Blog app, Anhelina Kulakova 2020</i>
+        </div>
+      </Router>
     </div>
   )
 }
