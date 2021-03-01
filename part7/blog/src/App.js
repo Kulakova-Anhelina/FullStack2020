@@ -15,10 +15,19 @@ import Users from './components/Users';
 import User from './components/User'
 import { handleLike, handleDelete } from './reducers/blogReducer'
 import Blog from './components/Blog'
+import { Nav, Navbar } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button'
+import Image from 'react-bootstrap/Image'
+
 
 
 
 const App = () => {
+
+  const padding = {
+    padding: 5,
+    color: "#fffff",
+  }
   const userState = useSelector(state => state.loginUser)
   const usersState = useSelector(state => state.users)
   const [username, setUsername] = useState('')
@@ -113,45 +122,53 @@ const App = () => {
     )
   }
   return (
-    <div className="container">
-      <h2>blogs</h2>
-      <Notification notification={notification} />
-      <p>
-        {userState.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
+    <div>
       <Router>
-        <div>
-          <Link className="padding" to="/">home</Link>
-          <Link className="padding" to="/blogs">blogs</Link>
-          <Link className="padding" to="/users">users</Link>
-        </div>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href="#home">
+            Blogs
+          </Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/">home</Link></Nav.Link>
+            <Nav.Link href="#" as="span"><Link style={padding} to="/blogs">blogs</Link></Nav.Link>
+            <Nav.Link href="#" as="span"><Link style={padding} to="/users">users</Link></Nav.Link>
+          </Nav>
+        </Navbar>
+        <div className="container">
+          <Image  src="./blog.jpg" fluid />
+          <h2>Blogs</h2>
+          <Notification notification={notification} />
+          <p>
+            {userState.name} logged in <Button variant="info" onClick={handleLogout}>logout</Button>
+          </p>
 
-        <Switch>
-          <Route path="/blogs/:id">
-            <Blog
-              blogs={blogState}
-              handleLike={like}
-              handleRemove={handleRemove}
-            />
-          </Route>
-          <Route path="/blogs">
-            <Blogs blogs={blogState} />
-            <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-              <NewBlog />
-            </Togglable>
-          </Route>
-          <Route path="/users/:id">
-            <User users={usersState} />
-          </Route>
-          <Route path="/users">
-            <Users users={usersState} />
-          </Route>
-          <Route path="/">
-          </Route>
-        </Switch>
-
-        <div>
-          <i>Blog app, Anhelina Kulakova 2020</i>
+          <Switch>
+            <Route path="/blogs/:id">
+              <Blog
+                blogs={blogState}
+                handleLike={like}
+                handleRemove={handleRemove}
+              />
+            </Route>
+            <Route path="/blogs">
+              <Blogs blogs={blogState} />
+              <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+                <NewBlog />
+              </Togglable>
+            </Route>
+            <Route path="/users/:id">
+              <User users={usersState} />
+            </Route>
+            <Route path="/users">
+              <Users users={usersState} />
+            </Route>
+            <Route path="/">
+            </Route>
+          </Switch>
+          <div>
+            <i>Blog app, Anhelina Kulakova 2020</i>
+          </div>
         </div>
       </Router>
     </div>
