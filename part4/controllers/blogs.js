@@ -34,7 +34,8 @@ blogsRouter.post('/', async (request, response, next) => {
     author: body.author,
     url: body.url,
     likes: body.likes || 0,
-    user: user._id
+    user: user._id,
+    comments: body.comments
   })
   try {
     const savedBlog = await blog.save()
@@ -94,8 +95,9 @@ blogsRouter.put('/:id', async (request, response, next) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
-
+    comments: body.comments
   }
+  console.log(blog, 'blog')
 
   try {
     const blogId = await Blog.findById(request.params.id)
