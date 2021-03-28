@@ -1,9 +1,0 @@
-POST http://localhost:3001/api/blogs/5fd7d42bcfc0513b84354bf4/comments
-Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhaW1vbiIsImlkIjoiNWZkN2Q0MmJjZmMwNTEzYjg0MzU0YmY0IiwiaWF0IjoxNjE2NDQzNzE2fQ.TseSRl9pwzIpkx0YQcx7lyW4dedo817C-giayIJG-BM
-
-{
-
-    "comments": "Hello me"
-    }
-
