@@ -2,6 +2,7 @@ const blogsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const Comment = require('../models/commnets')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
@@ -14,9 +15,46 @@ const getTokenFrom = request => {
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
     .find({}).populate('user', { username: 1, name: 1 })
+  //.find({}).populate('comments', { comment: 1 })
+
 
   response.json(blogs.map(blog => blog.toJSON()))
 })
+
+
+
+blogsRouter.post('/:id/comments', async (request, response, next) => {
+  const body = request.body
+  const token = getTokenFrom(request)
+
+  /*const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }*/
+
+  try {
+    const blog = await Blog.findById(request.params.id)
+    const newComment = new Comment({
+      comment: body.comment
+    })
+    const result = await newComment.save()
+    blog.comments = blog.comments.concat(result)
+    const updatedBlog = await blog.save()
+    const responseBody = await Blog.findById(updatedBlog._id).populate('comments', { comment: 1 })
+    return response.status(201).json(responseBody)
+  } catch (exception) {
+    next(exception)
+  }
+
+})
+
+
+
+
+
+
+
+
 
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
@@ -35,7 +73,7 @@ blogsRouter.post('/', async (request, response, next) => {
     url: body.url,
     likes: body.likes || 0,
     user: user._id,
-    comments: body.comments
+    comments: []
   })
   try {
     const savedBlog = await blog.save()
@@ -46,26 +84,6 @@ blogsRouter.post('/', async (request, response, next) => {
     next(exception)
   }
 })
-
-
-blogsRouter.post('/:id/comments', async (request, response, next) => {
-  const body = request.body
-  console.log(body)
-
-  const blog = new Blog({
-    comments: body.comments
-  })
-  try {
-    const savedBlog = await blog.save()
-    blog.comments = blog.comments.concat(savedBlog)
-    response.json(blog.comments.toJSON())
-  } catch (exception) {
-    next(exception)
-  }
-})
-
-
-
 
 
 
@@ -119,7 +137,7 @@ blogsRouter.put('/:id', async (request, response, next) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
-    comments: body.comments
+    comments: body.comment
   }
   console.log(blog, 'blog')
 

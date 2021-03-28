@@ -53,6 +53,7 @@ blogsRouter.post('/:id/comments', async (request, response, next) => {
   console.log(body)
 
   const blog = new Blog({
+    ...body,
     comments: body.comments
   })
   try {

@@ -20,6 +20,9 @@ const blogReducer = (state = [], action) => {
       const blogToRemove = action.data
       const removedBlog = state.filter(b => b.id !== blogToRemove.id)
       return [...removedBlog]
+    case 'ADD_COMMENT':
+      const comment = action.data.comments
+      return { ...state, comments: comment }
     default:
       return state
   }

@@ -36,6 +36,7 @@ const Blog = ({ blogs, handleLike, handleRemove }) => {
       <h4>Comments</h4>
       <ul>
         <li>{blog.comments}</li>
+
       </ul>
     </>
   )
