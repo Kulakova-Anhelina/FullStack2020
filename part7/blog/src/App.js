@@ -13,7 +13,7 @@ import {
 } from "react-router-dom"
 import Users from './components/Users';
 import User from './components/User'
-import { handleLike, handleDelete, creteComment } from './reducers/blogReducer'
+import { handleLike, creteComment } from './reducers/blogReducer'
 import Blog from './components/Blog'
 import { Nav, Navbar } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button'
@@ -36,25 +36,6 @@ const App = () => {
   const user = storage.loadUser()
   const blogFormRef = React.createRef()
   const blogState = useSelector(state => state.blogs)
-  const [comment, setComment] = useState()
-
-  const like = async (id) => {
-    const toLike = blogState.find(a => a.id === id)
-    dispatch(handleLike(toLike))
-  }
-  const onChangeComment = (e) => {
-    setComment(e.target.value)
-  }
-  const handleCreateComment = async (id) => {
-    dispatch(creteComment(comment, id))
-
-  }
-
-
-  const handleRemove = async (id) => {
-    const toRemove = blogState.find(a => a.id === id)
-    dispatch(handleDelete(toRemove))
-  }
 
 
   const dispatch = useDispatch()
@@ -153,10 +134,6 @@ const App = () => {
             <Route path="/blogs/:id">
               <Blog
                 blogs={blogState}
-                handleLike={like}
-                handleRemove={handleRemove}
-                handleCreateComment={handleCreateComment}
-                onChangeComment={onChangeComment}
               />
             </Route>
             <Route path="/blogs">

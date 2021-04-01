@@ -12,49 +12,37 @@ const getTokenFrom = request => {
   return null
 }
 
+//________________________________________________________________________________
+//get
+
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
-    .find({}).populate('user', { username: 1, name: 1 })
-  //.find({}).populate('comments', { comment: 1 })
-
-
+    .find({}).populate('user', { username: 1, name: 1 }).populate('comments', { content: 1 })
   response.json(blogs.map(blog => blog.toJSON()))
 })
 
 
-
+//_____________________________________________________________________________________
+//post comments
 blogsRouter.post('/:id/comments', async (request, response, next) => {
   const body = request.body
-  const token = getTokenFrom(request)
-
-  /*const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
-  }*/
-
   try {
     const blog = await Blog.findById(request.params.id)
     const newComment = new Comment({
-      comment: body.comment
+      comment: body.content
     })
     const result = await newComment.save()
-    blog.comments = blog.comments.concat(result)
+    blog.comments = blog.comments.concat(result.id)
     const updatedBlog = await blog.save()
-    const responseBody = await Blog.findById(updatedBlog._id).populate('comments', { comment: 1 })
+    const responseBody = await Blog.findById(updatedBlog._id).populate('comments')
     return response.status(201).json(responseBody)
   } catch (exception) {
     next(exception)
   }
-
 })
 
-
-
-
-
-
-
-
+//_________________________________________________________________________________________
+//post blog
 
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
@@ -66,6 +54,7 @@ blogsRouter.post('/', async (request, response, next) => {
   }
 
   const user = await User.findById(decodedToken.id)
+  console.log(user)
 
   const blog = new Blog({
     title: body.title,
@@ -86,8 +75,8 @@ blogsRouter.post('/', async (request, response, next) => {
 })
 
 
-
-
+//_________________________________________________________________________
+// get by id
 
 blogsRouter.get('/:id', async (request, response) => {
   const blog = await Blog.findById(request.params.id)
@@ -98,8 +87,8 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
-
-
+//____________________________________________________________________________
+//delete blog
 
 blogsRouter.delete('/:id', async (request, response, next) => {
   try {
@@ -121,6 +110,9 @@ blogsRouter.delete('/:id', async (request, response, next) => {
   }
 })
 
+//__________________________________________________________________________________
+//update
+
 blogsRouter.put('/:id', async (request, response, next) => {
 
   const body = request.body
@@ -132,14 +124,14 @@ blogsRouter.put('/:id', async (request, response, next) => {
   }
 
 
-  const blog = { // <-- Here
+  const blog = {
     title: body.title,
     author: body.author,
     url: body.url,
     likes: body.likes,
-    comments: body.comment
+    comments: body.content
   }
-  console.log(blog, 'blog')
+
 
   try {
     const blogId = await Blog.findById(request.params.id)

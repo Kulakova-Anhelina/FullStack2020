@@ -1,8 +1,6 @@
 import userServices from '../services/user'
 
 const usersReducer = (state = [], action) => {
-  console.log(action, "Action")
-  console.log(state, "State")
 
   switch (action.type) {
     case 'INIT_USERS':

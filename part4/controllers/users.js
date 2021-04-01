@@ -8,7 +8,7 @@ usersRouter.get('/', async (request, response) => {
     url: 1,
     likes: 1,
   })
-  response.json(users.map(u => u.toJSON()))
+  response.json(users)
 })
 
 usersRouter.post('/', async (request, response) => {

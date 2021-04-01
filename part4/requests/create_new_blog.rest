@@ -1,7 +1,6 @@
-POST http://localhost:3001/api/blogs/5fd7c797a9368f4ed0f59fa7/comments
+POST http://localhost:3001/api/blogs/6065ca4b3ff97f43745f5902/comments
 
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhaW1vbiIsImlkIjoiNWZkN2Q0MmJjZmMwNTEzYjg0MzU0YmY0IiwiaWF0IjoxNjE2ODcxNDYxfQ.oH0o7OHr72mNfxTtghLK0uerFP9vf0I_SyK2_LBFnno
 
 {
 "comment": "Hello World"
