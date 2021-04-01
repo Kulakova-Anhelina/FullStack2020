@@ -13,7 +13,7 @@ import {
 } from "react-router-dom"
 import Users from './components/Users';
 import User from './components/User'
-import { handleLike, handleDelete } from './reducers/blogReducer'
+import { handleLike, handleDelete, creteComment } from './reducers/blogReducer'
 import Blog from './components/Blog'
 import { Nav, Navbar } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button'
@@ -36,10 +36,18 @@ const App = () => {
   const user = storage.loadUser()
   const blogFormRef = React.createRef()
   const blogState = useSelector(state => state.blogs)
+  const [comment, setComment] = useState()
 
   const like = async (id) => {
     const toLike = blogState.find(a => a.id === id)
     dispatch(handleLike(toLike))
+  }
+  const onChangeComment = (e) => {
+    setComment(e.target.value)
+  }
+  const handleCreateComment = async (id) => {
+    dispatch(creteComment(comment, id))
+
   }
 
 
@@ -52,13 +60,11 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(initializeblogs())
-  }, [dispatch])
-
-
-
-  useEffect(() => {
     dispatch(showUser(user))
-  }, [dispatch])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+
 
   const notifyWith = (message, type = 'success') => {
     setNotification({
@@ -75,7 +81,6 @@ const App = () => {
       dispatch(logIn(password, username))
       dispatch(showUser(user))
       notifyWith(`${userState.name} welcome back!`)
-      console.log(userState)
       dispatch(showUser(user))
       setUsername('')
       setPassword('')
@@ -91,6 +96,7 @@ const App = () => {
   const handleLogout = () => {
     dispatch(logOut(storage.logoutUser()))
   }
+
 
   if (!userState) {
     return (
@@ -136,7 +142,7 @@ const App = () => {
           </Nav>
         </Navbar>
         <div className="container">
-          <Image  src="./blog.jpg" fluid />
+          <Image src="./blog.jpg" fluid />
           <h2>Blogs</h2>
           <Notification notification={notification} />
           <p>
@@ -149,6 +155,8 @@ const App = () => {
                 blogs={blogState}
                 handleLike={like}
                 handleRemove={handleRemove}
+                handleCreateComment={handleCreateComment}
+                onChangeComment={onChangeComment}
               />
             </Route>
             <Route path="/blogs">

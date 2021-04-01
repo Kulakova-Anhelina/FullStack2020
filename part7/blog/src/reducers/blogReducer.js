@@ -1,15 +1,14 @@
 import blogServices from '../services/blogs'
 
-const byLikes = (a1, a2) => a2.likes - a1.likes
-
-const blogReducer = (state = [], action) => {
-  //console.log(action, "Action")
-  //console.log(state, "State")
-
+const initialState = [{
+  title: "",
+  url: "",
+  author: ""
+}]
+const blogReducer = (state = initialState, action) => {
   switch (action.type) {
-
     case 'INIT_BLOG':
-      return action.data.sort(byLikes)
+      return action.data
     case 'NEW_BLOG':
       return [...state]
     case 'LIKE':
@@ -21,10 +20,22 @@ const blogReducer = (state = [], action) => {
       const removedBlog = state.filter(b => b.id !== blogToRemove.id)
       return [...removedBlog]
     case 'ADD_COMMENT':
-      const comment = action.data.comments
-      return { ...state, comments: comment }
+      console.log(action.data);
+      return action.data
     default:
       return state
+  }
+}
+
+export const creteComment = (blog, comment) => {
+  return async dispatch => {
+    await blogServices.createComment(blog, comment)
+    const data2 = await blogServices.getAll()
+    dispatch({
+      type: 'ADD_COMMENT',
+      data2
+
+    })
   }
 }
 
@@ -32,8 +43,6 @@ export const createblog = (blog) => {
   return async dispatch => {
 
     const data = await blogServices.create(blog)
-    console.log(blog, "b")
-    console.log(data, "c")
     dispatch({
       type: 'CREATE',
       title: data.title,
@@ -48,9 +57,11 @@ export const createblog = (blog) => {
 export const initializeblogs = () => {
   return async dispatch => {
     const blogs = await blogServices.getAll()
+
     dispatch({
       type: 'INIT_BLOG',
-      data: blogs,
+      data: blogs
+
     })
   }
 }
@@ -59,11 +70,10 @@ export const initializeblogs = () => {
 export const handleLike = (blogs) => {
   return async dispatch => {
     const toLike = { ...blogs, likes: blogs.likes += 1 }
-    console.log(toLike)
     const data = await blogServices.update(toLike)
     dispatch({
       type: 'LIKE',
-      data: data
+      data
     })
   }
 }
@@ -74,7 +84,7 @@ export const handleDelete = (blog) => {
     const data = await blogServices.remove(blog.id)
     dispatch({
       type: 'DELETE',
-      data: data
+      data
     })
   }
 }

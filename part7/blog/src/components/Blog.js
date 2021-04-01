@@ -5,7 +5,7 @@ import {
 
 
 
-const Blog = ({ blogs, handleLike, handleRemove }) => {
+const Blog = ({ blogs, handleLike, handleRemove, handleCreateComment, comment, onChangeComment }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -15,11 +15,14 @@ const Blog = ({ blogs, handleLike, handleRemove }) => {
   }
   const id = useParams().id
   const blog = blogs.find(n => n.id === id)
+
+
+
   if (!blog) {
     return null
   }
 
-  console.log(blog)
+
   return (
     <>
       <div style={blogStyle} className='blog'>
@@ -33,11 +36,23 @@ const Blog = ({ blogs, handleLike, handleRemove }) => {
         <div>{blog.user.name}</div>
         {<button onClick={() => handleRemove(blog.id)}>remove</button>}
       </div>
-      <h4>Comments</h4>
-      <ul>
-        <li>{blog.comments}</li>
 
-      </ul>
+      <div>
+        <h6>Create comment</h6>
+
+        <textarea type="tex" name="comment" value={comment} rows="4" cols="100" onChange={onChangeComment}></textarea>
+        <div><button onClick={() => handleCreateComment(blog.id)}>create comment</button></div>
+        {
+          blog.comments.content ? (<>
+            <h4>Comments</h4>
+            <ul>
+              <li>{blog.comments.content}</li>
+
+            </ul>
+          </>) : <div></div>
+        }
+
+      </div>
     </>
   )
 }

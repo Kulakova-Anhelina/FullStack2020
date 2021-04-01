@@ -3,6 +3,7 @@ import storage from '../utils/storage'
 
 const baseUrl = '/api/blogs'
 
+
 const getConfig = () => {
   return {
     headers: { Authorization: `bearer ${storage.loadUser().token}` }
@@ -10,13 +11,12 @@ const getConfig = () => {
 }
 
 const getAll = async () => {
-  const response =await axios.get(baseUrl)
+  const response = await axios.get(baseUrl)
   return response.data
 }
 
-const create = async ({url, author, title}) => {
-  const object = {title, url, author, likes: 0 }
-  console.log(object, "obj");
+const create = async ({ url, author, title }) => {
+  const object = { title, url, author, likes: 0 }
   const response = await axios.post(baseUrl, object, getConfig())
   return response.data
 }
@@ -27,10 +27,19 @@ const update = async (blog) => {
 
 }
 
+const createComment = async ({ comment, blog }) => {
+
+  const response = await axios.post(`${baseUrl}/${blog.id}/comments`, comment)
+  console.log(response.data);
+  return response.data
+}
+
+
+console.log(createComment);
+
 const remove = async (id) => {
-  console.log(id, "SERVICE")
   const response = await axios.delete(`${baseUrl}/${id}`, getConfig())
   return response.data
 }
 
-export default { getAll, create, update, remove }
+export default { getAll, create, update, remove, createComment }
