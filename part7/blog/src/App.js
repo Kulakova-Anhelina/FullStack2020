@@ -13,11 +13,11 @@ import {
 } from "react-router-dom"
 import Users from './components/Users';
 import User from './components/User'
-import { handleLike, creteComment } from './reducers/blogReducer'
+import Jumbotron from 'react-bootstrap/Jumbotron'
+import Container from 'react-bootstrap/Container'
 import Blog from './components/Blog'
 import { Nav, Navbar } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button'
-import Image from 'react-bootstrap/Image'
 
 
 
@@ -111,9 +111,15 @@ const App = () => {
   return (
     <div>
       <Router>
-        <Navbar bg="dark" variant="dark">
+        <Navbar className="bg-light justify-content-between" variant="light" fixed="top">
           <Navbar.Brand href="#home">
-            Blogs
+            <img
+              alt=""
+              src="lg.svg"
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+            />{' '}
           </Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="#" as="span">
@@ -122,14 +128,16 @@ const App = () => {
             <Nav.Link href="#" as="span"><Link style={padding} to="/users">users</Link></Nav.Link>
           </Nav>
         </Navbar>
-        <div className="container">
-          <Image src="./blog.jpg" fluid />
-          <h2>Blogs</h2>
-          <Notification notification={notification} />
-          <p>
-            {userState.name} logged in <Button variant="info" onClick={handleLogout}>logout</Button>
-          </p>
-
+        <Jumbotron fluid>
+          <Container>
+            <h2>Blogs</h2>
+            <Notification notification={notification} />
+            <p>
+              {userState.name} logged in <Button variant="info" onClick={handleLogout}>logout</Button>
+            </p>
+          </Container>
+        </Jumbotron>
+        <Container>
           <Switch>
             <Route path="/blogs/:id">
               <Blog
@@ -154,9 +162,9 @@ const App = () => {
           <div>
             <i>Blog app, Anhelina Kulakova 2020</i>
           </div>
-        </div>
-      </Router>
-    </div>
+        </Container>
+      </Router >
+    </div >
   )
 }
 

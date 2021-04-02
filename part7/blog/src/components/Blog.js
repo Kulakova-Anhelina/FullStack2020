@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   useParams
 } from "react-router-dom"
-
 import { useDispatch } from 'react-redux'
 import { handleLike, creteComment, handleDelete } from '../reducers/blogReducer'
+import { BsFillHeartFill, BsFillTrashFill } from "react-icons/bs";
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import Container from 'react-bootstrap/Container'
+
 
 const Blog = ({ blogs }) => {
   const [comment, setComment] = useState()
@@ -30,6 +34,9 @@ const Blog = ({ blogs }) => {
 
 
 
+  useEffect(() => {
+
+  }, [blog, comment])
 
   if (!blog) {
     return null
@@ -37,36 +44,38 @@ const Blog = ({ blogs }) => {
 
 
   return (
-    <>
+    <Container>
       <div className='blog'>
         <i>{blog.title}</i> by {blog.author}
       </div>
       <div>
         <div>{blog.url}</div>
-        <div>likes {blog.likes}
-          <button onClick={() => handleLikeBlog(blog.id)}>like</button>
+        <div> {blog.likes}<Button
+          onClick={() => handleLikeBlog(blog.id)}
+          variant='outline-light'
+        >
+          <BsFillHeartFill color="#DC143C" />
+        </Button>
         </div>
         <div>{blog.user.name}</div>
-        {<button onClick={() => handleRemove(blog.id)}>remove</button>}
+        {<Button onClick={() => handleRemove(blog.id)} variant='outline-light'><BsFillTrashFill color="black" /></Button>}
       </div>
-
-      <div>
-        <h6>Create comment</h6>
-
-        <textarea type="tex" name="comment" value={comment} rows="4" cols="100" onChange={onChangeComment}></textarea>
-        <div><button onClick={() => handleCreateComment(blog.id)}>create comment</button></div>
+      <Form>
+        <Form.Label>Create comment</Form.Label>
+        <Form.Control as="textarea" name="comment" value={comment} rows="4" cols="100" onChange={onChangeComment} />
+        <div><Button onClick={() => handleCreateComment(blog.id)} variant="outline-success">create comment</Button></div>
         {
-          blog.comments.content ? (<>
+          blog.comments ? (<>
             <h4>Comments</h4>
             <ul>
-              <li>{blog.comments.comment}</li>
+              <li>{ }</li>
 
             </ul>
           </>) : <div></div>
         }
 
-      </div>
-    </>
+      </Form>
+    </Container>
   )
 }
 export default Blog;
