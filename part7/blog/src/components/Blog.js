@@ -3,11 +3,13 @@ import {
   useParams
 } from "react-router-dom"
 import { useDispatch } from 'react-redux'
-import { handleLike, creteComment, handleDelete } from '../reducers/blogReducer'
+import { handleLike, handleDelete, addNewComment } from '../reducers/blogReducer'
 import { BsFillHeartFill, BsFillTrashFill } from "react-icons/bs";
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
+
+
 
 
 const Blog = ({ blogs }) => {
@@ -28,8 +30,11 @@ const Blog = ({ blogs }) => {
     e.preventDefault()
     setComment(e.target.value)
   }
-  const handleCreateComment = async (blog) => {
-    dispatch(creteComment(comment, blog))
+  const handleCreateComment = async (event) => {
+    console.log(comment, blog)
+    event.preventDefault()
+    console.log(dispatch(addNewComment(blog, { content: comment })));
+    dispatch(addNewComment(blog, { content: comment }))
   }
 
 
@@ -41,6 +46,7 @@ const Blog = ({ blogs }) => {
   if (!blog) {
     return null
   }
+
 
 
   return (
@@ -60,19 +66,28 @@ const Blog = ({ blogs }) => {
         <div>{blog.user.name}</div>
         {<Button onClick={() => handleRemove(blog.id)} variant='outline-light'><BsFillTrashFill color="black" /></Button>}
       </div>
+      <Container>
+        {
+          blog.comments ?
+            <>
+              <h5>Comments</h5>
+              {blog.comments.map((c =>
+              (<>
+
+                <ul>
+                  <li>{
+                    c.content}</li>
+
+                </ul>
+              </>)))}</>
+            : <div></div>
+        }
+      </Container>
       <Form>
         <Form.Label>Create comment</Form.Label>
         <Form.Control as="textarea" name="comment" value={comment} rows="4" cols="100" onChange={onChangeComment} />
-        <div><Button onClick={() => handleCreateComment(blog.id)} variant="outline-success">create comment</Button></div>
-        {
-          blog.comments ? (<>
-            <h4>Comments</h4>
-            <ul>
-              <li>{ }</li>
+        <div><Button onClick={handleCreateComment} variant="outline-success">create comment</Button></div>
 
-            </ul>
-          </>) : <div></div>
-        }
 
       </Form>
     </Container>

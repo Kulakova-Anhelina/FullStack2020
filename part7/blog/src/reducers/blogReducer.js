@@ -1,11 +1,9 @@
 import blogServices from '../services/blogs'
 
-const initialState = [{
-  title: "",
-  url: "",
-  author: ""
-}]
-const blogReducer = (state = initialState, action) => {
+
+const blogReducer = (state = [], action) => {
+  console.log(action);
+  console.log(state)
   switch (action.type) {
     case 'INIT_BLOG':
       return action.data
@@ -20,24 +18,13 @@ const blogReducer = (state = initialState, action) => {
       const removedBlog = state.filter(b => b.id !== blogToRemove.id)
       return [...removedBlog]
     case 'ADD_COMMENT':
-      console.log(action.data);
-      return action.data
+
+      return [...state, action.data]
     default:
       return state
   }
 }
 
-export const creteComment = (blog, comment) => {
-  return async dispatch => {
-    await blogServices.createComment(blog, comment)
-    const data2 = await blogServices.getAll()
-    dispatch({
-      type: 'ADD_COMMENT',
-      data2
-
-    })
-  }
-}
 
 export const createblog = (blog) => {
   return async dispatch => {
@@ -50,6 +37,7 @@ export const createblog = (blog) => {
       url: data.url
 
     })
+    await blogServices.getAll()
   }
 }
 
@@ -85,6 +73,23 @@ export const handleDelete = (blog) => {
     dispatch({
       type: 'DELETE',
       data
+    })
+    await blogServices.getAll()
+  }
+}
+
+
+export const addNewComment = (blog, comment) => {
+
+  console.log((blog, comment, "blog, comment"))
+  return async dispatch => {
+    console.log((blog, comment, "blog, comment"))
+    const data = await blogServices.createComment(blog, comment)
+    console.log(data);
+    dispatch({
+      type: 'ADD_COMMENT',
+      data: data
+
     })
   }
 }

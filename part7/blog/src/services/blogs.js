@@ -27,15 +27,13 @@ const update = async (blog) => {
 
 }
 
-const createComment = async ({ comment, blog }) => {
-
+const createComment = async (blog, comment) => {
+  console.log(blog, comment, "from server");
   const response = await axios.post(`${baseUrl}/${blog.id}/comments`, comment)
   console.log(response.data);
   return response.data
 }
 
-
-console.log(createComment);
 
 const remove = async (id) => {
   const response = await axios.delete(`${baseUrl}/${id}`, getConfig())
