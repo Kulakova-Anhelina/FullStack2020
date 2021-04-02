@@ -2,7 +2,7 @@ const blogsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
-const Comment = require('../models/commnets')
+
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
@@ -18,28 +18,10 @@ const getTokenFrom = request => {
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
     .find({}).populate('user', { username: 1, name: 1 }).populate('comments', { content: 1 })
-  response.json(blogs.map(blog => blog.toJSON()))
+  response.json(blogs.map(blog => blog))
 })
 
 
-//_____________________________________________________________________________________
-//post comments
-blogsRouter.post('/:id/comments', async (request, response, next) => {
-  const body = request.body
-  try {
-    const blog = await Blog.findById(request.params.id)
-    const newComment = new Comment({
-      comment: body.content
-    })
-    const result = await newComment.save()
-    blog.comments = blog.comments.concat(result.id)
-    const updatedBlog = await blog.save()
-    const responseBody = await Blog.findById(updatedBlog._id).populate('comments')
-    return response.status(201).json(responseBody)
-  } catch (exception) {
-    next(exception)
-  }
-})
 
 //_________________________________________________________________________________________
 //post blog
@@ -54,7 +36,7 @@ blogsRouter.post('/', async (request, response, next) => {
   }
 
   const user = await User.findById(decodedToken.id)
-  console.log(user)
+
 
   const blog = new Blog({
     title: body.title,
@@ -62,7 +44,6 @@ blogsRouter.post('/', async (request, response, next) => {
     url: body.url,
     likes: body.likes || 0,
     user: user._id,
-    comments: []
   })
   try {
     const savedBlog = await blog.save()
