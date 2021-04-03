@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Blogs from './components/Blogs'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
-import NewBlog from './components/NewBlog'
+
+import NewBlog from './components/Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import storage from './utils/storage'
 import { initializeblogs } from './reducers/blogReducer'
@@ -146,9 +146,9 @@ const App = () => {
             </Route>
             <Route path="/blogs">
               <Blogs blogs={blogState} />
-              <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-                <NewBlog />
-              </Togglable>
+
+              <NewBlog />
+
             </Route>
             <Route path="/users/:id">
               <User users={usersState} />

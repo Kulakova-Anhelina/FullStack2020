@@ -85,6 +85,7 @@ export const addNewComment = (blog, comment) => {
   return async dispatch => {
     console.log((blog, comment, "blog, comment"))
     const data = await blogServices.createComment(blog, comment)
+    await blogServices.getAll()
     console.log(data);
     dispatch({
       type: 'ADD_COMMENT',

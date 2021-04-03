@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react'
 import { Link } from "react-router-dom"
+import ListGroup from 'react-bootstrap/ListGroup'
+
 
 const Blogs = ({ blogs }) => {
 
   return (
-    <ul>
+    <ListGroup variant="flush">
       {blogs.map((blog) =>
-        <li key={blog.id}>
+        <ListGroup.Item key={blog.id} variant="light">
           <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-        </li>
+        </ListGroup.Item>
 
       )}
-    </ul>
+    </ListGroup>
   )
 }
 

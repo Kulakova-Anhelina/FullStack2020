@@ -33,6 +33,7 @@ const Blog = ({ blogs }) => {
   const handleCreateComment = async (event) => {
     console.log(comment, blog)
     event.preventDefault()
+    if (comment.length > 0) { }
     console.log(dispatch(addNewComment(blog, { content: comment })));
     dispatch(addNewComment(blog, { content: comment }))
   }
@@ -86,7 +87,7 @@ const Blog = ({ blogs }) => {
       <Form>
         <Form.Label>Create comment</Form.Label>
         <Form.Control as="textarea" name="comment" value={comment} rows="4" cols="100" onChange={onChangeComment} />
-        <div><Button onClick={handleCreateComment} variant="outline-success">create comment</Button></div>
+        <div><Button onClick={handleCreateComment} variant="outline-success" style={{ marginTop: "40px" }}>create comment</Button></div>
 
 
       </Form>
