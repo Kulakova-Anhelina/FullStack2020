@@ -8,9 +8,13 @@ import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
 import { useStateValue } from "../state";
+import {
+  Link, useParams,
+} from "react-router-dom";
 
 const PatientListPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
+
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
@@ -36,6 +40,38 @@ const PatientListPage: React.FC = () => {
     }
   };
 
+
+  const { id } = useParams<{ id: string }>();
+  const patientId = Object.values(patients).find((p) => p.id === id);
+  console.log(patientId?.id);
+
+
+
+
+
+  React.useEffect(() => {
+
+    const fetchPatient = async () => {
+      try {
+        const { data: patientInfo } = await axios.get<Patient>(
+          `${apiBaseUrl}/patients/${patientId?.id}`
+        );
+        dispatch({ type: "SET_PATIENT", payload: patientInfo });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+
+    fetchPatient();
+  }, [dispatch]);
+
+
+
+
+
+
+
   return (
     <div className="App">
       <Container textAlign="center">
@@ -53,7 +89,7 @@ const PatientListPage: React.FC = () => {
         <Table.Body>
           {Object.values(patients).map((patient: Patient) => (
             <Table.Row key={patient.id}>
-              <Table.Cell>{patient.name}</Table.Cell>
+              <Table.Cell><Link to={`/patients/${patient.id}`}>{patient.name}</Link></Table.Cell>
               <Table.Cell>{patient.gender}</Table.Cell>
               <Table.Cell>{patient.occupation}</Table.Cell>
               <Table.Cell>
@@ -75,3 +111,5 @@ const PatientListPage: React.FC = () => {
 };
 
 export default PatientListPage;
+
+
