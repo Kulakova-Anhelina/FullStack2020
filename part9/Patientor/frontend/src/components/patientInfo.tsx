@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect } from "react";
 import axios from "axios";
 import { Container, Header, Item } from "semantic-ui-react";
-import { Patient } from "../types";
+import { Diagnoses, Patient } from "../types";
 import { apiBaseUrl } from "../constants";
-import { useStateValue, setPatient } from "../state";
+import { useStateValue, setPatient, setDiagnosList } from "../state";
 import { useParams } from "react-router-dom";
 import { List } from "semantic-ui-react";
 import { Icon } from "semantic-ui-react";
 
 const PatientInfo: React.FC = () => {
-  const [{ patients }, dispatch] = useStateValue();
+  const [{ patients, patient, diagnoses }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
   const patientId = Object.values(patients).find((p) => p.id === id);
   const fetchPatient = useCallback(async () => {
@@ -29,13 +29,29 @@ const PatientInfo: React.FC = () => {
     }
     return;
   }, [fetchPatient]);
-  const [{ patient }] = useStateValue();
+
+  React.useEffect(() => {
+    const fetchDiagnosestList = async () => {
+      try {
+        const { data: diagnosesListFromApi } = await axios.get<Diagnoses[]>(
+          `${apiBaseUrl}/diagnoses`
+        );
+        dispatch(setDiagnosList(diagnosesListFromApi));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchDiagnosestList();
+  }, [dispatch]);
 
   if (!patient) {
     return null;
   }
 
-  //const entries: any = new Map<string, Patient>();
+  if (!diagnoses) {
+    return null;
+  }
 
   return (
     <div className="App">
@@ -65,8 +81,16 @@ const PatientInfo: React.FC = () => {
                 </p>
               </Item.Description>
               <List bulleted>
-                {entry?.diagnosisCodes?.map((c) => (
-                  <List.Item>{c}</List.Item>
+                {Object.values(diagnoses).map((diagnoses: Diagnoses) => (
+                  <>
+                    {entry.diagnosisCodes?.includes(diagnoses.code) ? (
+                      <List.Item key={diagnoses.code}>
+                        {diagnoses.code} {diagnoses.name}
+                      </List.Item>
+                    ) : (
+                      ""
+                    )}
+                  </>
                 ))}
               </List>
             </div>
