@@ -7,6 +7,7 @@ import { useStateValue, setPatient, setDiagnosList } from "../state";
 import { useParams } from "react-router-dom";
 import { List } from "semantic-ui-react";
 import { Icon } from "semantic-ui-react";
+import EntryDetails from "./Entry";
 
 const PatientInfo: React.FC = () => {
   const [{ patients, patient, diagnoses }, dispatch] = useStateValue();
@@ -76,9 +77,7 @@ const PatientInfo: React.FC = () => {
           {patient?.patient?.entries.map((entry) => (
             <div key={entry.id}>
               <Item.Description>
-                <p>
-                  {entry?.date} {entry?.description}
-                </p>
+                <EntryDetails entry={entry} />
               </Item.Description>
               <List bulleted>
                 {Object.values(diagnoses).map((diagnoses: Diagnoses) => (
