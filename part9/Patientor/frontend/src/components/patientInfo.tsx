@@ -64,10 +64,10 @@ const PatientInfo: React.FC = () => {
                   {entry?.date} {entry?.description}
                 </p>
               </Item.Description>
-              <List>
-                <List.Item>{entry?.diagnosisCodes?.map((c) => c)}</List.Item>
-                <List.Item>{entry?.specialist}</List.Item>
-                <List.Item>{entry?.type}</List.Item>
+              <List bulleted>
+                {entry?.diagnosisCodes?.map((c) => (
+                  <List.Item>{c}</List.Item>
+                ))}
               </List>
             </div>
           ))}
