@@ -4,7 +4,7 @@ import toNewPatientEntry from '../src/utils';
 
 const data = [
     {
-        id: 'd2773336-f723-11e9-8f0b-362b9e155667',
+        id: 'n',
         name: 'John McClane',
         dateOfBirth: '1986-07-09',
         ssn: '090786-122X',

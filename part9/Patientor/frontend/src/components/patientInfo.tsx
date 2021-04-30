@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import axios from "axios";
-import { Container } from "semantic-ui-react";
-import { Patient } from "../types";
+import { Container, Header, Item } from "semantic-ui-react";
+import { Patient } from '../types';
 import { apiBaseUrl } from "../constants";
 import { useStateValue, setPatient } from "../state";
 import { useParams } from "react-router-dom";
@@ -9,56 +9,75 @@ import { List } from 'semantic-ui-react';
 import { Icon } from 'semantic-ui-react';
 
 
-
-
-// eslint-disable-next-line no-redeclare
 const PatientInfo: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
   const patientId = Object.values(patients).find((p) => p.id === id);
-  //const [patient, setPatient] = useState<Patient>();
-
-  React.useEffect(() => {
-
-    const fetchPatient = async () => {
+  const fetchPatient = useCallback(
+    async () => {
       try {
         const { data: patientInfo } = await axios.get<Patient>(
           `${apiBaseUrl}/patients/${patientId?.id}`
         );
         dispatch(setPatient(patientInfo));
-        console.log(patientInfo);
-
-        //setPatient(patientInfo);
-
       } catch (e) {
         console.error(e);
       }
-    };
+    },
+    [dispatch, setPatient],
+  );
+
+  useEffect(() => {
 
     if (patientId !== undefined) {
       fetchPatient();
     }
+    return;
 
-  }, [dispatch]);
+  }, [fetchPatient]);
   const [{ patient }] = useStateValue();
 
   if (!patient) {
     return null;
   }
-  console.log();
+
+
+  //const entries: any = new Map<string, Patient>();
+
+
+
 
   return (
 
     <div className="App">
 
       <Container textAlign="center">
-        <h3>Patient Information {patient?.patient?.gender === "male" ? <Icon name='mars' /> : <Icon name='venus' />}</h3>
+        <Header as='h3'>Patient Information {patient?.patient?.gender === "male" ? <Icon name='mars' /> : <Icon name='venus' />}</Header>
         <List>
           <List.Item></List.Item>
           <List.Item>{patient?.patient?.dateOfBirth}</List.Item>
           <List.Item>{patient?.patient?.ssn}</List.Item>
           <List.Item>{patient?.patient?.occupation}</List.Item>
         </List>
+        <Item.Content>
+          <Item.Header as='a'>Entries</Item.Header>
+
+          {patient?.patient?.entries.map(entry => (
+            <div key={entry.id}>
+              <Item.Description >
+                <p>{entry?.date} {entry?.description}</p>
+              </Item.Description>
+              <List>
+                <List.Item>{entry?.diagnosisCodes?.map(c => c)}</List.Item>
+                <List.Item>{entry?.specialist}</List.Item>
+                <List.Item>{entry?.type}</List.Item>
+              </List>
+            </div>
+          ))}
+
+        </Item.Content>
+
+
       </Container>
 
 
