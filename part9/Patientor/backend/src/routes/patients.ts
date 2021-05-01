@@ -18,6 +18,17 @@ router.get('/', (_req, res) => {
   res.send(patientsService.getNonSensitiveEntries());
 });
 
+
+router.post("/:id/entry", (_req, res) => {
+  try {
+    const patient = patientsService.addEntry(_req.params.id, _req.body);
+    res.status(201).send(patient);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
+
 router.post('/', (req, res) => {
   try {
     const newPatientEntry = toNewPatientEntry(req.body);
@@ -27,6 +38,10 @@ router.post('/', (req, res) => {
     res.status(400).send(e.message);
   }
 });
+
+
+
+
 export default router;
 
 

@@ -74,7 +74,7 @@ const PatientInfo: React.FC = () => {
         <Item.Content>
           <Item.Header as="a">Entries</Item.Header>
 
-          {patient?.patient?.entries.map((entry) => (
+          {patient?.patient?.entries?.map((entry) => (
             <div key={entry.id}>
               <Item.Description>
                 <EntryDetails entry={entry} />
