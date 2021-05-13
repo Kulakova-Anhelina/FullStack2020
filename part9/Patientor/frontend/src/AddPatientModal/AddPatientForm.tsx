@@ -11,6 +11,34 @@ import {
 } from "./FormField";
 import { Gender, Patient, Entry } from "../types";
 import { useStateValue } from "../state";
+import * as Yup from "yup";
+import { date, object } from "yup";
+import { parse, isDate } from "date-fns";
+
+function parseDateString(_value: any, originalValue: string) {
+  const parsedDate = isDate(originalValue)
+    ? originalValue
+    : parse(originalValue, "yyyy-MM-dd", new Date());
+
+  return parsedDate;
+}
+const today = new Date();
+
+const SignupSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  snn: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  occupation: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  dateOfBirth: date().required("Required"),
+});
 
 /*
  * use type Patient, but omit id and entries,
@@ -39,8 +67,10 @@ export const AddPatientForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         dateOfBirth: "",
         occupation: "",
         gender: Gender.Other,
+
         entries: [],
       }}
+      validationSchema={SignupSchema}
       onSubmit={onSubmit}
       validate={(values) => {
         const requiredError = "Field is required";
