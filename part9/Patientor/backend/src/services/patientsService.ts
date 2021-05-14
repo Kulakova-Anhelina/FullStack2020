@@ -27,6 +27,7 @@ const addEntry = (patient: Patient, newEntry: EntryWithoutId): Patient => {
   const savedPatient = { ...patient, entries: patient.entries.concat(entry) };
   savedPatients = savedPatients.map((p) =>
     p.id === savedPatient.id ? savedPatient : p
+
   );
 
   return savedPatient;

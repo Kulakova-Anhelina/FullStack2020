@@ -2,43 +2,8 @@ import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
-import {
-  TextField,
-  SelectField,
-  GenderOption,
-  DiagnosisSelection,
-  NumberField,
-} from "./FormField";
-import { Gender, Patient, Entry } from "../types";
-import { useStateValue } from "../state";
-import * as Yup from "yup";
-import { date, object } from "yup";
-import { parse, isDate } from "date-fns";
-
-function parseDateString(_value: any, originalValue: string) {
-  const parsedDate = isDate(originalValue)
-    ? originalValue
-    : parse(originalValue, "yyyy-MM-dd", new Date());
-
-  return parsedDate;
-}
-const today = new Date();
-
-const SignupSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  snn: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  occupation: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  dateOfBirth: date().required("Required"),
-});
+import { TextField, SelectField, GenderOption } from "./FormField";
+import { Gender, Patient } from "../types";
 
 /*
  * use type Patient, but omit id and entries,
@@ -58,7 +23,6 @@ const genderOptions: GenderOption[] = [
 ];
 
 export const AddPatientForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
-  const [{ diagnoses }] = useStateValue();
   return (
     <Formik
       initialValues={{
@@ -70,7 +34,6 @@ export const AddPatientForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
 
         entries: [],
       }}
-      validationSchema={SignupSchema}
       onSubmit={onSubmit}
       validate={(values) => {
         const requiredError = "Field is required";
@@ -90,7 +53,7 @@ export const AddPatientForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         return errors;
       }}
     >
-      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
+      {({ isValid, dirty }) => {
         return (
           <Form className="form ui">
             <Field
@@ -118,18 +81,6 @@ export const AddPatientForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               component={TextField}
             />
             <SelectField label="Gender" name="gender" options={genderOptions} />
-            <Field
-              label="healthCheckRating"
-              name="healthCheckRating"
-              component={NumberField}
-              min={0}
-              max={3}
-            />
-            <DiagnosisSelection
-              setFieldValue={setFieldValue}
-              setFieldTouched={setFieldTouched}
-              diagnoses={Object.values(diagnoses)}
-            />
             <Grid>
               <Grid.Column floated="left" width={5}>
                 <Button type="button" onClick={onCancel} color="red">

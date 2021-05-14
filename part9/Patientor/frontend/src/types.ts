@@ -19,7 +19,11 @@ export interface Patient {
   dateOfBirth?: string;
   entries: Entry[];
 }
-
+export enum EntryType {
+  HospitalEntry = "HospitalEntry",
+  OccupationalHealthcareEntry = "OccupationalHealthcareEntry",
+  HealthCheckEntry = "HealthCheckEntry"
+}
 export interface BaseEntry {
   id: string;
   description: string;
@@ -40,28 +44,28 @@ export type Discharge = {
 };
 
 export interface HealthCheckEntry extends BaseEntry {
-  type: "HealthCheck";
-  healthCheckRating: HealthCheckRating;
+  type: EntryType.HealthCheckEntry;
+  healthCheckRating?: HealthCheckRating;
 }
 export interface HospitalEntry extends BaseEntry {
-  type: "Hospital";
-  discharge: Discharge;
+  type: EntryType.HospitalEntry;
+  discharge?: Discharge;
 }
 
 export type SickLeave = {
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 
 export interface OccupationalHealthcareEntry extends BaseEntry {
-  type: "OccupationalHealthcare";
+  type: EntryType.OccupationalHealthcareEntry;
   employerName?: string;
   sickLeave?: SickLeave;
 }
 export interface Diagnoses {
-  code: string;
-  name: string;
+  code?: string;
+  name?: string;
   latin?: string;
 }
 export type Entry =

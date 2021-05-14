@@ -8,6 +8,7 @@ import {
   HealthCheckEntry,
 } from "../types";
 import { Icon } from "semantic-ui-react";
+import { EntryType } from "../types";
 
 const HospitalComponent: React.FC<{ hostitalEntry: HospitalEntry }> = ({
   hostitalEntry,
@@ -60,14 +61,14 @@ const HealthCheck: React.FC<{
 
 const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
   switch (entry.type) {
-    case "Hospital":
+    case EntryType.HospitalEntry:
       return <HospitalComponent hostitalEntry={entry} />;
-    case "OccupationalHealthcare":
+    case EntryType.OccupationalHealthcareEntry:
       return <OccupationalHealthcare ocuppationalEntry={entry} />;
-    case "HealthCheck":
+    case EntryType.HealthCheckEntry:
       return <HealthCheck healthEntry={entry} />;
     default:
-      return assertNever(entry);
+      return entry;
   }
 };
 
