@@ -119,26 +119,30 @@ const PatientInfo: React.FC = () => {
             <Item.Content>
               <Item.Header as="a">Entries</Item.Header>
 
-              {Object.values(patient?.entries).map((entry) => (
-                <div key={entry.id}>
-                  <Item.Description>
-                    <EntryDetails entry={entry} />
-                  </Item.Description>
-                  <List bulleted>
-                    {Object.values(diagnoses).map((diagnoses: Diagnoses) => (
-                      <>
-                        {entry.diagnosisCodes?.includes(diagnoses.code) ? (
-                          <List.Item key={diagnoses.code}>
-                            {diagnoses.code} {diagnoses.name}
-                          </List.Item>
-                        ) : (
-                          ""
-                        )}
-                      </>
-                    ))}
-                  </List>
-                </div>
-              ))}
+              {Object.values(patient?.entries).map((entry) => {
+                console.log(entry, "entry");
+
+                return (
+                  <div key={entry.id}>
+                    <Item.Description>
+                      <EntryDetails entry={entry} />
+                    </Item.Description>
+                    <List bulleted>
+                      {Object.values(diagnoses).map((diagnoses: Diagnoses) => (
+                        <>
+                          {entry.diagnosisCodes?.includes(diagnoses.code) ? (
+                            <List.Item key={diagnoses.code}>
+                              {diagnoses.code} {diagnoses.name}
+                            </List.Item>
+                          ) : (
+                            ""
+                          )}
+                        </>
+                      ))}
+                    </List>
+                  </div>
+                );
+              })}
             </Item.Content>
           </>
         ))}

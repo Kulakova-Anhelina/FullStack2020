@@ -70,9 +70,9 @@ export type Entry =
   | HealthCheckEntry;
 
 export enum EntryType {
-  HospitalEntry = "HospitalEntry",
-  OccupationalHealthcareEntry = "OccupationalHealthcareEntry",
-  HealthCheckEntry = "HealthCheckEntry"
+  HospitalEntry = "Hospital",
+  OccupationalHealthcareEntry = "OccupationalHealthcare",
+  HealthCheckEntry = "HealthCheck"
 }
 
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;

@@ -20,9 +20,9 @@ export interface Patient {
   entries: Entry[];
 }
 export enum EntryType {
-  HospitalEntry = "HospitalEntry",
-  OccupationalHealthcareEntry = "OccupationalHealthcareEntry",
-  HealthCheckEntry = "HealthCheckEntry"
+  HospitalEntry = "Hospital",
+  OccupationalHealthcareEntry = "OccupationalHealthcare",
+  HealthCheckEntry = "HealthCheck"
 }
 export interface BaseEntry {
   id: string;
