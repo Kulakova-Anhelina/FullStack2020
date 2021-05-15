@@ -1,9 +1,11 @@
 import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
-import { TextField, DiagnosisSelection, NumberField } from "./FormFiled";
+
 import { BaseEntry, EntryType } from "../types";
 import { useStateValue } from "../state";
+import { DiagnosisSelection, TextField } from "../AddPatientModal/FormField";
+
 export type BaseFormValues = Omit<BaseEntry, "id">;
 
 interface Props {
@@ -19,8 +21,13 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         description: "",
         date: "",
         specialist: "",
-        type: EntryType.HealthCheckEntry,
+        type: EntryType.OccupationalHealthcareEntry,
         diagnosisCodes: [],
+        employerName: "",
+        sickLeave: {
+          startDate: "",
+          endDate: "",
+        },
       }}
       onSubmit={onSubmit}
       validate={(values) => {
@@ -60,11 +67,22 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               component={TextField}
             />
             <Field
-              label="healthCheckRating"
-              name="healthCheckRating"
-              component={NumberField}
-              min={0}
-              max={3}
+              label="EmployerName"
+              placeholder="employer name"
+              name="employerName"
+              component={TextField}
+            />
+            <Field
+              label="Start Date"
+              placeholder="start date"
+              name="sickLeave.startDate"
+              component={TextField}
+            />
+            <Field
+              label="End Date"
+              placeholder="End Date"
+              name="sickLeave.endDate"
+              component={TextField}
             />
             <DiagnosisSelection
               setFieldValue={setFieldValue}

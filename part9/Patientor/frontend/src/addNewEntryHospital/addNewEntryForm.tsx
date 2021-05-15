@@ -1,9 +1,17 @@
 import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
-import { TextField, DiagnosisSelection, NumberField } from "./FormFiled";
 import { BaseEntry, EntryType } from "../types";
 import { useStateValue } from "../state";
+import * as Yup from "yup";
+import { date } from "yup";
+import is from "date-fns/esm/locale/is/index.js";
+import { DiagnosisSelection, TextField } from "../AddPatientModal/FormField";
+
+/*
+ * use type Patient, but omit id and entries,
+ * because those are irrelevant for new patient object.
+ */
 export type BaseFormValues = Omit<BaseEntry, "id">;
 
 interface Props {
@@ -19,8 +27,12 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         description: "",
         date: "",
         specialist: "",
-        type: EntryType.HealthCheckEntry,
+        type: EntryType.HospitalEntry,
         diagnosisCodes: [],
+        discharge: {
+          date: "",
+          criteria: "",
+        },
       }}
       onSubmit={onSubmit}
       validate={(values) => {
@@ -60,11 +72,16 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               component={TextField}
             />
             <Field
-              label="healthCheckRating"
-              name="healthCheckRating"
-              component={NumberField}
-              min={0}
-              max={3}
+              label="Date"
+              placeholder="date"
+              name="discharge.date"
+              component={TextField}
+            />
+            <Field
+              label="Criteria"
+              placeholder="criteria"
+              name="discharge.criteria"
+              component={TextField}
             />
             <DiagnosisSelection
               setFieldValue={setFieldValue}

@@ -15,6 +15,8 @@ import { Icon } from "semantic-ui-react";
 import EntryDetails from "./Entry";
 import { BaseFormValues } from "../AddNewEntryField/addNewEntryForm";
 import AddEntryModal from "../AddNewEntryField";
+import AddEntryModaHospital from "../addNewEntryHospital";
+import AddEntryModaHealthCare from "../AddNewOccupationalHealthcare";
 
 const PatientInfo: React.FC = () => {
   const [{ patients, patient, diagnoses }, dispatch] = useStateValue();
@@ -62,6 +64,20 @@ const PatientInfo: React.FC = () => {
     setError(undefined);
   };
 
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const openModal = (): void => setModalOpen(true);
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  const [modalOpenfirst, setModalOpenfirst] = React.useState<boolean>(false);
+  const openModalfirst = (): void => setModalOpenfirst(true);
+  const closeModalfirst = (): void => {
+    setModalOpenfirst(false);
+    setError(undefined);
+  };
+
   const submitNewEntry = async (values: BaseFormValues) => {
     try {
       const { data: newPatient } = await axios.post<Patient>(
@@ -99,15 +115,40 @@ const PatientInfo: React.FC = () => {
                 <Icon name="venus" />
               )}
             </Header>
-            <AddEntryModal
-              modalOpen={modalOpensecond}
-              onSubmit={submitNewEntry}
-              error={error}
-              onClose={closeModalsecond}
-            />
-            <Button onClick={() => openModalsecond()} color="orange">
-              Add New Entry
-            </Button>
+            <Button.Group>
+              <AddEntryModal
+                modalOpen={modalOpensecond}
+                onSubmit={submitNewEntry}
+                error={error}
+                onClose={closeModalsecond}
+              />
+              <Button onClick={() => openModalsecond()} color="orange">
+                <Icon name="history" />
+                Health Check
+              </Button>
+              <Button.Or />
+              <AddEntryModaHospital
+                modalOpen={modalOpen}
+                onSubmit={submitNewEntry}
+                error={error}
+                onClose={closeModal}
+              />
+              <Button onClick={() => openModal()} color="olive">
+                <Icon name="add to calendar" />
+                Hospital
+              </Button>
+              <Button.Or />
+              <AddEntryModaHealthCare
+                modalOpen={modalOpenfirst}
+                onSubmit={submitNewEntry}
+                error={error}
+                onClose={closeModalfirst}
+              />
+              <Button onClick={() => openModalfirst()} color="teal">
+                <Icon name="heartbeat" />
+                Health Care
+              </Button>
+            </Button.Group>
             <List>
               <List.Item></List.Item>
               <List.Item>{patient?.dateOfBirth}</List.Item>
