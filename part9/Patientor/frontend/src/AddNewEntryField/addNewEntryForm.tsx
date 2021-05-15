@@ -48,9 +48,6 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
       }}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
-        console.log(isValid, "valid");
-        console.log(dirty, "dirty");
-
         return (
           <Form className="form ui">
             <Field

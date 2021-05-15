@@ -64,7 +64,7 @@ export interface OccupationalHealthcareEntry extends BaseEntry {
   sickLeave?: SickLeave;
 }
 export interface Diagnoses {
-  code?: string;
+  code: string;
   name?: string;
   latin?: string;
 }

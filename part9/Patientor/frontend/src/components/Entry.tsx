@@ -60,8 +60,6 @@ const HealthCheck: React.FC<{
 };
 
 const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
-  console.log(entry, "from detail");
-
   switch (entry?.type) {
     case EntryType.HospitalEntry:
       return <HospitalComponent hostitalEntry={entry} />;

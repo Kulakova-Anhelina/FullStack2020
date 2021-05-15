@@ -45,6 +45,18 @@ export const reducer = (state: State, action: Action): State => {
           ...state.patients
         }
       };
+
+    case "SET_DIAGNOSIES":
+      return {
+        ...state,
+        diagnoses: {
+          ...action.payload.reduce(
+            (memo, diagnoses) => ({ ...memo, [diagnoses.code]: diagnoses }),
+            {}
+          ),
+          ...state.diagnoses
+        }
+      };
     case "ADD_PATIENT":
       return {
         ...state,

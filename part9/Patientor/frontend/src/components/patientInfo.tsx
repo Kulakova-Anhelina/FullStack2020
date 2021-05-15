@@ -39,20 +39,18 @@ const PatientInfo: React.FC = () => {
     }
     return;
   }, [fetchPatient]);
-  console.log(patient);
+  const fetchDiagnosestList = async () => {
+    try {
+      const { data: diagnosesListFromApi } = await axios.get<Diagnoses[]>(
+        `${apiBaseUrl}/diagnoses`
+      );
+      dispatch(setDiagnosList(diagnosesListFromApi));
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-  React.useEffect(() => {
-    const fetchDiagnosestList = async () => {
-      try {
-        const { data: diagnosesListFromApi } = await axios.get<Diagnoses[]>(
-          `${apiBaseUrl}/diagnoses`
-        );
-        dispatch(setDiagnosList(diagnosesListFromApi));
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
+  useEffect(() => {
     fetchDiagnosestList();
   }, [dispatch]);
 
@@ -92,7 +90,7 @@ const PatientInfo: React.FC = () => {
     <div className="App">
       <Container textAlign="center">
         {Object.values(patient).map((patient: Patient) => (
-          <>
+          <div key={patient.id}>
             <Header as="h3">
               Patient Information{" "}
               {patient?.gender === "male" ? (
@@ -120,8 +118,6 @@ const PatientInfo: React.FC = () => {
               <Item.Header as="a">Entries</Item.Header>
 
               {Object.values(patient?.entries).map((entry) => {
-                console.log(entry, "entry");
-
                 return (
                   <div key={entry.id}>
                     <Item.Description>
@@ -129,7 +125,7 @@ const PatientInfo: React.FC = () => {
                     </Item.Description>
                     <List bulleted>
                       {Object.values(diagnoses).map((diagnoses: Diagnoses) => (
-                        <>
+                        <div key={diagnoses.code}>
                           {entry.diagnosisCodes?.includes(diagnoses.code) ? (
                             <List.Item key={diagnoses.code}>
                               {diagnoses.code} {diagnoses.name}
@@ -137,14 +133,14 @@ const PatientInfo: React.FC = () => {
                           ) : (
                             ""
                           )}
-                        </>
+                        </div>
                       ))}
                     </List>
                   </div>
                 );
               })}
             </Item.Content>
-          </>
+          </div>
         ))}
       </Container>
     </div>

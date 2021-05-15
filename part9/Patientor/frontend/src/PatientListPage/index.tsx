@@ -8,7 +8,7 @@ import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
 import { useStateValue, addPatient } from "../state";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const PatientListPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
@@ -33,29 +33,9 @@ const PatientListPage: React.FC = () => {
       dispatch(addPatient(newPatient));
       closeModal();
     } catch (e) {
-      console.error(e.response.data);
       setError(e.response.data.error);
     }
   };
-
-  const { id } = useParams<{ id: string }>();
-  const patientId = Object.values(patients).find((p) => p.id === id);
-  console.log(patientId?.id);
-
-  React.useEffect(() => {
-    const fetchPatient = async () => {
-      try {
-        const { data: patientInfo } = await axios.get<Patient>(
-          `${apiBaseUrl}/patients/${patientId?.id}`
-        );
-        dispatch({ type: "SET_PATIENT", payload: patientInfo });
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    fetchPatient();
-  }, [dispatch]);
 
   return (
     <div className="App">

@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/:id', (req, res) => {
   const patient = patientsService.findById(req.params.id);
 
-  if (patient) {
+  if (patient?.id) {
     res.send(patient);
   } else {
     res.sendStatus(404);
@@ -27,8 +27,6 @@ router.post("/:id/entry", (req, res) => {
       const updatedPatient = patientsService.addEntry(patient, newEntry);
       res.json(updatedPatient);
       res.status(201).send(patient);
-
-
     } catch (e) {
       res.status(400).send(e.message);
     }
@@ -43,7 +41,6 @@ router.post('/', (req, res) => {
     const addedEntry = patientsService.addData(newPatientEntry);
     res.json(addedEntry);
     console.log(addedEntry, "added entry");
-
   } catch (e) {
     res.status(400).send(e.message);
   }
