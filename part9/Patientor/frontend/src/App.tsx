@@ -34,9 +34,6 @@ const App: React.FC = () => {
 
     fetchPatientList();
   }, [dispatch]);
-  const [active, setActive] = useState<boolean>(false);
-  const handleClick = () => setActive(!active);
-
   return (
     <div className="App">
       <Router>
