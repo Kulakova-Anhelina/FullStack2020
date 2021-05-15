@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-import { Button, Divider, Header, Container } from "semantic-ui-react";
+import {
+  Button,
+  Divider,
+  Header,
+  Container,
+  Icon,
+  Breadcrumb,
+  Segment,
+} from "semantic-ui-react";
 import { apiBaseUrl } from "./constants";
 import { useStateValue, setPatientList } from "./state";
 import { Patient } from "./types";
@@ -26,19 +34,27 @@ const App: React.FC = () => {
 
     fetchPatientList();
   }, [dispatch]);
+  const [active, setActive] = useState<boolean>(false);
+  const handleClick = () => setActive(!active);
 
   return (
     <div className="App">
       <Router>
         <Container>
-          <Header as="h1">Patientor</Header>
-          <Button as={Link} to="/" primary>
-            Home
-          </Button>
+          <Segment>
+            <Header as="h1" color="violet">
+              <Breadcrumb.Section as={Link} to="/">
+                <Icon name="home" color="grey" />
+              </Breadcrumb.Section>
+              Patientor
+            </Header>
+          </Segment>
           <Divider hidden />
           <Switch>
             <Route path="/patients/:id">
-              <PatientInfo />
+              <Segment>
+                <PatientInfo />
+              </Segment>
             </Route>
             <Route path="/" render={() => <PatientListPage />} />
           </Switch>
