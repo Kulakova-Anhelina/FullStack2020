@@ -28,17 +28,16 @@ const PatientInfo: React.FC = () => {
       );
 
       dispatch(setPatient(patientInfo));
+      console.log();
     } catch (e) {
       console.error(e);
     }
   }, [dispatch, setPatient]);
 
   useEffect(() => {
-    if (patientId !== undefined) {
-      fetchPatient();
-    }
-    return;
-  }, [fetchPatient]);
+    fetchPatient();
+  }, [dispatch, patientId?.id, patients]);
+
   const fetchDiagnosestList = async () => {
     try {
       const { data: diagnosesListFromApi } = await axios.get<Diagnoses[]>(
@@ -85,6 +84,7 @@ const PatientInfo: React.FC = () => {
   if (!diagnoses) {
     return null;
   }
+  console.log(patient);
 
   return (
     <div className="App">
@@ -118,6 +118,8 @@ const PatientInfo: React.FC = () => {
               <Item.Header as="a">Entries</Item.Header>
 
               {Object.values(patient?.entries).map((entry) => {
+                console.log(patient?.entries);
+
                 return (
                   <div key={entry.id}>
                     <Item.Description>

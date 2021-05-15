@@ -8,8 +8,10 @@ import {
   EntryWithoutId,
 } from "../types";
 
+let savedPatients = [...patients];
+
 const getData = (): Array<Patient> => {
-  return patients;
+  return savedPatients;
 };
 const addData = (entry: NewPatientEntry): Patient => {
   const newPatientEntry = {
@@ -17,10 +19,10 @@ const addData = (entry: NewPatientEntry): Patient => {
     ...entry,
   };
 
-  patients.push(newPatientEntry);
+  savedPatients.push(newPatientEntry);
   return newPatientEntry;
 };
-let savedPatients = [...patients];
+
 
 const addEntry = (patient: Patient, newEntry: EntryWithoutId): Patient => {
   const entry: Entry = { ...newEntry, id: uuidv4() };
@@ -44,7 +46,7 @@ const getNonSensitiveEntries = (): PublicPatient[] => {
 };
 
 const findById = (id: string): Patient | undefined => {
-  const entry = patients.find((p) => p.id === id);
+  const entry = savedPatients.find((p) => p.id === id);
   return entry;
 };
 
