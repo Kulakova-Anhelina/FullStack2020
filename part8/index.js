@@ -1,4 +1,6 @@
 const { ApolloServer, gql } = require("apollo-server");
+const { find, filter } = require('lodash');
+
 
 let authors = [
   {
@@ -146,25 +148,17 @@ const resolvers = {
       books = books.concat(book)
       return book
     },
-    editAuthor: (root, args) => {
-      //Find index of specific object using findIndex method.
-      const objIndex = authors.findIndex((obj => obj.name == args.name));
-      // make new object of updated object.
-      if (objIndex) {
-        const updatedObj = { ...authors[objIndex], born: args.born };
-
-        const updatedAuthors = authors.filter(a => a === updatedObj ? updatedObj : a)
-
-        console.log(updatedAuthors, "updatedObj ");
-
-        return updatedObj
+    editAuthor: (_, { name, born }) => {
+      const author = find(authors, { name: name });
+      if (!author) {
+        throw new Error(`Couldn't find author with id ${name}`);
       }
-
-      return null
-
+      author.born = born;
+      return author;
     }
-  }
-};
+  },
+}
+
 
 const server = new ApolloServer({
   typeDefs,
