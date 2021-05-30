@@ -81,11 +81,13 @@ let books = [
 function getOccurrence(array, value) {
   return array.filter((v) => v.author === value).length;
 }
+const { v1: uuid } = require('uuid')
 
 const typeDefs = gql`
   type Author {
     name: String!
     bookCount: Int
+    born: String
   }
   type Books {
     title: String
@@ -99,6 +101,16 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genres: String): Books
     allAuthors: [Author!]!
+  }
+
+
+  type Mutation {
+    addBook(
+      title: String
+      published: Int!
+      author: String!
+      genres: [String]
+    ): Books
   }
 `;
 
@@ -122,6 +134,14 @@ const resolvers = {
   Author: {
     bookCount: (root) => getOccurrence(books, root.name),
   },
+
+  Mutation: {
+    addBook: (root, args) => {
+      const book = { ...args, id: uuid() }
+      books = books.concat(book)
+      return book
+    }
+  }
 };
 
 const server = new ApolloServer({
