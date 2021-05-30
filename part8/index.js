@@ -87,8 +87,9 @@ const typeDefs = gql`
   type Author {
     name: String!
     bookCount: Int
-    born: String
+    born: Int
   }
+
   type Books {
     title: String
     published: Int!
@@ -111,6 +112,10 @@ const typeDefs = gql`
       author: String!
       genres: [String]
     ): Books
+    editAuthor(
+    name: String!
+    born: Int
+    ): Author
   }
 `;
 
@@ -140,6 +145,23 @@ const resolvers = {
       const book = { ...args, id: uuid() }
       books = books.concat(book)
       return book
+    },
+    editAuthor: (root, args) => {
+      //Find index of specific object using findIndex method.
+      const objIndex = authors.findIndex((obj => obj.name == args.name));
+      // make new object of updated object.
+      if (objIndex) {
+        const updatedObj = { ...authors[objIndex], born: args.born };
+
+        const updatedAuthors = authors.filter(a => a === updatedObj ? updatedObj : a)
+
+        console.log(updatedAuthors, "updatedObj ");
+
+        return updatedObj
+      }
+
+      return null
+
     }
   }
 };
