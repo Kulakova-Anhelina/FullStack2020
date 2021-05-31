@@ -1,12 +1,6 @@
 
 import React from 'react'
 
-
-
-
-
-
-
 const Authors = ({ authors, show }) => {
 
   if (!show) {
