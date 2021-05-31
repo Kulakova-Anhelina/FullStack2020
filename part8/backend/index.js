@@ -104,6 +104,7 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genres: String): Books
     allAuthors: [Author!]!
+    allBooksview:[Books!]!
   }
 
 
@@ -136,6 +137,7 @@ const resolvers = {
       return root
     }),
     allAuthors: () => authors,
+    allBooksview: () => books
   },
 
   Author: {

@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Books = (props) => {
-  if (!props.show) {
+const Books = ({
+  show, books
+}) => {
+  if (!show) {
     return null
   }
-
-  const books = []
 
   return (
     <div>
@@ -22,7 +22,7 @@ const Books = (props) => {
               published
             </th>
           </tr>
-          {books.map(a =>
+          {books.data.allBooksview.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author}</td>

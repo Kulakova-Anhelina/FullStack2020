@@ -8,3 +8,14 @@ query{
       born}
     }
 `
+
+
+export const ALL_BOOKS = gql`
+query{
+  allBooksview
+  {
+    title,
+    published,
+    author,
+    genres}
+  }`
