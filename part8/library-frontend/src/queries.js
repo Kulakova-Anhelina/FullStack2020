@@ -45,11 +45,11 @@ mutation createBook(
 
 
 export const EDIT_YEAR = gql`
-  mutation  editAuthor($name: String!, $born: Int!){
+  mutation  editAuthor($name:String! , $born: Int!){
     editAuthor(name: $name, born: $born)  {
     name
     born
-    bookcount
+    bookCount
     }
   }
 `
