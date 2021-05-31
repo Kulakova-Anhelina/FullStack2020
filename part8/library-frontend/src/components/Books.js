@@ -22,7 +22,7 @@ const Books = ({
               published
             </th>
           </tr>
-          {books.data.allBooksview.map(a =>
+          {books?.data?.allBooksview.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author}</td>
