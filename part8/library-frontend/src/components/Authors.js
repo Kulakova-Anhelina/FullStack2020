@@ -1,5 +1,7 @@
 
 import React from 'react'
+import EditForm from "./EditForm"
+
 
 const Authors = ({ authors, show }) => {
 
@@ -31,6 +33,7 @@ const Authors = ({ authors, show }) => {
         </tbody>
       </table>
 
+      < EditForm />
     </div>
   )
 }
