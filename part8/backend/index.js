@@ -1,6 +1,23 @@
 const { ApolloServer, gql } = require("apollo-server");
 const { find, filter } = require('lodash');
+const mongoose = require('mongoose')
+const Book = require('./models/book')
 
+
+const MONGODB_URI = `mongodb+srv://bge887:${password}@cluster0.fcd9k.mongodb.net/library?retryWrites=true&w=majority`
+
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connection to MongoDB:', error.message)
+  })
+
+
+
+console.log('connecting to', MONGODB_URI)
 
 let authors = [
   {
@@ -93,11 +110,11 @@ const typeDefs = gql`
   }
 
   type Books {
-    title: String
+    title: String!
     published: Int!
-    author: String!
+    author: Author!
+    genres: [String!]!
     id: ID!
-    genres: [String]
   }
   type Query {
     bookCount: Int!
