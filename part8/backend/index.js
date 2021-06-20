@@ -164,7 +164,7 @@ const resolvers = {
           invalidArgs: args,
         })
       }
-      author.born = born;
+      author.born = args.born;
       return author
     },
 
