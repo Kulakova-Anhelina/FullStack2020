@@ -6,16 +6,20 @@ query{allAuthors{name, born, bookCount}}
 
 
 export const ALL_BOOKS = gql`
-query{
-  allBooksview
-  {
-    title,
-    published,
-    author,
-    genres}
-  }`
+query {
+  allBooksview {
+    title
+    author {
+      name
+      bookCount
+      born
+    }
+    published
+    genres
 
-
+  }
+}
+`
 
 export const CREATE_BOOK = gql`
 mutation createBook(
