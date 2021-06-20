@@ -36,7 +36,11 @@ mutation createBook(
   ) {
     title
     published
-    author
+    author{
+      name
+      bookCount
+      born
+    }
     genres
   }
 }

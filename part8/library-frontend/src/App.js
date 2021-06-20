@@ -26,9 +26,6 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
 
-
-  console.log(books.data, "books  app");
-
   if (authors.loading | books.loading) {
     return <div>loading...</div>
   }
@@ -84,6 +81,7 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+        setError={setErrorMessage}
       />
 
     </div>

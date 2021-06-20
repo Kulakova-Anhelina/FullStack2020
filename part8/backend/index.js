@@ -22,10 +22,6 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
   })
 
 
-function getOccurrence(array, value) {
-  return array.filter((v) => v.author === value).length;
-}
-
 const typeDefs = gql`
 type Token {
   value: String!
@@ -123,16 +119,20 @@ const resolvers = {
       })
     },
     me: (root, args, context) => {
+      console.log(context);
       return context.currentUser
     }
   },
   Mutation: {
-    addBook: async (root, args) => {
-      // const currentUser = context.currentUser
+    addBook: async (root, args, context) => {
+      const currentUser = context.currentUser
+      console.log(currentUser, "current");
+      console.log(context, "context");
 
-      // if (!currentUser) {
-      //   throw new AuthenticationError("not authenticated")
-      // }
+
+      if (!currentUser) {
+        throw new AuthenticationError("not authenticated")
+      }
 
 
       let author = await Author.findOne({ name: args.author });
@@ -143,7 +143,6 @@ const resolvers = {
       const book = new Book({ ...args, author })
       try {
         await book.save()
-        console.log(book, "bookd");
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
@@ -151,7 +150,7 @@ const resolvers = {
       }
       return book
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
       const author = await Author.findOne({ name: args.name })
       const currentUser = context.currentUser
 
@@ -207,6 +206,7 @@ const server = new ApolloServer({
       const decodedToken = jwt.verify(
         auth.substring(7), JWT_SECRET
       )
+
       const currentUser = await User
         .findById(decodedToken.id)
       return { currentUser }
