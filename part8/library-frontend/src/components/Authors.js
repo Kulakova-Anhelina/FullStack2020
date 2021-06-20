@@ -8,7 +8,7 @@ const Authors = ({ authors, show }) => {
   if (!show) {
     return null
   }
-
+  console.log(authors, "authors");
   return (
     <div>
       <h2>authors</h2>

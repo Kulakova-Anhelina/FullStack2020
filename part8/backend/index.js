@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer, UserInputError, gql } = require('apollo-server')
 const mongoose = require('mongoose')
 const Book = require('./models/book')
 const Author = require('./models/author')
@@ -25,8 +25,6 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
 function getOccurrence(array, value) {
   return array.filter((v) => v.author === value).length;
 }
-const { v1: uuid } = require('uuid')
-
 
 const typeDefs = gql`
 type Token {
@@ -102,17 +100,32 @@ const resolvers = {
     //   return p.author.includes(args.author) ? p : null
     // }
     //}),
-    allAuthors: () => Author.find({}),
-    allBooksview: () => Book.find({}),
+    allAuthors: async () => {
+      const authors = await Author.find({}).populate('books')
+      return authors.map(author => {
+        return {
+          name: author.name,
+          born: author.born,
+          bookCount: author.books.length
+        }
+      })
+    },
+    allBooksview: async () => {
+      const books = await Book.find({})
+      return books.map(async book => {
+        console.log(book, "bb");
+        return {
+          title: book.title,
+          published: book.published,
+          genres: book.genres,
+          author: await Author.findById(book.author)
+        }
+      })
+    },
     me: (root, args, context) => {
       return context.currentUser
     }
   },
-
-  Author: {
-    bookCount: (root) => getOccurrence(books, root.name),
-  },
-
   Mutation: {
     addBook: async (root, args) => {
       const currentUser = context.currentUser

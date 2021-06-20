@@ -6,7 +6,7 @@ const Books = ({
   if (!show) {
     return null
   }
-
+  console.log(books?.data?.allBooksview, "books");
   return (
     <div>
       <h2>books</h2>
@@ -25,7 +25,7 @@ const Books = ({
           {books?.data?.allBooksview.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
-              <td>{a.author}</td>
+
               <td>{a.published}</td>
             </tr>
           )}

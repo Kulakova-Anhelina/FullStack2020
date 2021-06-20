@@ -8,8 +8,22 @@ const NewBook = ({ show }) => {
   const [published, setPublished] = useState()
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
+  const [error, setError] = useState(null)
   const [createBook] = useMutation(CREATE_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS }]
+    refetchQueries: [{ query: ALL_BOOKS }],
+    onError: (error) => {
+      setError(error.graphQLErrors[0].message)
+    },
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: ALL_BOOKS })
+      store.writeQuery({
+        query: ALL_BOOKS,
+        data: {
+          ...dataInStore,
+          allBooksview: [...dataInStore.allBooksview, response.data.addBook]
+        }
+      })
+    }
   })
 
   if (!show) {

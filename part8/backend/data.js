@@ -9,10 +9,10 @@ export let authors = [
     id: "afa5b6f0-344d-11e9-a414-719c6709cf3e",
     born: 1963,
   },
-  {
-    name: "Fyodor Dostoevsky",
+  {  name: "Fyodor Dostoevsky",
     id: "afa5b6f1-344d-11e9-a414-719c6709cf3e",
-    born: 1821,
+    born: 1821
+  ,
   },
   {
     name: "Joshua Kerievsky", // birthyear not known
