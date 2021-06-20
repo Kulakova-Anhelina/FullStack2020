@@ -51,7 +51,7 @@ const typeDefs = gql`
     addBook(
       title: String
       published: Int!
-      author: String!
+      author:String!
       genres: [String]
     ): Books
     editAuthor(
@@ -87,7 +87,13 @@ const resolvers = {
 
   Mutation: {
     addBook: async (root, args) => {
-      const book = new Book({ ...args })
+
+      let author = await Author.findOne({ name: args.author });
+      if (!author) {
+        author = await new Author({ name: args.author });
+        await author.save();
+      }
+      const book = new Book({ ...args, author })
       try {
         await book.save()
       } catch (error) {
@@ -109,9 +115,6 @@ const resolvers = {
       author.born = born;
       return author
     }
-
-
-
 
   },
 }
