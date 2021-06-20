@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -25,6 +25,7 @@ const App = () => {
   const [token, setToken] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
+
 
   if (authors.loading | books.loading) {
     return <div>loading...</div>
@@ -63,7 +64,6 @@ const App = () => {
         logout
       </button>
       <div>
-
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
@@ -72,6 +72,7 @@ const App = () => {
       <Authors
         show={page === 'authors'}
         authors={authors}
+        setPage={setPage}
       />
 
       <Books

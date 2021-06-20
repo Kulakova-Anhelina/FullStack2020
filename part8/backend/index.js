@@ -7,9 +7,6 @@ const jwt = require('jsonwebtoken')
 const config = require('./utils/config')
 
 
-
-
-
 console.log('connecting to', config.MONGODB_URI)
 const JWT_SECRET = 'NEED_HERE_A_SECRET_KEY'
 
@@ -84,18 +81,20 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: (root, args) => Book.find(({ args: { $in: [args.author, args.genres] } })),
+    allBooks: async (root, args) => {
+      let books = await Book.find({})
+      let author = await Author.findOne({ name: args.author })
 
-    //(root, args) => books.filter((p) => {
-    // console.log((p.author.includes(args.author) && p.genres.includes(args.genres)))
-    // if (args.author && args.genres) {
-    //   return p.author.includes(args.author) && p.genres.includes(args.genres) ? p : null
-    // } else if (args.genres) {
-    //   return p.genres.includes(args.genres) ? p : null
-    // } else if (args.author) {
-    //   return p.author.includes(args.author) ? p : null
-    // }
-    //}),
+      if (args.author && args.genres) {
+        return books.filter((p) => { console.log(p.author.equals(author._id)); return p.author.equals(author._id) && p.genres.includes(args.genres) ? p : null })
+      } else if (args.genres) {
+        const list = books.filter(p => { console.log(p); return p.genres.includes(args.genres) })
+        return list
+      } else if (args.author) {
+        const list = books.filter(p.author.equals(author._id))
+        return list
+      }
+    },
     allAuthors: async () => {
       const authors = await Author.find({}).populate('books')
       return authors.map(author => {
