@@ -6,6 +6,14 @@ const Books = ({
   const [filteredData, setFilteredData] = React.useState(null)
   const [data, setData] = React.useState([])
   const [open, setOpen] = React.useState(false)
+
+
+
+
+
+
+
+  
   useEffect(() => {
     if (books?.data?.allBooksview) {
       setFilteredData(books?.data?.allBooksview.map(element => element.genres.map(b => {
