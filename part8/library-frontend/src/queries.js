@@ -87,3 +87,15 @@ query findBookByGenre($genres: String!) {
   }
 }
 `
+
+
+export const FIND_RECOMS = gql`
+query {
+  findRecoms {
+    title
+    published
+    author{name}
+  }
+}
+
+`

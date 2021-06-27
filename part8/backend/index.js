@@ -103,8 +103,14 @@ const resolvers = {
       })
     },
 
-    findRecoms: async (root, context) => {
+    findRecoms: async (root, args, context) => {
+
+
       const currentUser = context.currentUser
+      console.log(currentUser, "current");
+      console.log(args, "context");
+      console.log(currentUser.favoriteGenre, "cv");
+
       return Book.find({ genres: { $in: [currentUser.favoriteGenre] } }).populate('author')
     },
     allBooksview: async () => {
@@ -126,8 +132,7 @@ const resolvers = {
   Mutation: {
     addBook: async (root, args, context) => {
       const currentUser = context.currentUser
-      console.log(currentUser, "current");
-      console.log(context, "context");
+
 
 
       if (!currentUser) {

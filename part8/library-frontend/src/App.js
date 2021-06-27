@@ -5,7 +5,8 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/loginForm'
 import { useQuery, useApolloClient } from '@apollo/client';
-import { ALL_AUTHORS, ALL_BOOKS } from './queries'
+import { ALL_AUTHORS, ALL_BOOKS, FIND_RECOMS } from './queries'
+import Recommendations from './components/Recomends'
 
 const Notify = ({ errorMessage }) => {
   if (!errorMessage) {
@@ -22,6 +23,7 @@ const App = () => {
   const [page, setPage] = useState('authors')
   const authors = useQuery(ALL_AUTHORS)
   const books = useQuery(ALL_BOOKS)
+  const recoms = useQuery(FIND_RECOMS)
   const [token, setToken] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
@@ -35,6 +37,7 @@ const App = () => {
     localStorage.clear()
     client.resetStore()
   }
+
 
 
   const notify = (message) => {
@@ -67,8 +70,14 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
+        <button onClick={() => setPage('recoomendations')}>Recommendations</button>
       </div>
+      <Recommendations
+        show={page === 'recoomendations'}
+        recomBooks={recoms}
+        setPage={setPage}
 
+      />
       <Authors
         show={page === 'authors'}
         authors={authors}
@@ -84,6 +93,7 @@ const App = () => {
         show={page === 'add'}
         setError={setErrorMessage}
       />
+
 
     </div>
   )
