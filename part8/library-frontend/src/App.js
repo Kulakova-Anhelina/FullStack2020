@@ -1,12 +1,14 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/loginForm'
-import { useQuery, useApolloClient } from '@apollo/client';
-import { ALL_AUTHORS, ALL_BOOKS, FIND_RECOMS } from './queries'
+import { ALL_AUTHORS, ALL_BOOKS, FIND_RECOMS, BOOK_ADDED } from './queries'
 import Recommendations from './components/Recomends'
+import {
+  useQuery, useMutation, useSubscription, useApolloClient
+} from '@apollo/client'
 
 const Notify = ({ errorMessage }) => {
   if (!errorMessage) {
@@ -28,6 +30,12 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
 
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      window.alert("Book added")
+      console.log(subscriptionData);
+    }
+  })
 
   if (authors.loading | books.loading) {
     return <div>loading...</div>
@@ -46,6 +54,28 @@ const App = () => {
       setErrorMessage(null)
     }, 10000)
   }
+
+
+
+  // ...
+
+
+
+  // const updateCacheWith = (addedPerson) => {
+  //   const includedIn = (set, object) =>
+  //     set.map(p => p.id).includes(object.id)
+
+  //   const dataInStore = client.readQuery({ query: ALL_PERSONS })
+  //   if (!includedIn(dataInStore.allPersons, addedPerson)) {
+  //     client.writeQuery({
+  //       query: ALL_BOOKS,
+  //       data: { al : dataInStore.allPersons.concat(addedPerson) }
+  //     })
+  //   }
+  // }
+
+
+
 
 
   if (!token) {
