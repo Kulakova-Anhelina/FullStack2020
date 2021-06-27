@@ -5,7 +5,8 @@ const Author = require('./models/author')
 const User = require('./models/user')
 const jwt = require('jsonwebtoken')
 const config = require('./utils/config')
-
+const { PubSub } = require('apollo-server')
+const pubsub = new PubSub()
 
 console.log('connecting to', config.MONGODB_URI)
 const JWT_SECRET = 'NEED_HERE_A_SECRET_KEY'
@@ -17,9 +18,11 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
   .catch((error) => {
     console.log('error connection to MongoDB:', error.message)
   })
-
+mongoose.set('debug', true);
 
 const typeDefs = gql`
+
+
 type Token {
   value: String!
 }
@@ -74,6 +77,9 @@ type User {
       password: String!
     ): Token
   }
+  type Subscription {
+    bookAdded:  Books!
+  }
 `;
 
 const resolvers = {
@@ -105,12 +111,7 @@ const resolvers = {
 
     findRecoms: async (root, args, context) => {
 
-
       const currentUser = context.currentUser
-      console.log(currentUser, "current");
-      console.log(args, "context");
-      console.log(currentUser.favoriteGenre, "cv");
-
       return Book.find({ genres: { $in: [currentUser.favoriteGenre] } }).populate('author')
     },
     allBooksview: async () => {
@@ -131,15 +132,10 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args, context) => {
-      const currentUser = context.currentUser
-
-
-
-      if (!currentUser) {
-        throw new AuthenticationError("not authenticated")
-      }
-
-
+      // const currentUser = context.currentUser
+      // if (!currentUser) {
+      //   throw new AuthenticationError("not authenticated")
+      // }
       let author = await Author.findOne({ name: args.author });
       if (!author) {
         author = await new Author({ name: args.author });
@@ -153,8 +149,13 @@ const resolvers = {
           invalidArgs: args,
         })
       }
+
+      pubsub.publish('BOOK_ADDED', { bookAdded: book })
       return book
     },
+
+
+
     editAuthor: async (root, args, context) => {
       const author = await Author.findOne({ name: args.name })
       const currentUser = context.currentUser
@@ -197,9 +198,13 @@ const resolvers = {
       return { value: jwt.sign(userForToken, JWT_SECRET) }
     },
 
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    },
   }
 }
-
 
 const server = new ApolloServer({
   typeDefs,
@@ -210,15 +215,14 @@ const server = new ApolloServer({
       const decodedToken = jwt.verify(
         auth.substring(7), JWT_SECRET
       )
-
       const currentUser = await User
         .findById(decodedToken.id)
       return { currentUser }
     }
   }
-
 })
 
-server.listen().then(({ url }) => {
-  console.log(`Server ready at ${url}`);
-});
+server.listen().then(({ url, subscriptionsUrl }) => {
+  console.log(`Server ready at ${url}`)
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
+})
