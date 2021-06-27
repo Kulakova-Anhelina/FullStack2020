@@ -47,6 +47,7 @@ type User {
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genres: String): [Books!]!
+    findRecoms: [Books!]
     allAuthors: [Author!]!
     allBooksview:[Books!]!
     me: User
@@ -72,8 +73,6 @@ type User {
       username: String!
       password: String!
     ): Token
-
-
   }
 `;
 
@@ -92,6 +91,7 @@ const resolvers = {
       }
 
     },
+
     allAuthors: async () => {
       const authors = await Author.find({}).populate('books')
       return authors.map(author => {
@@ -102,10 +102,14 @@ const resolvers = {
         }
       })
     },
+
+    findRecoms: async (root, context) => {
+      const currentUser = context.currentUser
+      return Book.find({ genres: { $in: [currentUser.favoriteGenre] } }).populate('author')
+    },
     allBooksview: async () => {
       const books = await Book.find({})
       return books.map(async book => {
-        console.log(book, "bb");
         return {
           title: book.title,
           published: book.published,
@@ -165,8 +169,7 @@ const resolvers = {
     },
 
     createUser: (root, args) => {
-      const user = new User({ username: args.username })
-
+      const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
       return user.save()
         .catch(error => {
           throw new UserInputError(error.message, {

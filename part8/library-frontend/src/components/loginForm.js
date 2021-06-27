@@ -15,10 +15,14 @@ const LoginForm = ({ setError, setToken }) => {
   useEffect(() => {
     if (result.data) {
       const token = result.data.login.value
+      console.log(token, "token");
       setToken(token)
       localStorage.setItem('phonenumbers-user-token', token)
     }
+
   }, [result.data, setToken])
+
+
 
   const submit = async (event) => {
     event.preventDefault()
