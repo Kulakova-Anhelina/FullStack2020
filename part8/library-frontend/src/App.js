@@ -30,10 +30,29 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
 
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) =>
+      set.map(p => p.id).includes(object.id)
+    console.log(addedBook);
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!includedIn(dataInStore.allBooksview, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooksview: dataInStore.allPersons.concat(addedBook) }
+      })
+    }
+  }
+
+
+
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      window.alert("Book added")
+
       console.log(subscriptionData);
+      const addedBook = subscriptionData.data.bookAdded
+      window.alert(`${addedBook.title} added`)
+      updateCacheWith(addedBook)
+
     }
   })
 
