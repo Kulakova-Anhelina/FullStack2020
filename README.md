@@ -36,7 +36,7 @@ This repository contains exercise solutions to the the Full Stack Open course 20
 - [country-hook](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part7/country-hook) - a modification of the solution from part 2 using a custom hook to make an api request
 - [routed-anecdotes](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part7/routed-anecdotes) - anecdote web app with url routing
 
-[View Solutions]https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part7)
+[View Solutions](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part7)
 
 ## Part 6 - [State management with Redux](https://fullstackopen.com/en/part6)
 
