@@ -3,9 +3,11 @@
 This repository contains exercise solutions to the the Full Stack Open course 2020 | University of Helsinki.
 
 
-[View Certificate Part 0-7](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/97e7f5aea751c9d7ed029a3d3e25ea5f)
-[View Certificate Part 8](https://studies.cs.helsinki.fi/stats/api/certificate/fs-graphql/en/045684af16a0b4bedc3113d4771f16a6)
-[View Certificate Part 9](https://studies.cs.helsinki.fi/stats/api/certificate/fs-typescript/en/57df0d66f3eadc3dcf551f258ecf8148)
+- [View Certificate Part 0-7](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/97e7f5aea751c9d7ed029a3d3e25ea5f).
+
+- [View Certificate Part 8](https://studies.cs.helsinki.fi/stats/api/certificate/fs-graphql/en/045684af16a0b4bedc3113d4771f16a6).
+
+- [View Certificate Part 9](https://studies.cs.helsinki.fi/stats/api/certificate/fs-typescript/en/57df0d66f3eadc3dcf551f258ecf8148).
 
 ## Part 9 - [Typescript](https://fullstackopen.com/en/part9)
 
@@ -29,7 +31,7 @@ This repository contains exercise solutions to the the Full Stack Open course 20
 ## Part 7 - [React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 
 - [bloglist-frontend](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part7/blog) - Extends the functionality and designfrom part 5.
-- [bloglist-backend]https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part4 ) - Extends the functionality from part 4
+- [bloglist-backend](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part4 ) - Extends the functionality from part 4
 - [ultimate-hooks](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part7/ultimate-hooks) -exercise in writing a React custom hook implementation of an api resource fetcher
 - [country-hook](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part7/country-hook) - a modification of the solution from part 2 using a custom hook to make an api request
 - [routed-anecdotes](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part7/routed-anecdotes) - anecdote web app with url routing
@@ -55,14 +57,14 @@ Part 4 is a RESTful backend api written with node/express that serves endpoints 
 
 The codebase includes unit and integration tests written with Jest
 
-[Go to Part 4 Solution](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part4)
+[View Solutions](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part4)
 
 ## Part 3 - [Programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
 
 Part 3 is a REST backend using mongodb and written with node/express for PhoneBook from part 2 app
 
 
-[View Solution](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part3)
+[View Solutions](https://github.com/Kulakova-Anhelina/FullStack2020/tree/main/part3)
 
 ## Part 2 - [Communicating with server](https://fullstackopen.com/en/part2)
 
